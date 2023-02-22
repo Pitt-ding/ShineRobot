@@ -10,6 +10,7 @@ import math
 import sys
 import time
 import ctypes
+import re
 import struct
 from PyQt5 import QtCore
 from ShineRobot import Ui_MainWindow
@@ -77,6 +78,17 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.checkBox_ClntRecvFloat.clicked.connect(self.uiUpdate_checkbox_toggle_init)
         self.checkBox_ClntRecvStr.clicked.connect(self.uiUpdate_checkbox_toggle_init)
 
+        # check line edit widgets values
+        self.lineEdit_SerSendInt_Value.textChanged.connect(self.uiUpdate_SerSendValueCheck)
+        self.lineEdit_SerSendFloat_Value.textChanged.connect(self.uiUpdate_SerSendValueCheck)
+        self.lineEdit_SerSendstr_Value.textChanged.connect(self.uiUpdate_SerSendValueCheck)
+        # check spin box widgets sequences
+        self.spinBox_SerSendInt_Seq.textChanged.connect(self.uiUpdate_SerSendValueCheck)
+        self.spinBox_SerSendFloat_Seq.textChanged.connect(self.uiUpdate_SerSendValueCheck)
+        self.spinBox_SerSendStr_Seq.textChanged.connect(self.uiUpdate_SerSendValueCheck)
+        self.spinBox_SerRecvInt_Seq.textChanged.connect(self.uiUpdate_serRecValueCheck)
+        self.spinBox_SerRecvFloat_Seq.textChanged.connect(self.uiUpdate_serRecValueCheck)
+        self.spinBox_SerRecvStr_Seq.textChanged.connect(self.uiUpdate_serRecValueCheck)
         # socket server send and receive full type mode, auto uncheck the single mode check box
         self.lineEdit_SerSendFullType.textChanged.connect(self.uiUpdate_server_full_type_mode)
         self.lineEdit_SerSendFormatStr.textChanged.connect(self.uiUpdate_server_full_type_mode)
@@ -86,9 +98,9 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         # self.pushButton_ClntCreateConn.clicked.connect(self.Create_Client_Socket)
         # self.pushButton_ClntCloseConn.clicked.connect(self.Close_Client_Socket)
 
-    # ------------------------------------------------------------------------------------------------------------------
-    # -----------------------quaternion and euler convert function------------------------------------------------------
-    # ------------------------------------------------------------------------------------------------------------------
+        # ------------------------------------------------------------------------------------------------------------------
+        # -----------------------quaternion and euler convert function------------------------------------------------------
+        # ------------------------------------------------------------------------------------------------------------------
 
     def quaternion_to_euler(self):
         """
@@ -357,25 +369,6 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.textEdit_Log.append(_str_time + str_record)
         self.textEdit_Log.moveCursor(QTextCursor.End)
 
-    def check_server_send_value(self):
-        pass
-        if self.checkBox_SerSendInt.isChecked() + self.checkBox_SerSendFloat.isChecked() + self.checkBox_SerSendStr.isChecked() == 1:
-            if self.checkBox_SerSendInt.isChecked():
-                self.socket_server.socket_server_send(self.lineEdit_SerSendInt_Value.text())
-
-            elif self.checkBox_SerSendFloat.isChecked():
-                self.socket_server.socket_server_send(self.lineEdit_SerSendFloat_Value.text())
-            else:
-                self.socket_server.socket_server_send(self.lineEdit_SerSendstr_Value.text())
-        elif self.checkBox_SerSendInt.isChecked() + self.checkBox_SerSendFloat.isChecked() + self.checkBox_SerSendStr.isChecked() == 2:
-            if not self.checkBox_SerSendInt.isChecked():
-                pass
-            elif not self.checkBox_SerSendFloat.isChecked():
-                pass
-            else:
-                pass
-        elif self.checkBox_SerSendInt.isChecked() + self.checkBox_SerSendFloat.isChecked() + self.checkBox_SerSendStr.isChecked() == 3:
-            pass
     # ------------------------------------------------------------------------------------------------------------------
     # -----------------------------------uiUpdate-----------------------------------------------------------------------
     # ------------------------------------------------------------------------------------------------------------------
@@ -397,7 +390,9 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             self.checkBox_SerSendFloat.setEnabled(True)
 
             self.lineEdit_SerSendFullType.setEnabled(True)
+            self.lineEdit_SerSendFullType.setFocusPolicy(Qt.StrongFocus)
             self.lineEdit_SerSendFormatStr.setEnabled(True)
+            self.lineEdit_SerSendFormatStr.setFocusPolicy(Qt.StrongFocus)
 
             # receive widgets
             self.checkBox_ServerReceiveString.setEnabled(True)
@@ -414,26 +409,26 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
             self.pushButton_SerCloseConn.setEnabled(True)
             self.pushButton_SerCreateConn.setEnabled(False)
+
         else:
             # send widgets
+            self.checkBox_ServerSendString.setChecked(True)
             self.checkBox_ServerSendString.setEnabled(False)
             self.lineEdit_ServerSendSeparator.setEnabled(False)
+            self.checkBox_ServerSendRawbytes.setChecked(False)
             self.checkBox_ServerSendRawbytes.setEnabled(False)
 
             self.checkBox_SerSendInt.setChecked(False)
+            self.uiUpdate_checkbox_toggle_init()
             self.checkBox_SerSendInt.setEnabled(False)
-            self.spinBox_SerSendInt_Seq.setValue(0)
-            self.lineEdit_SerSendInt_Value.clear()
 
             self.checkBox_SerSendFloat.setChecked(False)
+            self.uiUpdate_checkbox_toggle_init()
             self.checkBox_SerSendFloat.setEnabled(False)
-            self.lineEdit_SerSendFloat_Value.clear()
-            self.spinBox_SerSendFloat_Seq.setValue(0)
 
             self.checkBox_SerSendStr.setChecked(False)
+            self.uiUpdate_checkbox_toggle_init()
             self.checkBox_SerSendStr.setEnabled(False)
-            self.lineEdit_SerSendstr_Value.clear()
-            self.spinBox_SerSendStr_Seq.setValue(0)
 
             self.lineEdit_SerSendFullType.clear()
             self.lineEdit_SerSendFullType.setEnabled(False)
@@ -441,23 +436,22 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             self.lineEdit_SerSendFormatStr.setEnabled(False)
 
             # receive widgets
+            self.checkBox_ServerReceiveString.setChecked(True)
             self.checkBox_ServerReceiveString.setEnabled(False)
             self.lineEdit_ServerReceiveSeparator.setEnabled(False)
+            self.checkBox_ServerReceiveRawbytes.setChecked(False)
             self.checkBox_ServerReceiveRawbytes.setEnabled(False)
 
-            self.lineEdit_SerRecvInt_Value.clear()
-            self.spinBox_SerRecvInt_Seq.setValue(0)
             self.checkBox_SerRecvInt.setChecked(False)
+            self.uiUpdate_checkbox_toggle_init()
             self.checkBox_SerRecvInt.setEnabled(False)
 
-            self.lineEdit_SerRecvFloat_Value.clear()
-            self.spinBox_SerRecvFloat_Seq.setValue(0)
             self.checkBox_SerRecvFloat.setChecked(False)
+            self.uiUpdate_checkbox_toggle_init()
             self.checkBox_SerRecvFloat.setEnabled(False)
 
-            self.lineEdit_SerRecvStr_Value.clear()
-            self.spinBox_SerRecvStr_Seq.setValue(0)
             self.checkBox_SerRecvStr.setChecked(False)
+            self.uiUpdate_checkbox_toggle_init()
             self.checkBox_SerRecvStr.setEnabled(False)
 
             self.lineEdit_SerRecvFormatStr.clear()
@@ -469,6 +463,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
             self.pushButton_SerCloseConn.setEnabled(False)
             self.pushButton_SerCreateConn.setEnabled(True)
+        self.uiUpdate_checkbox_checked_String()
 
     def uiUpdate_checkbox_checked_String(self):
         """
@@ -476,33 +471,42 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         :return:
         """
         # server string checkbox checked
-        if self.checkBox_ServerSendString.isChecked():
+        if self.checkBox_ServerSendString.isChecked() and self.checkBox_ServerSendString.isEnabled():
             self.checkBox_ServerSendRawbytes.setChecked(False)
             self.lineEdit_ServerSendSeparator.setEnabled(True)
+            # self.lineEdit_SerSendFormatStr.setEnabled(False)
         elif self.checkBox_ServerSendString.isEnabled():
             self.checkBox_ServerSendRawbytes.setChecked(True)
             self.lineEdit_ServerSendSeparator.setEnabled(False)
+            # self.lineEdit_SerSendFormatStr.setEnabled(True)
 
-        if self.checkBox_ServerReceiveString.isChecked():
+        if self.checkBox_ServerReceiveString.isChecked() and self.checkBox_ServerReceiveString.isEnabled():
             self.checkBox_ServerReceiveRawbytes.setChecked(False)
             self.lineEdit_ServerReceiveSeparator.setEnabled(True)
+            # self.lineEdit_SerRecvFormatStr.setEnabled(False)
         elif self.checkBox_ServerReceiveString.isEnabled():
             self.checkBox_ServerReceiveRawbytes.setChecked(True)
             self.lineEdit_ServerReceiveSeparator.setEnabled(False)
+            # self.lineEdit_SerRecvFormatStr.setEnabled(True)
         # client string checkbox checked
-        if self.checkBox_ClientSendString.isChecked():
+        if self.checkBox_ClientSendString.isChecked() and self.checkBox_ClientSendString.isEnabled():
             self.checkBox_ClientSendRawbytes.setChecked(False)
             self.lineEdit_ClientSendSeparator.setEnabled(True)
+            # self.lineEdit_ClntSendFormatStr.setEnabled(False)
         elif self.checkBox_ClientSendString.isEnabled():
             self.checkBox_ClientSendRawbytes.setChecked(True)
             self.lineEdit_ClientSendSeparator.setEnabled(False)
+            # self.lineEdit_ClntSendFormatStr.setEnabled(True)
 
-        if self.checkBox_ClientReceiveString.isChecked():
+        if self.checkBox_ClientReceiveString.isChecked() and self.checkBox_ClientReceiveString.isEnabled():
             self.checkBox_ClientReceiveRawbytes.setChecked(False)
             self.lineEdit_ClientReceiveSeparator.setEnabled(True)
+            # self.lineEdit_ClntRecvFormatStr.setEnabled(False)
         elif self.checkBox_ClientReceiveString.isEnabled():
             self.checkBox_ClientReceiveRawbytes.setChecked(True)
             self.lineEdit_ClientReceiveSeparator.setEnabled(False)
+            # self.lineEdit_ClntRecvFormatStr.setEnabled(True)
+        self.uiUpdate_checkbox_toggle_init()
 
     def uiUpdate_checkbox_checked_Rawbytes(self):
         """
@@ -510,33 +514,42 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         :return:
         """
         # server rawbytes checkbox checked
-        if self.checkBox_ServerSendRawbytes.isChecked():
+        if self.checkBox_ServerSendRawbytes.isChecked() and self.checkBox_ServerSendRawbytes.isEnabled():
             self.checkBox_ServerSendString.setChecked(False)
             self.lineEdit_ServerSendSeparator.setEnabled(False)
+            # self.lineEdit_SerSendFormatStr.setEnabled(True)
         elif self.checkBox_ServerSendRawbytes.isEnabled():
             self.checkBox_ServerSendString.setChecked(True)
             self.lineEdit_ServerSendSeparator.setEnabled(True)
+            # self.lineEdit_SerSendFormatStr.setEnabled(False)
 
-        if self.checkBox_ServerReceiveRawbytes.isChecked():
+        if self.checkBox_ServerReceiveRawbytes.isChecked() and self.checkBox_ServerReceiveRawbytes.isEnabled():
             self.checkBox_ServerReceiveString.setChecked(False)
             self.lineEdit_ServerReceiveSeparator.setEnabled(False)
+            # self.lineEdit_SerRecvFormatStr.setEnabled(True)
         elif self.checkBox_ServerReceiveRawbytes.isEnabled():
             self.checkBox_ServerReceiveString.setChecked(True)
             self.lineEdit_ServerReceiveSeparator.setEnabled(True)
+            # self.lineEdit_SerRecvFormatStr.setEnabled(False)
         # client rawbytes checkbox checked
-        if self.checkBox_ClientSendRawbytes.isChecked():
+        if self.checkBox_ClientSendRawbytes.isChecked() and self.checkBox_ClientSendRawbytes.isEnabled():
             self.checkBox_ClientSendString.setChecked(False)
             self.lineEdit_ClientSendSeparator.setEnabled(False)
+            # self.lineEdit_ClntSendFormatStr.setEnabled(True)
         elif self.checkBox_ClientSendRawbytes.isEnabled():
             self.checkBox_ClientSendString.setChecked(True)
             self.lineEdit_ClientSendSeparator.setEnabled(True)
+            # self.lineEdit_ClntSendFormatStr.setEnabled(False)
 
-        if self.checkBox_ClientReceiveRawbytes.isChecked():
+        if self.checkBox_ClientReceiveRawbytes.isChecked() and self.checkBox_ClientReceiveRawbytes.isEnabled():
             self.checkBox_ClientReceiveString.setChecked(False)
             self.lineEdit_ClientReceiveSeparator.setEnabled(False)
+            # self.lineEdit_ClntRecvFormatStr.setEnabled(True)
         elif self.checkBox_ClientReceiveRawbytes.isEnabled():
             self.checkBox_ClientReceiveString.setChecked(True)
             self.lineEdit_ClientReceiveSeparator.setEnabled(True)
+            # self.lineEdit_ClntRecvFormatStr.setEnabled(False)
+        self.uiUpdate_checkbox_toggle_init()
 
     def uiUpdate_server_full_type_mode(self):
         """
@@ -544,17 +557,17 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         :return:
         """
         # judge if the serSendFullType are clear by single mode, this would avoid the checkbox setCheck automatically!
-        if self.lineEdit_SerSendFullType.text() != "":
+        if self.lineEdit_SerSendFullType.text() != "" \
+                or self.lineEdit_SerSendFormatStr.text() != "":
             self.checkBox_SerSendInt.setChecked(False)
             self.checkBox_SerSendFloat.setChecked(False)
             self.checkBox_SerSendStr.setChecked(False)
-            self.lineEdit_SerSendFormatStr.setReadOnly(False)
 
-        if self.lineEdit_SerRecvFormatStr.text() != "":
+        if self.lineEdit_SerSendFullType.text() != "" \
+                or self.lineEdit_SerRecvFormatStr.text() != "":
             self.checkBox_SerRecvInt.setChecked(False)
             self.checkBox_SerRecvFloat.setChecked(False)
             self.checkBox_SerRecvStr.setChecked(False)
-            self.lineEdit_SerRecvFullType.setReadOnly(True)
 
         self.uiUpdate_checkbox_toggle_init()
 
@@ -565,88 +578,110 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         """
         # server send checkbox
         if self.checkBox_SerSendInt.isChecked():
-            print("Checkbox is checked")
             self.spinBox_SerSendInt_Seq.setEnabled(True)
             self.lineEdit_SerSendInt_Value.setEnabled(True)
-
-            # self.checkBox_SerSendInt.setChecked(True)
-            self.lineEdit_SerSendFormatStr.setReadOnly(True)
-            self.lineEdit_SerSendFullType.clear()
-            # self.lineEdit_SerSendInt_Value.setStyleSheet("QLineEdit{background-color:rgb(255, 255, 255)}")
         else:
-            print("CheckBox is not checked")
             self.spinBox_SerSendInt_Seq.setValue(0)
             self.spinBox_SerSendInt_Seq.setEnabled(False)
             self.lineEdit_SerSendInt_Value.clear()
             self.lineEdit_SerSendInt_Value.setEnabled(False)
+            self.spinBox_SerSendInt_Seq.setStyleSheet("QLineEdit{background-color:rgb(240, 240, 240)}")
+            self.lineEdit_SerSendInt_Value.setStyleSheet("QLineEdit{background-color:rgb(240, 240, 240)}")
 
         if self.checkBox_SerSendFloat.isChecked():
             self.spinBox_SerSendFloat_Seq.setEnabled(True)
             self.lineEdit_SerSendFloat_Value.setEnabled(True)
-
-            self.checkBox_SerSendFloat.setChecked(True)
-            self.lineEdit_SerSendFormatStr.setReadOnly(True)
-            self.lineEdit_SerSendFullType.clear()
         else:
             self.spinBox_SerSendFloat_Seq.setValue(0)
             self.spinBox_SerSendFloat_Seq.setEnabled(False)
             self.lineEdit_SerSendFloat_Value.clear()
             self.lineEdit_SerSendFloat_Value.setEnabled(False)
+            self.spinBox_SerSendFloat_Seq.setStyleSheet("QLineEdit{background-color:rgb(240, 240, 240)}")
+            self.lineEdit_SerSendFloat_Value.setStyleSheet("QLineEdit{background-color:rgb(240, 240, 240)}")
 
         if self.checkBox_SerSendStr.isChecked():
             self.spinBox_SerSendStr_Seq.setEnabled(True)
             self.lineEdit_SerSendstr_Value.setEnabled(True)
-
-            self.checkBox_SerSendStr.setChecked(True)
-            self.lineEdit_SerSendFormatStr.setReadOnly(True)
-            self.lineEdit_SerSendFullType.clear()
         else:
             self.spinBox_SerSendStr_Seq.setValue(0)
             self.spinBox_SerSendStr_Seq.setEnabled(False)
             self.lineEdit_SerSendstr_Value.clear()
             self.lineEdit_SerSendstr_Value.setEnabled(False)
+            self.spinBox_SerSendStr_Seq.setStyleSheet("QLineEdit{background-color:rgb(240, 240, 240)}")
+            self.lineEdit_SerSendstr_Value.setStyleSheet("QLineEdit{background-color:rgb(240, 240, 240)}")
+
+        if self.checkBox_SerSendInt.isChecked() + self.checkBox_SerSendFloat.isChecked() + self.checkBox_SerSendStr.isChecked() == 0 \
+                and self.checkBox_SerSendInt.isEnabled() + self.checkBox_SerSendFloat.isEnabled() + self.checkBox_SerSendStr.isEnabled() > 0:
+            self.lineEdit_SerSendFullType.setEnabled(True)
+            if self.checkBox_ServerSendString.isChecked():
+                self.lineEdit_SerSendFormatStr.clear()
+                self.lineEdit_SerSendFormatStr.setEnabled(False)
+                if self.lineEdit_SerSendFullType.text() != "":
+                    self.lineEdit_ServerSendSeparator.setEnabled(False)
+                else:
+                    self.lineEdit_ServerSendSeparator.setEnabled(True)
+            else:
+                self.lineEdit_SerSendFormatStr.setEnabled(True)
+        else:
+            self.lineEdit_SerSendFullType.clear()
+            self.lineEdit_SerSendFullType.setEnabled(False)
+            self.lineEdit_SerSendFormatStr.clear()
+            self.lineEdit_SerSendFormatStr.setEnabled(False)
+
         # server receive checkbox
         if self.checkBox_SerRecvInt.isChecked():
+            print("server receive int")
             self.spinBox_SerRecvInt_Seq.setEnabled(True)
             self.lineEdit_SerRecvInt_Value.setEnabled(True)
-
-            self.checkBox_SerRecvInt.setChecked(True)
-            # self.lineEdit_SerRecvFormatStr.setReadOnly(True)
-            self.lineEdit_SerRecvFullType.clear()
-            self.lineEdit_SerRecvFormatStr.clear()
+            self.lineEdit_SerRecvInt_Value.setReadOnly(True)
+            self.lineEdit_SerRecvInt_Value.setStyleSheet("QLineEdit{background-color:rgb(255, 255, 255)}")
         else:
             self.spinBox_SerRecvInt_Seq.setValue(0)
             self.spinBox_SerRecvInt_Seq.setEnabled(False)
             self.lineEdit_SerRecvInt_Value.clear()
             self.lineEdit_SerRecvInt_Value.setEnabled(False)
+            self.spinBox_SerRecvInt_Seq.setStyleSheet("QLineEdit{background-color:rgb(240, 240, 240)}")
+            self.lineEdit_SerRecvInt_Value.setStyleSheet("QLineEdit{background-color:rgb(240, 240, 240)}")
 
         if self.checkBox_SerRecvFloat.isChecked():
             self.spinBox_SerRecvFloat_Seq.setEnabled(True)
             self.lineEdit_SerRecvFloat_Value.setEnabled(True)
-
-            self.checkBox_SerRecvFloat.setChecked(True)
-            # self.lineEdit_SerRecvFormatStr.setReadOnly(True)
-            self.lineEdit_SerRecvFullType.clear()
-            self.lineEdit_SerRecvFormatStr.clear()
+            self.lineEdit_SerRecvFloat_Value.setReadOnly(True)
+            self.lineEdit_SerRecvFloat_Value.setStyleSheet("QLineEdit{background-color:rgb(255, 255, 255)}")
         else:
             self.spinBox_SerRecvFloat_Seq.setValue(0)
             self.spinBox_SerRecvFloat_Seq.setEnabled(False)
             self.lineEdit_SerRecvFloat_Value.clear()
             self.lineEdit_SerRecvFloat_Value.setEnabled(False)
+            self.spinBox_SerRecvFloat_Seq.setStyleSheet("QLineEdit{background-color:rgb(240, 240, 240)}")
+            self.lineEdit_SerRecvFloat_Value.setStyleSheet("QLineEdit{background-color:rgb(240, 240, 240)}")
 
         if self.checkBox_SerRecvStr.isChecked():
             self.spinBox_SerRecvStr_Seq.setEnabled(True)
             self.lineEdit_SerRecvStr_Value.setEnabled(True)
-
-            self.checkBox_SerRecvStr.setChecked(True)
-            # self.lineEdit_SerRecvFormatStr.setReadOnly(True)
-            self.lineEdit_SerRecvFullType.clear()
-            self.lineEdit_SerRecvFormatStr.clear()
+            self.lineEdit_SerRecvStr_Value.setReadOnly(True)
+            self.lineEdit_SerRecvStr_Value.setStyleSheet("QLineEdit{background-color:rgb(255, 255, 255)}")
         else:
             self.spinBox_SerRecvStr_Seq.setValue(0)
             self.spinBox_SerRecvStr_Seq.setEnabled(False)
             self.lineEdit_SerRecvStr_Value.clear()
             self.lineEdit_SerRecvStr_Value.setEnabled(False)
+            self.spinBox_SerRecvStr_Seq.setStyleSheet("QLineEdit{background-color:rgb(240, 240, 240)}")
+            self.lineEdit_SerRecvStr_Value.setStyleSheet("QLineEdit{background-color:rgb(240, 240, 240)}")
+
+        if self.checkBox_SerRecvInt.isChecked() + self.checkBox_SerRecvFloat.isChecked() + self.checkBox_SerRecvStr.isChecked() == 0 \
+                and self.checkBox_SerRecvInt.isEnabled() + self.checkBox_SerRecvFloat.isEnabled() + self.checkBox_SerRecvStr.isEnabled() > 0:
+            if self.checkBox_ServerReceiveString.isChecked():
+                self.lineEdit_SerRecvFullType.setEnabled(True)
+                self.lineEdit_SerRecvFormatStr.clear()
+                self.lineEdit_SerRecvFormatStr.setEnabled(False)
+            else:
+                self.lineEdit_SerRecvFullType.setEnabled(True)
+                self.lineEdit_SerRecvFormatStr.setEnabled(True)
+        else:
+            self.lineEdit_SerRecvFullType.setEnabled(False)
+            self.lineEdit_SerRecvFormatStr.clear()
+            self.lineEdit_SerRecvFormatStr.setEnabled(False)
         # client send check box
         if self.checkBox_ClntSendInt.isChecked():
             self.spinBox_ClntSendInt_Seq.setEnabled(True)
@@ -656,6 +691,8 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             self.spinBox_ClntSendInt_Seq.setEnabled(False)
             self.lineEdit_ClntSendInt_Value.clear()
             self.lineEdit_ClntSendInt_Value.setEnabled(False)
+            self.spinBox_ClntSendInt_Seq.setStyleSheet("QLineEdit{background-color:rgb(240, 240, 240)}")
+            self.lineEdit_ClntSendInt_Value.setStyleSheet("QLineEdit{background-color:rgb(240, 240, 240)}")
 
         if self.checkBox_ClntSendFloat.isChecked():
             self.spinBox_ClntSendFloat_Seq.setEnabled(True)
@@ -665,6 +702,8 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             self.spinBox_ClntSendFloat_Seq.setEnabled(False)
             self.lineEdit_ClntSendFloat_Value.clear()
             self.lineEdit_ClntSendFloat_Value.setEnabled(False)
+            self.spinBox_ClntSendFloat_Seq.setStyleSheet("QLineEdit{background-color:rgb(240, 240, 240)}")
+            self.lineEdit_ClntSendFloat_Value.setStyleSheet("QLineEdit{background-color:rgb(240, 240, 240)}")
 
         if self.checkBox_ClntSendStr.isChecked():
             self.spinBox_ClntSendStr_Seq.setEnabled(True)
@@ -674,6 +713,19 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             self.spinBox_ClntSendStr_Seq.setEnabled(False)
             self.lineEdit_ClntSendStr_Value.clear()
             self.lineEdit_ClntSendStr_Value.setEnabled(False)
+            self.spinBox_ClntSendStr_Seq.setStyleSheet("QLineEdit{background-color:rgb(240, 240, 240)}")
+            self.lineEdit_ClntSendStr_Value.setStyleSheet("QLineEdit{background-color:rgb(240, 240, 240)}")
+
+        if self.checkBox_ClntSendInt.isChecked() + self.checkBox_ClntSendFloat.isChecked() + self.checkBox_ClntSendStr.isChecked() == 0 \
+                and self.checkBox_ClntSendInt.isEnabled() + self.checkBox_ClntSendFloat.isEnabled() + self.checkBox_ClntSendStr.isEnabled() > 0:
+            self.lineEdit_ClntSendFullType.setEnabled(True)
+            self.lineEdit_ClntSendFormatStr.setEnabled(True)
+        else:
+            self.lineEdit_ClntSendFullType.clear()
+            self.lineEdit_ClntSendFullType.setEnabled(False)
+            self.lineEdit_ClntSendFormatStr.clear()
+            self.lineEdit_ClntSendFormatStr.setEnabled(False)
+
         # client receive checkbox
         if self.checkBox_ClntRecvInt.isChecked():
             self.spinBox_ClntRecvInt_Seq.setEnabled(True)
@@ -683,6 +735,8 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             self.spinBox_ClntRecvInt_Seq.setEnabled(False)
             self.lineEdit_ClntRecvInt_Value.clear()
             self.lineEdit_ClntRecvInt_Value.setEnabled(False)
+            self.spinBox_ClntRecvInt_Seq.setStyleSheet("QLineEdit{background-color:rgb(240, 240, 240)}")
+            self.lineEdit_ClntRecvInt_Value.setStyleSheet("QLineEdit{background-color:rgb(240, 240, 240)}")
 
         if self.checkBox_ClntRecvFloat.isChecked():
             self.spinBox_ClntRecvFloat_Seq.setEnabled(True)
@@ -692,6 +746,8 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             self.spinBox_ClntRecvFloat_Seq.setEnabled(False)
             self.lineEdit_ClntRecvFloat_Value.clear()
             self.lineEdit_ClntRecvFloat_Value.setEnabled(False)
+            self.spinBox_ClntRecvFloat_Seq.setStyleSheet("QLineEdit{background-color:rgb(240, 240, 240)}")
+            self.lineEdit_ClntRecvFloat_Value.setStyleSheet("QLineEdit{background-color:rgb(240, 240, 240)}")
 
         if self.checkBox_ClntRecvStr.isChecked():
             self.spinBox_ClntRecvStr_Seq.setEnabled(True)
@@ -701,28 +757,224 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             self.spinBox_ClntRecvStr_Seq.setEnabled(False)
             self.lineEdit_ClntRecvStr_Value.clear()
             self.lineEdit_ClntRecvStr_Value.setEnabled(False)
+            self.lineEdit_ClntRecvStr_Value.setStyleSheet("QLineEdit{background-color:rgb(240, 240, 240)}")
+            self.lineEdit_ClntRecvStr_Value.setStyleSheet("QLineEdit{background-color:rgb(240, 240, 240)}")
+
+        if self.checkBox_ClntRecvInt.isChecked() + self.checkBox_ClntRecvFloat.isChecked() + self.checkBox_ClntRecvStr.isChecked() == 0 \
+                and self.checkBox_ClntRecvInt.isEnabled() + self.checkBox_ClntRecvFloat.isEnabled() + self.checkBox_ClntRecvStr.isEnabled() > 0:
+            self.lineEdit_ClntRecvFullType.setEnabled(True)
+            self.lineEdit_ClntRecvFormatStr.setEnabled(True)
+        else:
+            self.lineEdit_ClntRecvFullType.clear()
+            self.lineEdit_ClntRecvFullType.setEnabled(False)
+            self.lineEdit_ClntRecvFormatStr.clear()
+            self.lineEdit_ClntRecvFormatStr.setEnabled(False)
+
         self.uiUpdate_SerSendValueCheck()
+        self.uiUpdate_serRecValueCheck()
 
     def uiUpdate_SerSendValueCheck(self):
-        if self.checkBox_SerSendInt.isChecked() + self.checkBox_SerSendFloat.isChecked() + self.checkBox_SerSendStr.isChecked() == 1:
-            if self.checkBox_SerSendInt.isChecked():
-                pass
-                # self.spinBox_SerSendInt_Seq.setStyleSheet("QSpinBox{background-color:rgb(255, 85, 0)}")
-                # self.spinBox_SerSendInt_Seq.setBackgroundRole(rgb(255, 85, 0))
-            elif self.checkBox_SerSendFloat.isChecked():
-                pass
-                # self.spinBox_SerSendInt_Seq.setStyleSheet("QSpinBox{background-color:rgb(255, 85, 0)}")
+
+        b_lineedit_check_valid = False
+        b_spinbox_check_valid = False
+        # server send value check
+        if self.checkBox_SerSendInt.isChecked():
+            ins_re_match = re.match(r"^\d+$", self.lineEdit_SerSendInt_Value.text())
+            if ins_re_match is not None:
+                self.lineEdit_SerSendInt_Value.setStyleSheet("background-color: rgb(255, 255, 255);")
+                b_lineedit_check_valid = True
             else:
-                pass
+                self.lineEdit_SerSendInt_Value.setStyleSheet("background-color: rgb(253, 183, 184);")
+                b_lineedit_check_valid = False
+
+        if self.checkBox_SerSendFloat.isChecked():
+            ins_re_match = re.match(r"^\d+\.\d+$", self.lineEdit_SerSendFloat_Value.text())
+            if ins_re_match is not None:
+                self.lineEdit_SerSendFloat_Value.setStyleSheet("background-color: rgb(255, 255, 255);")
+                b_lineedit_check_valid = True
+            else:
+                self.lineEdit_SerSendFloat_Value.setStyleSheet("background-color: rgb(253, 183, 184);")
+                b_lineedit_check_valid = False
+
+        if self.checkBox_SerSendStr.isChecked():
+            ins_re_match = re.match(r"^\S+$", self.lineEdit_SerSendstr_Value.text())
+            if ins_re_match is not None:
+                self.lineEdit_SerSendstr_Value.setStyleSheet("background-color: rgb(255, 255, 255);")
+                b_lineedit_check_valid = True
+            else:
+                self.lineEdit_SerSendstr_Value.setStyleSheet("background-color: rgb(253, 183, 184);")
+                b_lineedit_check_valid = False
+        # Server send sequence check
+        if self.checkBox_SerSendInt.isChecked() + self.checkBox_SerSendFloat.isChecked() + self.checkBox_SerSendStr.isChecked() == 0:
+            if self.checkBox_ServerSendString.isChecked():
+                if self.lineEdit_SerSendFullType.text() != "":
+                    b_lineedit_check_valid = True
+                    b_spinbox_check_valid = True
+            else:
+                if self.lineEdit_SerSendFullType.text() != "" and self.lineEdit_SerSendFormatStr.text() != "":
+                    b_lineedit_check_valid = True
+                    b_spinbox_check_valid = True
+
+        elif self.checkBox_SerSendInt.isChecked() + self.checkBox_SerSendFloat.isChecked() + self.checkBox_SerSendStr.isChecked() == 1:
+            if self.checkBox_SerSendInt.isChecked():
+                self.spinBox_SerSendInt_Seq.setStyleSheet("QSpinBox{background-color:rgb(255, 255, 255)}")
+            elif self.checkBox_SerSendFloat.isChecked():
+                self.spinBox_SerSendFloat_Seq.setStyleSheet("QSpinBox{background-color:rgb(255, 255, 255)}")
+            else:
+                self.spinBox_SerSendStr_Seq.setStyleSheet("QSpinBox{background-color:rgb(255, 255, 255)}")
+            b_spinbox_check_valid = True
         elif self.checkBox_SerSendInt.isChecked() + self.checkBox_SerSendFloat.isChecked() + self.checkBox_SerSendStr.isChecked() == 2:
             if not self.checkBox_SerSendInt.isChecked():
-                pass
+                if self.spinBox_SerSendFloat_Seq.text() == self.spinBox_SerSendStr_Seq.text():
+                    self.spinBox_SerSendFloat_Seq.setStyleSheet("QSpinBox{background-color: rgb(253, 183, 184)}")
+                    self.spinBox_SerSendStr_Seq.setStyleSheet("QSpinBox{background-color: rgb(253, 183, 184)}")
+                    b_spinbox_check_valid = False
+                else:
+                    self.spinBox_SerSendFloat_Seq.setStyleSheet("QSpinBox{background-color: rgb(255, 255, 255)}")
+                    self.spinBox_SerSendStr_Seq.setStyleSheet("QSpinBox{background-color: rgb(255, 255, 255)}")
+                    b_spinbox_check_valid = True
+
             elif not self.checkBox_SerSendFloat.isChecked():
-                pass
+                if self.spinBox_SerSendInt_Seq.text() == self.spinBox_SerSendStr_Seq.text():
+                    self.spinBox_SerSendInt_Seq.setStyleSheet("QSpinBox{background-color: rgb(253, 183, 184)}")
+                    self.spinBox_SerSendStr_Seq.setStyleSheet("QSpinBox{background-color: rgb(253, 183, 184)}")
+                    b_spinbox_check_valid = False
+                else:
+                    self.spinBox_SerSendInt_Seq.setStyleSheet("QSpinBox{background-color: rgb(255, 255, 255)}")
+                    self.spinBox_SerSendStr_Seq.setStyleSheet("QSpinBox{background-color: rgb(255, 255, 255)}")
+                    b_spinbox_check_valid = True
             else:
-                pass
+                if self.spinBox_SerSendFloat_Seq.text() == self.spinBox_SerSendInt_Seq.text():
+                    self.spinBox_SerSendFloat_Seq.setStyleSheet("QSpinBox{background-color: rgb(253, 183, 184)}")
+                    self.spinBox_SerSendInt_Seq.setStyleSheet("QSpinBox{background-color: rgb(253, 183, 184)}")
+                    b_spinbox_check_valid = False
+                else:
+                    self.spinBox_SerSendFloat_Seq.setStyleSheet("QSpinBox{background-color: rgb(255, 255, 255)}")
+                    self.spinBox_SerSendInt_Seq.setStyleSheet("QSpinBox{background-color: rgb(255, 255, 255)}")
+                    b_spinbox_check_valid = True
+
         elif self.checkBox_SerSendInt.isChecked() + self.checkBox_SerSendFloat.isChecked() + self.checkBox_SerSendStr.isChecked() == 3:
-            pass
+            if self.spinBox_SerSendInt_Seq.text() == self.spinBox_SerSendFloat_Seq.text():
+                b_spinbox_check_valid = False
+                self.spinBox_SerSendInt_Seq.setStyleSheet("QSpinBox{background-color: rgb(253, 183, 184)}")
+                self.spinBox_SerSendFloat_Seq.setStyleSheet("QSpinBox{background-color: rgb(253, 183, 184)}")
+                if self.spinBox_SerSendInt_Seq.text() == self.spinBox_SerSendStr_Seq.text():
+                    self.spinBox_SerSendInt_Seq.setStyleSheet("QSpinBox{background-color: rgb(253, 183, 184)}")
+                    self.spinBox_SerSendStr_Seq.setStyleSheet("QSpinBox{background-color: rgb(253, 183, 184)}")
+                else:
+                    self.spinBox_SerSendStr_Seq.setStyleSheet("QSpinBox{background-color: rgb(255, 255, 255)}")
+            elif self.spinBox_SerSendInt_Seq.text() == self.spinBox_SerSendStr_Seq.text():
+                b_spinbox_check_valid = False
+                self.spinBox_SerSendFloat_Seq.setStyleSheet("QSpinBox{background-color: rgb(255, 255, 255)}")
+                self.spinBox_SerSendInt_Seq.setStyleSheet("QSpinBox{background-color: rgb(253, 183, 184)}")
+                self.spinBox_SerSendStr_Seq.setStyleSheet("QSpinBox{background-color: rgb(253, 183, 184)}")
+                if self.spinBox_SerSendFloat_Seq.text() == self.spinBox_SerSendStr_Seq.text():
+                    self.spinBox_SerSendFloat_Seq.setStyleSheet("QSpinBox{background-color: rgb(253, 183, 184)}")
+                    self.spinBox_SerSendStr_Seq.setStyleSheet("QSpinBox{background-color: rgb(253, 183, 184)}")
+                else:
+                    self.spinBox_SerSendFloat_Seq.setStyleSheet("QSpinBox{background-color: rgb(255, 255, 255)}")
+            elif self.spinBox_SerSendInt_Seq.text() != self.spinBox_SerSendStr_Seq.text():
+                self.spinBox_SerSendInt_Seq.setStyleSheet("QSpinBox{background-color: rgb(255, 255, 255)}")
+                if self.spinBox_SerSendFloat_Seq.text() == self.spinBox_SerSendStr_Seq.text():
+                    b_spinbox_check_valid = False
+                    self.spinBox_SerSendFloat_Seq.setStyleSheet("QSpinBox{background-color: rgb(253, 183, 184)}")
+                    self.spinBox_SerSendStr_Seq.setStyleSheet("QSpinBox{background-color: rgb(253, 183, 184)}")
+                else:
+                    b_spinbox_check_valid = True
+                    self.spinBox_SerSendFloat_Seq.setStyleSheet("QSpinBox{background-color: rgb(255, 255, 255)}")
+                    self.spinBox_SerSendStr_Seq.setStyleSheet("QSpinBox{background-color: rgb(255, 255, 255)}")
+
+        if b_spinbox_check_valid and b_lineedit_check_valid:
+            self.pushButton_SerSend.setEnabled(True)
+        else:
+            self.pushButton_SerSend.setEnabled(False)
+
+    def uiUpdate_serRecValueCheck(self):
+        """
+
+        """
+        b_spinbox_check_valid = False
+        if self.checkBox_SerRecvInt.isChecked() + self.checkBox_SerRecvFloat.isChecked() + self.checkBox_SerRecvStr.isChecked() == 0:
+            if self.checkBox_ServerReceiveString.isChecked():
+                b_spinbox_check_valid = True
+            else:
+                if self.lineEdit_SerRecvFormatStr.text() != "":
+                    b_spinbox_check_valid = True
+                else:
+                    b_spinbox_check_valid = False
+        elif self.checkBox_SerRecvInt.isChecked() + self.checkBox_SerRecvFloat.isChecked() + self.checkBox_SerRecvStr.isChecked() == 1:
+            if self.checkBox_SerRecvInt.isChecked():
+                self.spinBox_SerRecvInt_Seq.setStyleSheet("QSpinBox{background-color:rgb(255, 255, 255)}")
+            elif self.checkBox_SerRecvFloat.isChecked():
+                self.spinBox_SerRecvFloat_Seq.setStyleSheet("QSpinBox{background-color:rgb(255, 255, 255)}")
+            else:
+                self.spinBox_SerRecvStr_Seq.setStyleSheet("QSpinBox{background-color:rgb(255, 255, 255)}")
+            b_spinbox_check_valid = True
+        elif self.checkBox_SerRecvInt.isChecked() + self.checkBox_SerRecvFloat.isChecked() + self.checkBox_SerRecvStr.isChecked() == 2:
+            if not self.checkBox_SerRecvInt.isChecked():
+                if self.spinBox_SerRecvFloat_Seq.text() == self.spinBox_SerRecvStr_Seq.text():
+                    self.spinBox_SerRecvFloat_Seq.setStyleSheet("QSpinBox{background-color: rgb(253, 183, 184)}")
+                    self.spinBox_SerRecvStr_Seq.setStyleSheet("QSpinBox{background-color: rgb(253, 183, 184)}")
+                    b_spinbox_check_valid = False
+                else:
+                    self.spinBox_SerRecvFloat_Seq.setStyleSheet("QSpinBox{background-color: rgb(255, 255, 255)}")
+                    self.spinBox_SerRecvStr_Seq.setStyleSheet("QSpinBox{background-color: rgb(255, 255, 255)}")
+                    b_spinbox_check_valid = True
+
+            elif not self.checkBox_SerRecvFloat.isChecked():
+                if self.spinBox_SerRecvInt_Seq.text() == self.spinBox_SerRecvStr_Seq.text():
+                    self.spinBox_SerRecvInt_Seq.setStyleSheet("QSpinBox{background-color: rgb(253, 183, 184)}")
+                    self.spinBox_SerRecvStr_Seq.setStyleSheet("QSpinBox{background-color: rgb(253, 183, 184)}")
+                    b_spinbox_check_valid = False
+                else:
+                    self.spinBox_SerRecvInt_Seq.setStyleSheet("QSpinBox{background-color: rgb(255, 255, 255)}")
+                    self.spinBox_SerRecvStr_Seq.setStyleSheet("QSpinBox{background-color: rgb(255, 255, 255)}")
+                    b_spinbox_check_valid = True
+            else:
+                if self.spinBox_SerRecvFloat_Seq.text() == self.spinBox_SerRecvInt_Seq.text():
+                    self.spinBox_SerRecvFloat_Seq.setStyleSheet("QSpinBox{background-color: rgb(253, 183, 184)}")
+                    self.spinBox_SerRecvInt_Seq.setStyleSheet("QSpinBox{background-color: rgb(253, 183, 184)}")
+                    b_spinbox_check_valid = False
+                else:
+                    self.spinBox_SerRecvFloat_Seq.setStyleSheet("QSpinBox{background-color: rgb(255, 255, 255)}")
+                    self.spinBox_SerRecvInt_Seq.setStyleSheet("QSpinBox{background-color: rgb(255, 255, 255)}")
+                    b_spinbox_check_valid = True
+
+        elif self.checkBox_SerRecvInt.isChecked() + self.checkBox_SerRecvFloat.isChecked() + self.checkBox_SerRecvStr.isChecked() == 3:
+            if self.spinBox_SerRecvInt_Seq.text() == self.spinBox_SerRecvFloat_Seq.text():
+                b_spinbox_check_valid = False
+                self.spinBox_SerRecvInt_Seq.setStyleSheet("QSpinBox{background-color: rgb(253, 183, 184)}")
+                self.spinBox_SerRecvFloat_Seq.setStyleSheet("QSpinBox{background-color: rgb(253, 183, 184)}")
+                if self.spinBox_SerRecvInt_Seq.text() == self.spinBox_SerRecvStr_Seq.text():
+                    self.spinBox_SerRecvInt_Seq.setStyleSheet("QSpinBox{background-color: rgb(253, 183, 184)}")
+                    self.spinBox_SerRecvStr_Seq.setStyleSheet("QSpinBox{background-color: rgb(253, 183, 184)}")
+                else:
+                    self.spinBox_SerRecvStr_Seq.setStyleSheet("QSpinBox{background-color: rgb(255, 255, 255)}")
+            elif self.spinBox_SerRecvInt_Seq.text() == self.spinBox_SerRecvStr_Seq.text():
+                b_spinbox_check_valid = False
+                self.spinBox_SerRecvFloat_Seq.setStyleSheet("QSpinBox{background-color: rgb(255, 255, 255)}")
+                self.spinBox_SerRecvInt_Seq.setStyleSheet("QSpinBox{background-color: rgb(253, 183, 184)}")
+                self.spinBox_SerRecvStr_Seq.setStyleSheet("QSpinBox{background-color: rgb(253, 183, 184)}")
+                if self.spinBox_SerRecvFloat_Seq.text() == self.spinBox_SerRecvStr_Seq.text():
+                    self.spinBox_SerRecvFloat_Seq.setStyleSheet("QSpinBox{background-color: rgb(253, 183, 184)}")
+                    self.spinBox_SerRecvStr_Seq.setStyleSheet("QSpinBox{background-color: rgb(253, 183, 184)}")
+                else:
+                    self.spinBox_SerRecvFloat_Seq.setStyleSheet("QSpinBox{background-color: rgb(255, 255, 255)}")
+            elif self.spinBox_SerRecvInt_Seq.text() != self.spinBox_SerRecvStr_Seq.text():
+                self.spinBox_SerRecvInt_Seq.setStyleSheet("QSpinBox{background-color: rgb(255, 255, 255)}")
+                if self.spinBox_SerRecvFloat_Seq.text() == self.spinBox_SerRecvStr_Seq.text():
+                    b_spinbox_check_valid = False
+                    self.spinBox_SerRecvFloat_Seq.setStyleSheet("QSpinBox{background-color: rgb(253, 183, 184)}")
+                    self.spinBox_SerRecvStr_Seq.setStyleSheet("QSpinBox{background-color: rgb(253, 183, 184)}")
+                else:
+                    b_spinbox_check_valid = True
+                    self.spinBox_SerRecvFloat_Seq.setStyleSheet("QSpinBox{background-color: rgb(255, 255, 255)}")
+                    self.spinBox_SerRecvStr_Seq.setStyleSheet("QSpinBox{background-color: rgb(255, 255, 255)}")
+
+        if b_spinbox_check_valid:
+            self.pushButton_SerRecv.setEnabled(True)
+        else:
+            self.pushButton_SerRecv.setEnabled(False)
 
 
 if __name__ == '__main__':

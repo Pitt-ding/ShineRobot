@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>983</width>
-    <height>779</height>
+    <width>1114</width>
+    <height>828</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -526,7 +526,7 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
                  <string/>
                 </property>
                 <property name="text">
-                 <string>0.0</string>
+                 <string>1.0</string>
                 </property>
                </widget>
               </item>
@@ -985,8 +985,8 @@ QPushButton:hover{background-color:rgb(85, 170, 255) }</string>
              <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
            </widget>
           </item>
@@ -1115,7 +1115,7 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
           <item row="22" column="1">
            <widget class="QLabel" name="label_15">
             <property name="text">
-             <string>接收格式字符</string>
+             <string>Rawbytes接收格式字符</string>
             </property>
            </widget>
           </item>
@@ -1417,7 +1417,7 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
           <item row="12" column="1">
            <widget class="QLabel" name="label_6">
             <property name="text">
-             <string>发送格式字符</string>
+             <string>Rawbytes发送格式字符</string>
             </property>
            </widget>
           </item>
@@ -1587,6 +1587,9 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
             <property name="inputMethodHints">
              <set>Qt::ImhNone</set>
             </property>
+            <property name="dragEnabled">
+             <bool>false</bool>
+            </property>
             <property name="readOnly">
              <bool>true</bool>
             </property>
@@ -1653,7 +1656,7 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
           <item row="12" column="1">
            <widget class="QLabel" name="label_23">
             <property name="text">
-             <string>发送格式字符</string>
+             <string>Rawbytes发送格式字符</string>
             </property>
            </widget>
           </item>
@@ -1740,7 +1743,7 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
           <item row="22" column="1">
            <widget class="QLabel" name="label_30">
             <property name="text">
-             <string>接收格式字符</string>
+             <string>Rawbytes接收格式字符</string>
             </property>
            </widget>
           </item>
@@ -2221,8 +2224,8 @@ p, li { white-space: pre-wrap; }
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>983</width>
-     <height>22</height>
+     <width>1114</width>
+     <height>21</height>
     </rect>
    </property>
   </widget>

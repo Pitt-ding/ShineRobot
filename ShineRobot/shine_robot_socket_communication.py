@@ -62,12 +62,10 @@ class SocketServer(QObject):
                 self.signal_record_result.emit("socket server accept client connection from {}".format(socket_server_accept_any))
                 self.signal_socket_server_accepted.emit(True)
 
-
         except OSError as e:
             self.signal_record_result.emit(str(e))
             self.socket_server_accept_client.close()
             self.socket_server.close()
-
 
     @QtCore.pyqtSlot()
     def close_socket_server(self):
@@ -91,7 +89,7 @@ class SocketServer(QObject):
         :return: None
         """
         if self.socket_server_accept_client is not None:
-            self.signal_record_result.emit("socket server send data")
+            self.signal_record_result.emit("socket server send data: " + s_send)
             self.socket_server_accept_client.send(s_send.encode())
             # self.signal_socket_server_send.emit(True)
 

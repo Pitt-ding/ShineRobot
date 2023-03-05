@@ -316,23 +316,49 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         send message as the checkbox setting
         :return: None
         """
-        if self.checkBox_SerSendInt.isChecked() + self.checkBox_SerSendFloat.isChecked() + self.checkBox_SerSendStr.isChecked() == 1:
-            if self.checkBox_SerSendInt.isChecked():
-                self.socket_server.socket_server_send(self.lineEdit_SerSendInt_Value.text())
-
-            elif self.checkBox_SerSendFloat.isChecked():
-                self.socket_server.socket_server_send(self.lineEdit_SerSendFloat_Value.text())
-            else:
-                self.socket_server.socket_server_send(self.lineEdit_SerSendstr_Value.text())
-        elif self.checkBox_SerSendInt.isChecked() + self.checkBox_SerSendFloat.isChecked() + self.checkBox_SerSendStr.isChecked() == 2:
-            if not self.checkBox_SerSendInt.isChecked():
-                pass
-            elif not self.checkBox_SerSendFloat.isChecked():
-                pass
-            else:
-                pass
-        elif self.checkBox_SerSendInt.isChecked() + self.checkBox_SerSendFloat.isChecked() + self.checkBox_SerSendStr.isChecked() == 3:
-            pass
+        if self.pushButton_SerSend.isEnabled():
+            if self.checkBox_ServerSendString.isChecked():
+                if self.checkBox_SerSendInt.isChecked() + self.checkBox_SerSendFloat.isChecked() + self.checkBox_SerSendStr.isChecked() == 1:
+                    if self.checkBox_SerSendInt.isChecked():
+                        self.socket_server.socket_server_send(self.lineEdit_SerSendInt_Value.text())
+                    elif self.checkBox_SerSendFloat.isChecked():
+                        self.socket_server.socket_server_send(self.lineEdit_SerSendFloat_Value.text())
+                    else:
+                        self.socket_server.socket_server_send(self.lineEdit_SerSendstr_Value.text())
+                elif self.checkBox_SerSendInt.isChecked() + self.checkBox_SerSendFloat.isChecked() + self.checkBox_SerSendStr.isChecked() == 2:
+                    if not self.checkBox_SerSendInt.isChecked():
+                        if int(self.spinBox_SerSendFloat_Seq.text()) > int(self.spinBox_SerSendStr_Seq.text()):
+                            self.socket_server.socket_server_send(self.lineEdit_SerSendFloat_Value.text()
+                                                                  + self.lineEdit_ServerSendSeparator.text() + self.lineEdit_SerSendstr_Value.text())
+                        else:
+                            self.socket_server.socket_server_send(self.lineEdit_SerSendstr_Value.text()
+                                                                  + self.lineEdit_ServerSendSeparator.text() + self.lineEdit_SerSendFloat_Value.text())
+                    elif not self.checkBox_SerSendFloat.isChecked():
+                        if int(self.spinBox_SerSendInt_Seq.text()) > int(self.spinBox_SerSendStr_Seq.text()):
+                            self.socket_server.socket_server_send(self.lineEdit_SerSendInt_Value.text()
+                                                                  + self.lineEdit_ServerSendSeparator.text() + self.lineEdit_SerSendstr_Value.text())
+                        else:
+                            self.socket_server.socket_server_send(self.lineEdit_SerSendstr_Value.text()
+                                                                  + self.lineEdit_ServerSendSeparator.text() + self.lineEdit_SerSendInt_Value.text())
+                    else:
+                        if int(self.spinBox_SerSendInt_Seq.text()) > int(self.spinBox_SerSendFloat_Seq.text()):
+                            self.socket_server.socket_server_send(self.lineEdit_SerSendInt_Value.text()
+                                                                  + self.lineEdit_ServerSendSeparator.text() + self.lineEdit_SerSendFloat_Value.text())
+                        else:
+                            self.socket_server.socket_server_send(self.lineEdit_SerSendFloat_Value.text()
+                                                                  + self.lineEdit_ServerSendSeparator.text() + self.lineEdit_SerSendInt_Value.text())
+                elif self.checkBox_SerSendInt.isChecked() + self.checkBox_SerSendFloat.isChecked() + self.checkBox_SerSendStr.isChecked() == 3:
+                    m_sequence_list = [[int(self.spinBox_SerSendInt_Seq.text()), self.lineEdit_SerSendInt_Value.text()], [int(self.spinBox_SerSendFloat_Seq.text()), self.lineEdit_SerSendFloat_Value.text()], [int(self.spinBox_SerSendStr_Seq.text()), self.lineEdit_SerSendstr_Value.text()]]
+                    m_sequence_list.sort(key=lambda x: x[0], reverse=True)
+                    self.socket_server.socket_server_send(str(m_sequence_list[0][1])
+                                                          + self.lineEdit_ServerSendSeparator.text() + str(m_sequence_list[1][1]) + self.lineEdit_ServerSendSeparator.text() + str(m_sequence_list[2][1]))
+                else:
+                    self.socket_server.socket_server_send(self.lineEdit_SerSendFullType.text())
+            elif self.checkBox_ServerSendRawbytes():
+                if self.checkBox_SerSendInt.isChecked() or self.checkBox_SerSendFloat.isChecked() or self.checkBox_SerSendStr.isChecked():
+                    pass
+                else:
+                    pass
 
     def socket_server_receive_message(self):
         """

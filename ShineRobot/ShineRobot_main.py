@@ -381,14 +381,24 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                             self.socket_server.socket_server_send(struct.pack("<fh", float(self.lineEdit_SerSendFloat_Value.text()), int(self.lineEdit_SerSendInt_Value.text())))
                 elif self.checkBox_SerSendInt.isChecked() + self.checkBox_SerSendFloat.isChecked() + self.checkBox_SerSendStr.isChecked() == 3:
                     m_sequence_list = [
-                        [int(self.spinBox_SerSendInt_Seq.text()), self.lineEdit_SerSendInt_Value.text(), "h"],
-                        [int(self.spinBox_SerSendFloat_Seq.text()), self.lineEdit_SerSendFloat_Value.text(), "f"],
-                        [int(self.spinBox_SerSendStr_Seq.text()), self.lineEdit_SerSendstr_Value.text(), "{}s".format(len(self.lineEdit_SerSendstr_Value.text()))]]
+                        [int(self.spinBox_SerSendInt_Seq.text()), int(self.lineEdit_SerSendInt_Value.text()), "h"],
+                        [int(self.spinBox_SerSendFloat_Seq.text()), float(self.lineEdit_SerSendFloat_Value.text()), "f"],
+                        [int(self.spinBox_SerSendStr_Seq.text()), self.lineEdit_SerSendstr_Value.text().encode(), "{}s".format(len(self.lineEdit_SerSendstr_Value.text()))]]
                     m_sequence_list.sort(key=lambda x: x[0], reverse=True)
-                    self.socket_server.socket_server_send(struct.pack("<" + m_sequence_list[0][2] + m_sequence_list[1][2] + + m_sequence_list[2][2], str(m_sequence_list[0][1]) + str(m_sequence_list[1][1]) + str( m_sequence_list[2][1])))
+                    self.socket_server.socket_server_send(struct.pack("<" + m_sequence_list[0][2] + m_sequence_list[1][2] + m_sequence_list[2][2], m_sequence_list[0][1], m_sequence_list[1][1], m_sequence_list[2][1]))
                 else:
+                    list_re = re.findall(r"(h|f|\d+s)", self.lineEdit_SerSendFormatStr.text())
+                    list_value = self.lineEdit_SerSendFullType.text().split(self.lineEdit_ServerSendSeparator.text())
+                    list_byte = bytes()
+                    for int_index in range(len(list_re)):
+                        if list_re[int_index] == "h":
+                            list_byte += (struct.pack(list_re[int_index], int(list_value[int_index])))
+                        elif list_re[int_index] == "f":
+                            list_byte += (struct.pack(list_re[int_index], float(list_value[int_index])))
+                        elif "s" in list_re[int_index]:
+                            list_byte += (struct.pack(list_re[int_index], list_value[int_index].encode()))
 
-                    self.socket_server.socket_server_send(struct.pack(self.lineEdit_SerSendFormatStr.text(), self.lineEdit_SerSendFullType.text()))
+                    self.socket_server.socket_server_send(list_byte)
 
     def socket_server_receive_message(self):
         """

@@ -354,11 +354,41 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                                                           + self.lineEdit_ServerSendSeparator.text() + str(m_sequence_list[1][1]) + self.lineEdit_ServerSendSeparator.text() + str(m_sequence_list[2][1]))
                 else:
                     self.socket_server.socket_server_send(self.lineEdit_SerSendFullType.text())
-            elif self.checkBox_ServerSendRawbytes():
-                if self.checkBox_SerSendInt.isChecked() or self.checkBox_SerSendFloat.isChecked() or self.checkBox_SerSendStr.isChecked():
-                    pass
+            elif self.checkBox_ServerSendRawbytes.isChecked():
+                if self.checkBox_SerSendInt.isChecked() + self.checkBox_SerSendFloat.isChecked() + self.checkBox_SerSendStr.isChecked() == 1:
+                    if self.checkBox_SerSendInt.isChecked():
+                        self.socket_server.socket_server_send(struct.pack("<h", str(self.lineEdit_SerSendInt_Value.text())))
+                    elif self.checkBox_SerSendFloat.isChecked():
+                        self.socket_server.socket_server_send(struct.pack("<f", str(self.lineEdit_SerSendFloat_Value.text())))
+                    else:
+                        self.socket_server.socket_server_send(struct.pack("<f", str(self.lineEdit_SerSendstr_Value.text())))
+                elif self.checkBox_SerSendInt.isChecked() + self.checkBox_SerSendFloat.isChecked() + self.checkBox_SerSendStr.isChecked() == 2:
+                    if not self.checkBox_SerSendInt.isChecked():
+                        if int(self.spinBox_SerSendFloat_Seq.text()) > int(self.spinBox_SerSendStr_Seq.text()):
+                            self.socket_server.socket_server_send(struct.pack("<f{}s".format(len(self.lineEdit_SerSendstr_Value.text())), float(self.lineEdit_SerSendFloat_Value.text()), self.lineEdit_SerSendstr_Value.text().encode()))
+                        else:
+                            self.socket_server.socket_server_send(struct.pack("<{}sf".format(len(self.lineEdit_SerSendstr_Value.text())), self.lineEdit_SerSendstr_Value.text().encode(), float(self.lineEdit_SerSendFloat_Value.text())))
+                    elif not self.checkBox_SerSendFloat.isChecked():
+                        if int(self.spinBox_SerSendInt_Seq.text()) > int(self.spinBox_SerSendStr_Seq.text()):
+                            self.socket_server.socket_server_send(struct.pack("<h{}s".format(len(self.lineEdit_SerSendstr_Value.text())), int(self.lineEdit_SerSendInt_Value.text()), self.lineEdit_SerSendstr_Value.text().encode()))
+                        else:
+                            self.socket_server.socket_server_send(struct.pack("<{}sh".format(len(self.lineEdit_SerSendstr_Value.text())), self.lineEdit_SerSendstr_Value.text().encode(), int(self.lineEdit_SerSendInt_Value.text())))
+                    else:
+                        if int(self.spinBox_SerSendInt_Seq.text()) > int(self.spinBox_SerSendFloat_Seq.text()):
+                            # print("{}{}".format(int(self.lineEdit_SerSendInt_Value.text()), float(self.lineEdit_SerSendFloat_Value.text())))
+                            self.socket_server.socket_server_send(struct.pack("<hf", int(self.lineEdit_SerSendInt_Value.text()), float(self.lineEdit_SerSendFloat_Value.text())))
+                        else:
+                            self.socket_server.socket_server_send(struct.pack("<fh", float(self.lineEdit_SerSendFloat_Value.text()), int(self.lineEdit_SerSendInt_Value.text())))
+                elif self.checkBox_SerSendInt.isChecked() + self.checkBox_SerSendFloat.isChecked() + self.checkBox_SerSendStr.isChecked() == 3:
+                    m_sequence_list = [
+                        [int(self.spinBox_SerSendInt_Seq.text()), self.lineEdit_SerSendInt_Value.text(), "h"],
+                        [int(self.spinBox_SerSendFloat_Seq.text()), self.lineEdit_SerSendFloat_Value.text(), "f"],
+                        [int(self.spinBox_SerSendStr_Seq.text()), self.lineEdit_SerSendstr_Value.text(), "{}s".format(len(self.lineEdit_SerSendstr_Value.text()))]]
+                    m_sequence_list.sort(key=lambda x: x[0], reverse=True)
+                    self.socket_server.socket_server_send(struct.pack("<" + m_sequence_list[0][2] + m_sequence_list[1][2] + + m_sequence_list[2][2], str(m_sequence_list[0][1]) + str(m_sequence_list[1][1]) + str( m_sequence_list[2][1])))
                 else:
-                    pass
+
+                    self.socket_server.socket_server_send(struct.pack(self.lineEdit_SerSendFormatStr.text(), self.lineEdit_SerSendFullType.text()))
 
     def socket_server_receive_message(self):
         """

@@ -89,8 +89,12 @@ class SocketServer(QObject):
         :return: None
         """
         if self.socket_server_accept_client is not None:
-            self.signal_record_result.emit("socket server send data: " + s_send)
-            self.socket_server_accept_client.send(s_send.encode())
+            if type(s_send) is bytes:
+                print("send rawbytes")
+                self.socket_server_accept_client.send(s_send)
+            else:
+                self.signal_record_result.emit("socket server send data: " + s_send)
+                self.socket_server_accept_client.send(s_send.encode())
             # self.signal_socket_server_send.emit(True)
 
     @QtCore.pyqtSlot()

@@ -7,6 +7,7 @@
 # @Description :
 
 import math
+import socket
 import sys
 import time
 import ctypes
@@ -316,114 +317,326 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         send message as the checkbox setting
         :return: None
         """
-        if self.pushButton_SerSend.isEnabled():
-            if self.checkBox_ServerSendString.isChecked():
-                if self.checkBox_SerSendInt.isChecked() + self.checkBox_SerSendFloat.isChecked() + self.checkBox_SerSendStr.isChecked() == 1:
-                    if self.checkBox_SerSendInt.isChecked():
-                        self.socket_server.socket_server_send(self.lineEdit_SerSendInt_Value.text())
-                    elif self.checkBox_SerSendFloat.isChecked():
-                        self.socket_server.socket_server_send(self.lineEdit_SerSendFloat_Value.text())
+        try:
+            if self.pushButton_SerSend.isEnabled():
+                if self.checkBox_ServerSendString.isChecked():
+                    if self.checkBox_SerSendInt.isChecked() + self.checkBox_SerSendFloat.isChecked() + self.checkBox_SerSendStr.isChecked() == 1:
+                        if self.checkBox_SerSendInt.isChecked():
+                            self.socket_server.socket_server_send(self.lineEdit_SerSendInt_Value.text())
+                        elif self.checkBox_SerSendFloat.isChecked():
+                            self.socket_server.socket_server_send(self.lineEdit_SerSendFloat_Value.text())
+                        else:
+                            self.socket_server.socket_server_send(self.lineEdit_SerSendstr_Value.text())
+                    elif self.checkBox_SerSendInt.isChecked() + self.checkBox_SerSendFloat.isChecked() + self.checkBox_SerSendStr.isChecked() == 2:
+                        if not self.checkBox_SerSendInt.isChecked():
+                            if int(self.spinBox_SerSendFloat_Seq.text()) > int(self.spinBox_SerSendStr_Seq.text()):
+                                self.socket_server.socket_server_send(self.lineEdit_SerSendFloat_Value.text()
+                                                                      + self.lineEdit_ServerSendSeparator.text() + self.lineEdit_SerSendstr_Value.text())
+                            else:
+                                self.socket_server.socket_server_send(self.lineEdit_SerSendstr_Value.text()
+                                                                      + self.lineEdit_ServerSendSeparator.text() + self.lineEdit_SerSendFloat_Value.text())
+                        elif not self.checkBox_SerSendFloat.isChecked():
+                            if int(self.spinBox_SerSendInt_Seq.text()) > int(self.spinBox_SerSendStr_Seq.text()):
+                                self.socket_server.socket_server_send(self.lineEdit_SerSendInt_Value.text()
+                                                                      + self.lineEdit_ServerSendSeparator.text() + self.lineEdit_SerSendstr_Value.text())
+                            else:
+                                self.socket_server.socket_server_send(self.lineEdit_SerSendstr_Value.text()
+                                                                      + self.lineEdit_ServerSendSeparator.text() + self.lineEdit_SerSendInt_Value.text())
+                        else:
+                            if int(self.spinBox_SerSendInt_Seq.text()) > int(self.spinBox_SerSendFloat_Seq.text()):
+                                self.socket_server.socket_server_send(self.lineEdit_SerSendInt_Value.text()
+                                                                      + self.lineEdit_ServerSendSeparator.text() + self.lineEdit_SerSendFloat_Value.text())
+                            else:
+                                self.socket_server.socket_server_send(self.lineEdit_SerSendFloat_Value.text()
+                                                                      + self.lineEdit_ServerSendSeparator.text() + self.lineEdit_SerSendInt_Value.text())
+                    elif self.checkBox_SerSendInt.isChecked() + self.checkBox_SerSendFloat.isChecked() + self.checkBox_SerSendStr.isChecked() == 3:
+                        m_sequence_list = [[int(self.spinBox_SerSendInt_Seq.text()), self.lineEdit_SerSendInt_Value.text()], [int(self.spinBox_SerSendFloat_Seq.text()), self.lineEdit_SerSendFloat_Value.text()], [int(self.spinBox_SerSendStr_Seq.text()), self.lineEdit_SerSendstr_Value.text()]]
+                        m_sequence_list.sort(key=lambda x: x[0], reverse=True)
+                        self.socket_server.socket_server_send(str(m_sequence_list[0][1])
+                                                              + self.lineEdit_ServerSendSeparator.text() + str(m_sequence_list[1][1]) + self.lineEdit_ServerSendSeparator.text() + str(m_sequence_list[2][1]))
                     else:
-                        self.socket_server.socket_server_send(self.lineEdit_SerSendstr_Value.text())
-                elif self.checkBox_SerSendInt.isChecked() + self.checkBox_SerSendFloat.isChecked() + self.checkBox_SerSendStr.isChecked() == 2:
-                    if not self.checkBox_SerSendInt.isChecked():
-                        if int(self.spinBox_SerSendFloat_Seq.text()) > int(self.spinBox_SerSendStr_Seq.text()):
-                            self.socket_server.socket_server_send(self.lineEdit_SerSendFloat_Value.text()
-                                                                  + self.lineEdit_ServerSendSeparator.text() + self.lineEdit_SerSendstr_Value.text())
+                        self.socket_server.socket_server_send(self.lineEdit_SerSendFullType.text())
+                elif self.checkBox_ServerSendRawbytes.isChecked():
+                    if self.checkBox_SerSendInt.isChecked() + self.checkBox_SerSendFloat.isChecked() + self.checkBox_SerSendStr.isChecked() == 1:
+                        if self.checkBox_SerSendInt.isChecked():
+                            self.socket_server.socket_server_send(struct.pack("<h", str(self.lineEdit_SerSendInt_Value.text())))
+                        elif self.checkBox_SerSendFloat.isChecked():
+                            self.socket_server.socket_server_send(struct.pack("<f", str(self.lineEdit_SerSendFloat_Value.text())))
                         else:
-                            self.socket_server.socket_server_send(self.lineEdit_SerSendstr_Value.text()
-                                                                  + self.lineEdit_ServerSendSeparator.text() + self.lineEdit_SerSendFloat_Value.text())
-                    elif not self.checkBox_SerSendFloat.isChecked():
-                        if int(self.spinBox_SerSendInt_Seq.text()) > int(self.spinBox_SerSendStr_Seq.text()):
-                            self.socket_server.socket_server_send(self.lineEdit_SerSendInt_Value.text()
-                                                                  + self.lineEdit_ServerSendSeparator.text() + self.lineEdit_SerSendstr_Value.text())
+                            self.socket_server.socket_server_send(struct.pack("<f", str(self.lineEdit_SerSendstr_Value.text())))
+                    elif self.checkBox_SerSendInt.isChecked() + self.checkBox_SerSendFloat.isChecked() + self.checkBox_SerSendStr.isChecked() == 2:
+                        if not self.checkBox_SerSendInt.isChecked():
+                            if int(self.spinBox_SerSendFloat_Seq.text()) > int(self.spinBox_SerSendStr_Seq.text()):
+                                self.socket_server.socket_server_send(struct.pack("<f{}s".format(len(self.lineEdit_SerSendstr_Value.text())), float(self.lineEdit_SerSendFloat_Value.text()), self.lineEdit_SerSendstr_Value.text().encode()))
+                            else:
+                                self.socket_server.socket_server_send(struct.pack("<{}sf".format(len(self.lineEdit_SerSendstr_Value.text())), self.lineEdit_SerSendstr_Value.text().encode(), float(self.lineEdit_SerSendFloat_Value.text())))
+                        elif not self.checkBox_SerSendFloat.isChecked():
+                            if int(self.spinBox_SerSendInt_Seq.text()) > int(self.spinBox_SerSendStr_Seq.text()):
+                                self.socket_server.socket_server_send(struct.pack("<h{}s".format(len(self.lineEdit_SerSendstr_Value.text())), int(self.lineEdit_SerSendInt_Value.text()), self.lineEdit_SerSendstr_Value.text().encode()))
+                            else:
+                                self.socket_server.socket_server_send(struct.pack("<{}sh".format(len(self.lineEdit_SerSendstr_Value.text())), self.lineEdit_SerSendstr_Value.text().encode(), int(self.lineEdit_SerSendInt_Value.text())))
                         else:
-                            self.socket_server.socket_server_send(self.lineEdit_SerSendstr_Value.text()
-                                                                  + self.lineEdit_ServerSendSeparator.text() + self.lineEdit_SerSendInt_Value.text())
+                            if int(self.spinBox_SerSendInt_Seq.text()) > int(self.spinBox_SerSendFloat_Seq.text()):
+                                # print("{}{}".format(int(self.lineEdit_SerSendInt_Value.text()), float(self.lineEdit_SerSendFloat_Value.text())))
+                                self.socket_server.socket_server_send(struct.pack("<hf", int(self.lineEdit_SerSendInt_Value.text()), float(self.lineEdit_SerSendFloat_Value.text())))
+                            else:
+                                self.socket_server.socket_server_send(struct.pack("<fh", float(self.lineEdit_SerSendFloat_Value.text()), int(self.lineEdit_SerSendInt_Value.text())))
+                    elif self.checkBox_SerSendInt.isChecked() + self.checkBox_SerSendFloat.isChecked() + self.checkBox_SerSendStr.isChecked() == 3:
+                        m_sequence_list = [
+                            [int(self.spinBox_SerSendInt_Seq.text()), int(self.lineEdit_SerSendInt_Value.text()), "h"],
+                            [int(self.spinBox_SerSendFloat_Seq.text()), float(self.lineEdit_SerSendFloat_Value.text()), "f"],
+                            [int(self.spinBox_SerSendStr_Seq.text()), self.lineEdit_SerSendstr_Value.text().encode(), "{}s".format(len(self.lineEdit_SerSendstr_Value.text()))]]
+                        m_sequence_list.sort(key=lambda x: x[0], reverse=True)
+                        self.socket_server.socket_server_send(struct.pack("<" + m_sequence_list[0][2] + m_sequence_list[1][2] + m_sequence_list[2][2], m_sequence_list[0][1], m_sequence_list[1][1], m_sequence_list[2][1]))
                     else:
-                        if int(self.spinBox_SerSendInt_Seq.text()) > int(self.spinBox_SerSendFloat_Seq.text()):
-                            self.socket_server.socket_server_send(self.lineEdit_SerSendInt_Value.text()
-                                                                  + self.lineEdit_ServerSendSeparator.text() + self.lineEdit_SerSendFloat_Value.text())
-                        else:
-                            self.socket_server.socket_server_send(self.lineEdit_SerSendFloat_Value.text()
-                                                                  + self.lineEdit_ServerSendSeparator.text() + self.lineEdit_SerSendInt_Value.text())
-                elif self.checkBox_SerSendInt.isChecked() + self.checkBox_SerSendFloat.isChecked() + self.checkBox_SerSendStr.isChecked() == 3:
-                    m_sequence_list = [[int(self.spinBox_SerSendInt_Seq.text()), self.lineEdit_SerSendInt_Value.text()], [int(self.spinBox_SerSendFloat_Seq.text()), self.lineEdit_SerSendFloat_Value.text()], [int(self.spinBox_SerSendStr_Seq.text()), self.lineEdit_SerSendstr_Value.text()]]
-                    m_sequence_list.sort(key=lambda x: x[0], reverse=True)
-                    self.socket_server.socket_server_send(str(m_sequence_list[0][1])
-                                                          + self.lineEdit_ServerSendSeparator.text() + str(m_sequence_list[1][1]) + self.lineEdit_ServerSendSeparator.text() + str(m_sequence_list[2][1]))
-                else:
-                    self.socket_server.socket_server_send(self.lineEdit_SerSendFullType.text())
-            elif self.checkBox_ServerSendRawbytes.isChecked():
-                if self.checkBox_SerSendInt.isChecked() + self.checkBox_SerSendFloat.isChecked() + self.checkBox_SerSendStr.isChecked() == 1:
-                    if self.checkBox_SerSendInt.isChecked():
-                        self.socket_server.socket_server_send(struct.pack("<h", str(self.lineEdit_SerSendInt_Value.text())))
-                    elif self.checkBox_SerSendFloat.isChecked():
-                        self.socket_server.socket_server_send(struct.pack("<f", str(self.lineEdit_SerSendFloat_Value.text())))
-                    else:
-                        self.socket_server.socket_server_send(struct.pack("<f", str(self.lineEdit_SerSendstr_Value.text())))
-                elif self.checkBox_SerSendInt.isChecked() + self.checkBox_SerSendFloat.isChecked() + self.checkBox_SerSendStr.isChecked() == 2:
-                    if not self.checkBox_SerSendInt.isChecked():
-                        if int(self.spinBox_SerSendFloat_Seq.text()) > int(self.spinBox_SerSendStr_Seq.text()):
-                            self.socket_server.socket_server_send(struct.pack("<f{}s".format(len(self.lineEdit_SerSendstr_Value.text())), float(self.lineEdit_SerSendFloat_Value.text()), self.lineEdit_SerSendstr_Value.text().encode()))
-                        else:
-                            self.socket_server.socket_server_send(struct.pack("<{}sf".format(len(self.lineEdit_SerSendstr_Value.text())), self.lineEdit_SerSendstr_Value.text().encode(), float(self.lineEdit_SerSendFloat_Value.text())))
-                    elif not self.checkBox_SerSendFloat.isChecked():
-                        if int(self.spinBox_SerSendInt_Seq.text()) > int(self.spinBox_SerSendStr_Seq.text()):
-                            self.socket_server.socket_server_send(struct.pack("<h{}s".format(len(self.lineEdit_SerSendstr_Value.text())), int(self.lineEdit_SerSendInt_Value.text()), self.lineEdit_SerSendstr_Value.text().encode()))
-                        else:
-                            self.socket_server.socket_server_send(struct.pack("<{}sh".format(len(self.lineEdit_SerSendstr_Value.text())), self.lineEdit_SerSendstr_Value.text().encode(), int(self.lineEdit_SerSendInt_Value.text())))
-                    else:
-                        if int(self.spinBox_SerSendInt_Seq.text()) > int(self.spinBox_SerSendFloat_Seq.text()):
-                            # print("{}{}".format(int(self.lineEdit_SerSendInt_Value.text()), float(self.lineEdit_SerSendFloat_Value.text())))
-                            self.socket_server.socket_server_send(struct.pack("<hf", int(self.lineEdit_SerSendInt_Value.text()), float(self.lineEdit_SerSendFloat_Value.text())))
-                        else:
-                            self.socket_server.socket_server_send(struct.pack("<fh", float(self.lineEdit_SerSendFloat_Value.text()), int(self.lineEdit_SerSendInt_Value.text())))
-                elif self.checkBox_SerSendInt.isChecked() + self.checkBox_SerSendFloat.isChecked() + self.checkBox_SerSendStr.isChecked() == 3:
-                    m_sequence_list = [
-                        [int(self.spinBox_SerSendInt_Seq.text()), int(self.lineEdit_SerSendInt_Value.text()), "h"],
-                        [int(self.spinBox_SerSendFloat_Seq.text()), float(self.lineEdit_SerSendFloat_Value.text()), "f"],
-                        [int(self.spinBox_SerSendStr_Seq.text()), self.lineEdit_SerSendstr_Value.text().encode(), "{}s".format(len(self.lineEdit_SerSendstr_Value.text()))]]
-                    m_sequence_list.sort(key=lambda x: x[0], reverse=True)
-                    self.socket_server.socket_server_send(struct.pack("<" + m_sequence_list[0][2] + m_sequence_list[1][2] + m_sequence_list[2][2], m_sequence_list[0][1], m_sequence_list[1][1], m_sequence_list[2][1]))
-                else:
-                    list_re = re.findall(r"(h|f|\d+s)", self.lineEdit_SerSendFormatStr.text())
-                    list_value = self.lineEdit_SerSendFullType.text().split(self.lineEdit_ServerSendSeparator.text())
-                    list_byte = bytes()
-                    for int_index in range(len(list_re)):
-                        if list_re[int_index] == "h":
-                            list_byte += (struct.pack(list_re[int_index], int(list_value[int_index])))
-                        elif list_re[int_index] == "f":
-                            list_byte += (struct.pack(list_re[int_index], float(list_value[int_index])))
-                        elif "s" in list_re[int_index]:
-                            list_byte += (struct.pack(list_re[int_index], list_value[int_index].encode()))
+                        list_re = re.findall(r"(h|f|\d+s)", self.lineEdit_SerSendFormatStr.text())
+                        list_value = self.lineEdit_SerSendFullType.text().split(self.lineEdit_ServerSendSeparator.text())
+                        list_byte = bytes()
+                        for int_index in range(len(list_re)):
+                            if list_re[int_index] == "h":
+                                list_byte += (struct.pack(list_re[int_index], int(list_value[int_index])))
+                            elif list_re[int_index] == "f":
+                                list_byte += (struct.pack(list_re[int_index], float(list_value[int_index])))
+                            elif "s" in list_re[int_index]:
+                                list_byte += (struct.pack(list_re[int_index], list_value[int_index].encode()))
 
-                    self.socket_server.socket_server_send(list_byte)
+                        self.socket_server.socket_server_send(list_byte)
+        except ValueError as e:
+            self.record_socket_communication_result(str(e))
+            self.record_socket_communication_result("Send value format error, please check!")
+            return
 
     def socket_server_receive_message(self):
         """
 
         :return:
         """
-        if self.checkBox_SerSendInt.isChecked() + self.checkBox_SerSendFloat.isChecked() + self.checkBox_SerSendStr.isChecked() == 1:
-            if self.checkBox_SerSendInt.isChecked():
-                pass
-                # self.spinBox_SerSendInt_Seq.setStyleSheet("QSpinBox{background-color:rgb(255, 85, 0)}")
-                # self.spinBox_SerSendInt_Seq.setBackgroundRole(rgb(255, 85, 0))
-            elif self.checkBox_SerSendFloat.isChecked():
-                pass
-                # self.spinBox_SerSendInt_Seq.setStyleSheet("QSpinBox{background-color:rgb(255, 85, 0)}")
-            else:
-                pass
-        elif self.checkBox_SerSendInt.isChecked() + self.checkBox_SerSendFloat.isChecked() + self.checkBox_SerSendStr.isChecked() == 2:
-            if not self.checkBox_SerSendInt.isChecked():
-                pass
-            elif not self.checkBox_SerSendFloat.isChecked():
-                pass
-            else:
-                pass
-        elif self.checkBox_SerSendInt.isChecked() + self.checkBox_SerSendFloat.isChecked() + self.checkBox_SerSendStr.isChecked() == 3:
-            pass
+        _server_receive_rawbytes_length = 5
+        try:
+            if self.checkBox_ServerReceiveString.isChecked():
+                if self.checkBox_SerRecvInt.isChecked() + self.checkBox_SerRecvFloat.isChecked() + self.checkBox_SerRecvStr.isChecked() == 0:
+                    self.lineEdit_SerRecvFullType.setText(self.socket_server.socket_server_receive().decode())
+                if self.checkBox_SerRecvInt.isChecked() + self.checkBox_SerRecvFloat.isChecked() + self.checkBox_SerRecvStr.isChecked() == 1:
+                    if self.checkBox_SerRecvInt.isChecked():
+                        try:
+                            m_int = int(self.socket_server.socket_server_receive().decode())
+                            self.lineEdit_SerRecvInt_Value.setText(str(m_int))
+                        except ValueError:
+                            self.lineEdit_SerRecvInt_Value.clear()
+                            self.record_socket_communication_result("Receive value except INT but not ")
+                            return
+
+                    elif self.checkBox_SerRecvFloat.isChecked():
+                        try:
+                            m_float = float(self.socket_server.socket_server_receive().decode())
+                            self.lineEdit_SerRecvFloat_Value.setText(str(m_float))
+                        except ValueError:
+                            self.lineEdit_SerRecvFloat_Value.clear()
+                            self.record_socket_communication_result("Receive value except FLOAT but not ")
+                            return
+
+                    else:
+                        try:
+                            m_str = self.socket_server.socket_server_receive().decode()
+                            self.lineEdit_SerRecvStr_Value.setText(m_str)
+                        except ValueError:
+                            self.lineEdit_SerRecvStr_Value.clear()
+                            self.record_socket_communication_result("Receive value except STRING but not ")
+                            return
+
+                elif self.checkBox_SerRecvInt.isChecked() + self.checkBox_SerRecvFloat.isChecked() + self.checkBox_SerRecvStr.isChecked() == 2:
+                    if not self.checkBox_SerRecvInt.isChecked():
+                        if int(self.spinBox_SerRecvFloat_Seq.text()) > int(self.spinBox_SerRecvStr_Seq.text()):
+                            try:
+                                _float_str, _string = self.socket_server.socket_server_receive().decode().split(self.lineEdit_ServerReceiveSeparator.text())
+                                self.lineEdit_SerRecvFloat_Value.setText(_float_str)
+                                self.lineEdit_SerRecvStr_Value.setText(_string)
+                            except ValueError:
+                                self.lineEdit_SerRecvFloat_Value.clear()
+                                self.lineEdit_SerRecvStr_Value.clear()
+                                self.record_socket_communication_result("Receive values is not identical with Receive setting ")
+                                return
+                        else:
+                            try:
+                                _string, _float_str = self.socket_server.socket_server_receive().decode().split(self.lineEdit_ServerReceiveSeparator.text())
+                                self.lineEdit_SerRecvFloat_Value.setText(_float_str)
+                                self.lineEdit_SerRecvStr_Value.setText(_string)
+                            except ValueError:
+                                self.lineEdit_SerRecvFloat_Value.clear()
+                                self.lineEdit_SerRecvStr_Value.clear()
+                                self.record_socket_communication_result("Receive values is not identical with Receive setting ")
+                                return
+                    elif not self.checkBox_SerRecvFloat.isChecked():
+                        if int(self.spinBox_SerRecvInt_Seq.text()) > int(self.spinBox_SerRecvStr_Seq.text()):
+                            try:
+                                _int_str, _string = self.socket_server.socket_server_receive().decode().split(self.lineEdit_ServerReceiveSeparator.text())
+                                self.lineEdit_SerRecvInt_Value.setText(_int_str)
+                                self.lineEdit_SerRecvStr_Value.setText(_string)
+                            except ValueError:
+                                self.lineEdit_SerRecvInt_Value.clear()
+                                self.lineEdit_SerRecvStr_Value.clear()
+                                self.record_socket_communication_result("Receive values is not identical with Receive setting ")
+                                return
+                        else:
+                            try:
+                                _string, _int_str = self.socket_server.socket_server_receive().decode().split(self.lineEdit_ServerReceiveSeparator.text())
+                                self.lineEdit_SerRecvInt_Value.setText(_int_str)
+                                self.lineEdit_SerRecvStr_Value.setText(_string)
+                            except ValueError:
+                                self.lineEdit_SerRecvInt_Value.clear()
+                                self.lineEdit_SerRecvStr_Value.clear()
+                                self.record_socket_communication_result("Receive values is not identical with Receive setting ")
+                                return
+                    else:
+                        if int(self.spinBox_SerRecvInt_Seq.text()) > int(self.spinBox_SerRecvFloat_Seq.text()):
+                            try:
+                                _int_str, _float_str = self.socket_server.socket_server_receive().decode().split(self.lineEdit_ServerReceiveSeparator.text())
+                                self.lineEdit_SerRecvInt_Value.setText(_int_str)
+                                self.lineEdit_SerRecvFloat_Value.setText(_float_str)
+                            except ValueError:
+                                self.lineEdit_SerRecvInt_Value.clear()
+                                self.lineEdit_SerRecvFloat_Value.clear()
+                                self.record_socket_communication_result("Receive values is not identical with Receive setting ")
+                                return
+                        else:
+                            try:
+                                _float_str, _int_str = self.socket_server.socket_server_receive().decode().split(self.lineEdit_ServerReceiveSeparator.text())
+                                self.lineEdit_SerRecvInt_Value.setText(_int_str)
+                                self.lineEdit_SerRecvFloat_Value.setText(_float_str)
+                            except ValueError:
+                                self.lineEdit_SerRecvInt_Value.clear()
+                                self.lineEdit_SerRecvFloat_Value.clear()
+                                self.record_socket_communication_result("Receive values is not identical with Receive setting ")
+                                return
+
+                elif self.checkBox_SerRecvInt.isChecked() + self.checkBox_SerRecvFloat.isChecked() + self.checkBox_SerRecvStr.isChecked() == 3:
+                    try:
+                        _float_str, _int_str, _string = self.socket_server.socket_server_receive().decode().split(self.lineEdit_ServerReceiveSeparator.text())
+                        self.lineEdit_SerRecvInt_Value.setText(_int_str)
+                        self.lineEdit_SerRecvFloat_Value.setText(_float_str)
+                        self.lineEdit_SerRecvStr_Value.setText(_string)
+                    except ValueError:
+                        self.lineEdit_SerRecvInt_Value.clear()
+                        self.lineEdit_SerRecvFloat_Value.clear()
+                        self.lineEdit_SerRecvStr_Value.clear()
+                        self.record_socket_communication_result("Receive values is not identical with Receive setting ")
+                        return
+
+            elif self.checkBox_ServerReceiveRawbytes.isChecked():
+                if self.checkBox_SerRecvInt.isChecked() + self.checkBox_SerRecvFloat.isChecked() + self.checkBox_SerRecvStr.isChecked() == 0:
+                    try:
+                        _tuple = struct.unpack(self.lineEdit_SerRecvFormatStr.text(), self.socket_server.socket_server_receive())
+                        self.lineEdit_SerRecvFullType.setText(str(_tuple))
+                    except (struct.error, ValueError):
+                        self.lineEdit_SerRecvInt_Value.clear()
+                        self.record_socket_communication_result("Can't parse receive data,please check")
+
+                if self.checkBox_SerRecvInt.isChecked() + self.checkBox_SerRecvFloat.isChecked() + self.checkBox_SerRecvStr.isChecked() == 1:
+                    if self.checkBox_SerRecvInt.isChecked():
+                        try:
+                            _int, = struct.unpack('<h', self.socket_server.socket_server_receive())
+                            self.lineEdit_SerRecvInt_Value.setText(str(_int))
+                        except (struct.error, ValueError):
+                            self.lineEdit_SerRecvInt_Value.clear()
+                            self.record_socket_communication_result("Can't parse receive data,please check")
+
+                    elif self.checkBox_SerRecvFloat.isChecked():
+                        try:
+                            _float, = struct.unpack('<f', self.socket_server.socket_server_receive())
+                            self.lineEdit_SerRecvFloat_Value.setText(str(_float))
+                        except (struct.error, ValueError):
+                            self.lineEdit_SerRecvFloat_Value.clear()
+                            self.record_socket_communication_result("Can't parse receive data,please check")
+
+                    else:
+                        try:
+                            _string, = struct.unpack('<{}s'.format(_server_receive_rawbytes_length), self.socket_server.socket_server_receive())
+                            self.lineEdit_SerRecvStr_Value.setText(str(_string.decode()))
+                        except (struct.error, ValueError):
+                            self.lineEdit_SerRecvStr_Value.clear()
+                            self.record_socket_communication_result("Can't parse receive data,please check")
+
+                elif self.checkBox_SerRecvInt.isChecked() + self.checkBox_SerRecvFloat.isChecked() + self.checkBox_SerRecvStr.isChecked() == 2:
+                    if not self.checkBox_SerRecvInt.isChecked():
+                        if int(self.spinBox_SerRecvFloat_Seq.text()) > int(self.spinBox_SerRecvStr_Seq.text()):
+                            try:
+                                _float, _str = struct.unpack('<f{}s'.format(_server_receive_rawbytes_length), self.socket_server.socket_server_receive())
+                                self.lineEdit_SerRecvFloat_Value.setText(str(_float))
+                                self.lineEdit_SerRecvStr_Value.setText(str(_str))
+                            except (struct.error, ValueError):
+                                self.lineEdit_SerRecvFloat_Value.clear()
+                                self.lineEdit_SerRecvStr_Value.clear()
+                                self.record_socket_communication_result("Can't parse receive data,please check")
+
+                        else:
+                            try:
+                                _str, _float = struct.unpack('<{}sf'.format(_server_receive_rawbytes_length),
+                                                             self.socket_server.socket_server_receive())
+                                self.lineEdit_SerRecvFloat_Value.setText(str(_float))
+                                self.lineEdit_SerRecvStr_Value.setText(str(_str))
+                            except (struct.error, ValueError):
+                                self.lineEdit_SerRecvFloat_Value.clear()
+                                self.lineEdit_SerRecvStr_Value.clear()
+                                self.record_socket_communication_result("Can't parse receive data,please check")
+
+                    elif not self.checkBox_SerRecvFloat.isChecked():
+                        if int(self.spinBox_SerRecvInt_Seq.text()) > int(self.spinBox_SerRecvStr_Seq.text()):
+                            try:
+                                _int, _str = struct.unpack('<h{}s'.format(_server_receive_rawbytes_length), self.socket_server.socket_server_receive())
+                                self.lineEdit_SerRecvInt_Value.setText(str(_int))
+                                self.lineEdit_SerRecvStr_Value.setText(str(_str))
+                            except (struct.error, ValueError):
+                                self.lineEdit_SerRecvInt_Value.clear()
+                                self.lineEdit_SerRecvStr_Value.clear()
+                                self.record_socket_communication_result("Can't parse receive data,please check")
+                        else:
+                            try:
+                                _str, _int, = struct.unpack('<{}sh'.format(_server_receive_rawbytes_length), self.socket_server.socket_server_receive())
+                                self.lineEdit_SerRecvInt_Value.setText(str(_int))
+                                self.lineEdit_SerRecvStr_Value.setText(str(_str))
+                            except (struct.error, ValueError):
+                                self.lineEdit_SerRecvInt_Value.clear()
+                                self.lineEdit_SerRecvStr_Value.clear()
+                                self.record_socket_communication_result("Can't parse receive data,please check")
+                    else:
+                        if int(self.spinBox_SerRecvInt_Seq.text()) > int(self.spinBox_SerRecvFloat_Seq.text()):
+                            try:
+                                _int, _float = struct.unpack('<hf', self.socket_server.socket_server_receive())
+                                self.lineEdit_SerRecvInt_Value.setText(str(_int))
+                                self.lineEdit_SerRecvFloat_Value.setText(str(_float))
+                            except (struct.error, ValueError):
+                                self.lineEdit_SerRecvInt_Value.clear()
+                                self.lineEdit_SerRecvFloat_Value.clear()
+                                self.record_socket_communication_result("Can't parse receive data,please check")
+                        else:
+                            try:
+                                _float, _int = struct.unpack('<hf', self.socket_server.socket_server_receive())
+                                self.lineEdit_SerRecvInt_Value.setText(str(_int))
+                                self.lineEdit_SerRecvFloat_Value.setText(str(_float))
+                            except (struct.error, ValueError):
+                                self.lineEdit_SerRecvInt_Value.clear()
+                                self.lineEdit_SerRecvFloat_Value.clear()
+                                self.record_socket_communication_result("Can't parse receive data,please check")
+                elif self.checkBox_SerRecvInt.isChecked() + self.checkBox_SerRecvFloat.isChecked() + self.checkBox_SerRecvStr.isChecked() == 3:
+                    try:
+                        _int, _float, _str = struct.unpack('<hf', self.socket_server.socket_server_receive())
+                        self.lineEdit_SerRecvInt_Value.setText(str(_int))
+                        self.lineEdit_SerRecvFloat_Value.setText(str(_float))
+                        self.lineEdit_SerRecvStr_Value.setText(str(_str))
+                    except (struct.error, ValueError):
+                        self.lineEdit_SerRecvInt_Value.clear()
+                        self.lineEdit_SerRecvFloat_Value.clear()
+                        self.lineEdit_SerRecvStr_Value.clear()
+                        self.record_socket_communication_result("Can't parse receive data,please check")
+
+        except TypeError as e:
+            self.record_socket_communication_result(str(e))
+            self.record_socket_communication_result("receive value error, please check!")
+            return
+        # 检查调用Socket receive方法是否接收数据超时，如果是则发布信息并return
+        except OSError:
+            self.record_socket_communication_result("Doesn't receive data, please check")
+            return
 
     def record_socket_communication_result(self, str_record: str):
         """
@@ -746,6 +959,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                 self.lineEdit_SerRecvFormatStr.setEnabled(True)
         else:
             self.lineEdit_SerRecvFullType.setEnabled(False)
+            self.lineEdit_SerRecvFullType.clear()
             self.lineEdit_SerRecvFormatStr.clear()
             self.lineEdit_SerRecvFormatStr.setEnabled(False)
         # client send check box

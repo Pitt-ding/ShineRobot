@@ -18,8 +18,6 @@ class SocketServer(QObject):
     # signal for class
     signal_record_result = QtCore.pyqtSignal(str)
     signal_socket_server_accepted = QtCore.pyqtSignal(bool)
-    signal_socket_server_send = QtCore.pyqtSignal(bool)
-    signal_socket_server_received = QtCore.pyqtSignal(bool)
     signal_close_socket_server_thread = QtCore.pyqtSignal(bool)
 
     def __init__(self, _ip_port):
@@ -104,8 +102,19 @@ class SocketServer(QObject):
         :return: None
         """
         if self.socket_server_accept_client is not None:
-            self.signal_record_result.emit("socket server receive data")
-            self.signal_socket_server_received.emit(True)
+            try:
+                self.socket_server_accept_client.settimeout(1)
+                m_receive = self.socket_server_accept_client.recv(1024)
+                self.signal_record_result.emit("Receive value type: {}".format(type(m_receive)))
+                self.signal_record_result.emit("Receive value: {}".format(m_receive))
+                return m_receive
+
+            except (ValueError, TypeError) as e:
+                self.signal_record_result.emit(str(e))
+                return
+            # 检查socket.recv()是否超时，如果超时则向调用方Raise错误
+            except OSError:
+                raise OSError
 
 
 class SocketServerCloseClient(QObject):

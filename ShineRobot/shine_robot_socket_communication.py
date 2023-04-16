@@ -7,8 +7,9 @@
 # @Description :
 
 from socket import socket
-from PyQt5.Qt import QObject
+from PyQt5.Qt import QObject,QThread
 from PyQt5 import QtCore
+from _socket import SHUT_RDWR
 
 
 class SocketServer(QObject):
@@ -19,16 +20,16 @@ class SocketServer(QObject):
     signal_record_result = QtCore.pyqtSignal(str)
     # socket server connect accepted signal
     signal_socket_server_accepted = QtCore.pyqtSignal(bool)
-    # socket server thread close signal
-    signal_close_socket_server_thread = QtCore.pyqtSignal(bool)
+    signal_socket_server_closed = QtCore.pyqtSignal(bool)
 
-    def __init__(self, _ip_port):
+    def __init__(self):
 
         super().__init__()
         # self.socket_server_connect_ip = '127.0.0.1'
         # self.socket_server_connect_port = 1026
-        self.socket_server_connect_ip, self.socket_server_connect_port = _ip_port
-        self.socket_server_connect_port = int(self.socket_server_connect_port)
+        # self.socket_server_connect_ip, self.socket_server_connect_port = _ip_port
+        # self.socket_server_connect_port = int(self.socket_server_connect_port)
+        self.socket_server_connect_ip, self.socket_server_connect_port = None, None
         self.socket_server = socket()
 
         self.b_socket_server_shutup = False
@@ -36,32 +37,36 @@ class SocketServer(QObject):
         # self.nSocket_server_receive = 0
         self.socket_server_accept_client = None
 
-    def create_socket_server(self):
+    @QtCore.pyqtSlot()
+    def create_socket_server(self, _ip_port):
         """
         create the socket server in thread
         :return: None
         """
         try:
-
-            self.b_socket_server_shutup = False
+            self.socket_server.__init__()
+            # self.b_socket_server_shutup = False
+            print("Socket server thread", QThread.currentThreadId())
+            self.socket_server_connect_ip, self.socket_server_connect_port = _ip_port
+            self.socket_server_connect_port = int(self.socket_server_connect_port)
 
             self.signal_record_result.emit("Socket server Creating...")
             self.signal_record_result.emit("Server IP:{}, Server Port:{}".format(self.socket_server_connect_ip, self.socket_server_connect_port))
 
             self.socket_server.bind((self.socket_server_connect_ip, self.socket_server_connect_port))
+
             self.signal_record_result.emit("Socket server bind finished")
             self.signal_record_result.emit("Socket server begin listening...")
-
             self.socket_server.listen()
 
             # socket_server.settimeout(3)
+            self.signal_record_result.emit("Socket server begin accept client connection...")
             self.socket_server_accept_client, socket_server_accept_any = self.socket_server.accept()
-            if not self.b_socket_server_shutup:
-                self.signal_record_result.emit("socket server accept client connection from {}".format(socket_server_accept_any))
-                self.signal_socket_server_accepted.emit(True)
+            self.signal_record_result.emit("socket server accept client connection from {}".format(socket_server_accept_any))
+            self.signal_socket_server_accepted.emit(True)
 
         except OSError as e:
-            self.signal_record_result.emit(str(e))
+            self.signal_record_result.emit("Socket server create connect: " + str(e))
             self.socket_server_accept_client.close()
             self.socket_server.close()
 
@@ -72,13 +77,21 @@ class SocketServer(QObject):
         with decorate to declare slot function
         :return:
         """
-        # self.socket_server_accept_client.shutdown(socket.SHUT_RDWR)
-        self.socket_server_accept_client.close()
-        self.socket_server.close()
+        try:
+            self.socket_server_accept_client.close()
+            # !!!Clear accepted client after closed, if not there would be error
+            self.socket_server_accept_client = None
+            self.signal_record_result.emit("Socket server accepted client closed")
+            self.socket_server.close()
 
-        self.signal_socket_server_accepted.emit(False)
-        self.signal_record_result.emit("Socket server closed")
-        self.signal_close_socket_server_thread.emit(True)
+            self.signal_socket_server_accepted.emit(False)
+            self.signal_record_result.emit("Socket server closed")
+            self.signal_socket_server_closed.emit(True)
+        except OSError as e:
+            self.signal_record_result.emit("Socket server close: " + str(e))
+            self.socket_server_accept_client.close()
+            self.socket_server_accept_client = None
+            self.socket_server.close()
 
     @QtCore.pyqtSlot()
     def socket_server_send(self, s_send):
@@ -94,9 +107,8 @@ class SocketServer(QObject):
                 else:
                     self.signal_record_result.emit("socket server send data: " + s_send)
                     self.socket_server_accept_client.send(s_send.encode())
-                # self.signal_socket_server_send.emit(True)
         except ConnectionAbortedError as e:
-            self.signal_record_result.emit(str(e))
+            self.signal_record_result.emit("Socket server send: " + str(e))
             return
 
     @QtCore.pyqtSlot()
@@ -114,7 +126,7 @@ class SocketServer(QObject):
                 return m_receive
 
             except (ValueError, TypeError) as e:
-                self.signal_record_result.emit(str(e))
+                self.signal_record_result.emit("Socket server receive: " + str(e))
                 return
             # 检查socket.recv()是否超时，如果超时则向调用方Raise osError错误
             except OSError:
@@ -126,16 +138,14 @@ class SocketServerCloseClient(QObject):
     class for close socket server which stub in accept function,create socket client connect to server and close self
     """
     signal_record_result = QtCore.pyqtSignal(str)
-    signal_close_socket_server_client_connection = QtCore.pyqtSignal(bool)
-    signal_close_socket_server_client_thread = QtCore.pyqtSignal(bool)
+    signal_socket_server_client_closed = QtCore.pyqtSignal(bool)
 
     def __init__(self, _ip_port):
         super().__init__()
         # init variable for socket communication
-        # self.socket_client_connect_ip = '127.0.0.1'
-        # self.socket_client_connect_port = 1025
         self.socket_client = socket()
         self._targetAddress = _ip_port
+        self.socket_server_client_connect_ip, self.socket_server_client_connect_port = None, None
 
     def connect_to_Server(self):
         """
@@ -144,16 +154,18 @@ class SocketServerCloseClient(QObject):
         """
         try:
             # print('Address:{},port{}'.format(*self._targetAddress))
+            self.socket_client = socket()
             self.socket_client.settimeout(3)
-            self.socket_client.connect(self._targetAddress)
+            self.socket_server_client_connect_ip, self.socket_server_client_connect_port = self._targetAddress
+            self.socket_server_client_connect_port = int(self.socket_server_client_connect_port)
 
+            self.socket_client.connect((self.socket_server_client_connect_ip, self.socket_server_client_connect_port))
             self.socket_client.close()
-            self.signal_close_socket_server_client_connection.emit(True)
-            self.signal_close_socket_server_client_thread.emit(True)
+            self.signal_socket_server_client_closed.emit(True)
+            # self.signal_close_socket_server_client_thread.emit(True)
         except OSError as e:
-            self.signal_record_result.emit(str(e))
-            # socket_server_accept_client.close()
-            # socket_server.close()
+            self.signal_record_result.emit("Socket server close client: " + str(e))
+
         finally:
             pass
 

@@ -179,7 +179,7 @@ class SocketClient(QObject):
     # socket server connect accepted signal
     signal_socket_client_connected = QtCore.pyqtSignal(bool)
     # socket server thread close signal
-    signal_socket_client_closed = QtCore.pyqtSignal(bool)
+    # signal_socket_client_closed = QtCore.pyqtSignal(bool)
 
     def __init__(self):
 
@@ -227,8 +227,9 @@ class SocketClient(QObject):
         :return:
         """
         self.socket_client.close()
+        self.signal_socket_client_connected.emit(False)
         self.signal_record_result.emit("Socket client closed")
-        self.signal_socket_client_closed.emit(True)
+        # self.signal_socket_client_closed.emit(True)
 
     @QtCore.pyqtSlot()
     def socket_client_send(self, s_send):

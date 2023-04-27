@@ -19,6 +19,7 @@ from PyQt5.Qt import QStandardItemModel, QCursor, Qt, QThread, pyqtSignal
 from PyQt5.QtGui import QTextCursor
 from shine_robot_socket_communication import SocketServer, SocketServerCloseClient, SocketClient
 from functools import partial
+from Pyqt_Quaternion_Euler import QuaternionEuler
 
 
 class SocketWidgetStruct:
@@ -74,6 +75,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
         self.setupUi(self)
         self.right_click_menu = QMenu()
+        self.quaternion_euler_ins = QuaternionEuler()
         # socket server
         self.socket_server = SocketServer()
         # socket server close client used to close blocking socket server
@@ -176,19 +178,12 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.client_widgets_status.pushButton_Send = self.pushButton_ClntSend
         self.client_widgets_status.pushButton_Receive = self.pushButton_ClntRecv
 
-        self.init_append_customer_func()
-
-    def init_append_customer_func(self):
-        """
-        customer the widgets signal to slot
-        :return: none
-        """
-        self.pushButton_quaternion_euler.clicked.connect(self.quaternion_to_euler)
-        self.pushButton_euler_quaternion.clicked.connect(self.euler_to_quaternion)
-        self.pushButton_quaternion_clearinput.clicked.connect(self.clear_quaternion_input)
-        self.pushButton_euler_clearinput.clicked.connect(self.clear_euler_input)
-        self.pushButton_quaternion_copy.clicked.connect(self.copy_quaternion_result)
-        self.pushButton_euler_copy.clicked.connect(self.copy_euler_result)
+        self.pushButton_quaternion_euler.clicked.connect(self.quaternion_euler_ins.quaternion_to_euler)
+        self.pushButton_euler_quaternion.clicked.connect(self.quaternion_euler_ins.euler_to_quaternion)
+        self.pushButton_quaternion_clearinput.clicked.connect(self.quaternion_euler_ins.clear_quaternion_input)
+        self.pushButton_euler_clearinput.clicked.connect(self.quaternion_euler_ins.clear_euler_input)
+        self.pushButton_quaternion_copy.clicked.connect(self.quaternion_euler_ins.copy_quaternion_result)
+        self.pushButton_euler_copy.clicked.connect(self.quaternion_euler_ins.copy_euler_result)
         self.textEdit_result_record.customContextMenuRequested.connect(self.qtextedit_custom_context_menu)
         # socket server send and receive event
         self.pushButton_SerCreateConn.clicked.connect(partial(self.socket_server.create_socket_server, (self.lineEdit_SevIP.text(), self.lineEdit_SerPort.text())), Qt.QueuedConnection)
@@ -271,137 +266,23 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.lineEdit_ClntSendFullType.textChanged.connect(lambda: self.uiUpdate_server_full_type_mode(self.client_widgets_status))
         self.lineEdit_ClntSendFormatStr.textChanged.connect(lambda: self.uiUpdate_server_full_type_mode(self.client_widgets_status))
         self.lineEdit_ClntRecvFormatStr.textChanged.connect(lambda: self.uiUpdate_server_full_type_mode(self.client_widgets_status))
+        self.init_quaternion()
+
         # ------------------------------------------------------------------------------------------------------------------
         # -----------------------quaternion and euler convert function------------------------------------------------------
         # ------------------------------------------------------------------------------------------------------------------
-
-    def quaternion_to_euler(self):
-        """
-        calculate the quaternion to euler
-        quaternion and euler values all get or return to lineedit
-        :return: none
-        """
-        _tuple_quaternion = tuple(float(x) for x in (self.lineEdit_quaternion_q1.text(),
-                                                     self.lineEdit_quaternion_q2.text(),
-                                                     self.lineEdit_quaternion_q3.text(),
-                                                     self.lineEdit_quaternion_q4.text()))
-        q1, q2, q3, q4 = _tuple_quaternion
-
-        _record_str = 'Request convert quaternion to euler, input is: ' + str(list(_tuple_quaternion))
-        self.record_convert_result(_record_str)
-
-        unit = q1 * q1 + q2 * q2 + q3 * q3 + q4 * q4
-        test = q1 * q3 - q2 * q4
-        print("Unit: {},test: {}".format(unit, test))
-
-        if test > 0.499 * unit:
-            angle_x = 0
-            angle_y = math.asin(2 * (q1 * q3 - q2 * q4))
-            print("z para1: {},para2: {}".format(2 * (q1 * q4 + q2 * q3), 1 - 2 * (q3 * q3 + q4 * q4)))
-            angle_z = -2 * math.atan2(q2, q1)
-            print("angle_z: {}".format(angle_z))
-        elif test < -0.499 * unit:
-            angle_x = 0
-            angle_y = math.asin(2 * (q1 * q3 - q2 * q4))
-            print("z para1: {},para2: {}".format(2 * (q1 * q4 + q2 * q3), 1 - 2 * (q3 * q3 + q4 * q4)))
-            angle_z = 2 * math.atan2(q2, q1)
-            print("angle_z: {}".format(angle_z))
-        else:
-            angle_x = math.atan2(2 * (q1 * q2 + q3 * q4), 1 - 2 * (q2 * q2 + q3 * q3))
-            angle_y = math.asin(2 * (q1 * q3 - q2 * q4))
-            print("z para1: {},para2: {}".format(2 * (q1 * q4 + q2 * q3), 1 - 2 * (q3 * q3 + q4 * q4)))
-            angle_z = math.atan2(2 * (q1 * q4 + q2 * q3), 1 - 2 * (q3 * q3 + q4 * q4))
-            print("angle_z: {}".format(angle_z))
-
-        angle_x = math.degrees(angle_x)
-        angle_y = math.degrees(angle_y)
-        angle_z = math.degrees(angle_z)
-
-        _list_quaternion_result = list([round(x, 3) for x in [angle_x, angle_y, angle_z]])
-        self.lineEdit_quaternion_result.setText(str(_list_quaternion_result))
-
-        _record_str = 'Convert Result: ' + str(_list_quaternion_result)
-        self.record_convert_result(_record_str)
-
-    def euler_to_quaternion(self):
-        """
-        calculate the euler to quaternion
-        euler and quaternion values all get or return to lineedit
-        :return: none
-        """
-        _tuple_input = tuple((float(x) for x in (self.lineEdit_euler_rotx.text(),
-                                                 self.lineEdit_euler_roty.text(),
-                                                 self.lineEdit_euler_rotz.text())))
-
-        _record_str = 'Request convert euler to quaternion, input is: ' + str(list(_tuple_input))
-        self.record_convert_result(_record_str)
-
-        angle_x, angle_y, angle_z = map(math.radians, _tuple_input)
-        sin_x = math.sin(angle_x / 2)
-        sin_y = math.sin(angle_y / 2)
-        sin_z = math.sin(angle_z / 2)
-
-        cos_x = math.cos(angle_x / 2)
-        cos_y = math.cos(angle_y / 2)
-        cos_z = math.cos(angle_z / 2)
-
-        q1 = cos_x * cos_y * cos_z + sin_x * sin_y * sin_z
-        q2 = sin_x * cos_y * cos_z - cos_x * sin_y * sin_z
-        q3 = cos_x * sin_y * cos_z + sin_x * cos_y * sin_z
-        q4 = cos_x * cos_y * sin_z - sin_x * sin_y * cos_z
-        _list_euler_result = list((round(x, 6) for x in (q1, q2, q3, q4)))
-        self.lineEdit_euler_result.setText(str(_list_euler_result))
-
-        _record_str = 'Convert Result: ' + str(_list_euler_result)
-        self.record_convert_result(_record_str)
-
-    def clear_quaternion_input(self):
-        """
-        clear the quaternion lineedit values
-        :return: none
-        """
-        self.lineEdit_quaternion_q1.setText(str(0.0))
-        self.lineEdit_quaternion_q2.setText(str(0.0))
-        self.lineEdit_quaternion_q3.setText(str(0.0))
-        self.lineEdit_quaternion_q4.setText(str(0.0))
-        self.lineEdit_quaternion_result.setText('')
-
-    def clear_euler_input(self):
-        """
-        clear the euler lineedit values
-        :return: none
-        """
-        self.lineEdit_euler_rotx.setText(str(0.0))
-        self.lineEdit_euler_roty.setText(str(0.0))
-        self.lineEdit_euler_rotz.setText(str(0.0))
-        self.lineEdit_euler_result.setText('')
-
-    def record_convert_result(self, str_record: str):
-        """
-        write record and date to textedit
-        :param str_record: string that need to write
-        :return: none
-        """
-        _str_time = time.strftime('%Y-%m-%d: %H:%M:%S ', time.localtime())
-        self.textEdit_result_record.append(_str_time + str_record)
-
-    def copy_quaternion_result(self):
-        """
-        copy quaternion result form lineedit
-        :return: none
-        """
-        self.lineEdit_quaternion_result.selectAll()
-        self.lineEdit_quaternion_result.copy()
-        self.lineEdit_quaternion_result.deselect()
-
-    def copy_euler_result(self):
-        """
-        copy euler result from lineedit
-        :return: none
-        """
-        self.lineEdit_euler_result.selectAll()
-        self.lineEdit_euler_result.copy()
-        self.lineEdit_euler_result.deselect()
+    def init_quaternion(self):
+        self.quaternion_euler_ins.lineedit_q1 = self.lineEdit_quaternion_q1
+        self.quaternion_euler_ins.lineedit_q2 = self.lineEdit_quaternion_q2
+        self.quaternion_euler_ins.lineedit_q3 = self.lineEdit_quaternion_q3
+        self.quaternion_euler_ins.lineedit_q4 = self.lineEdit_quaternion_q4
+        self.quaternion_euler_ins.lineedit_rotx = self.lineEdit_euler_rotx
+        self.quaternion_euler_ins.lineedit_roty = self.lineEdit_euler_roty
+        self.quaternion_euler_ins.lineedit_rotz = self.lineEdit_euler_rotz
+        self.quaternion_euler_ins.lineedit_quaternion_euler = self.lineEdit_quaternion_result
+        self.quaternion_euler_ins.lineedit_euler_quaternion = self.lineEdit_euler_result
+        self.quaternion_euler_ins.textedit_log = self.textEdit_result_record
+        # self.quaternion_euler_ins.log_fun = self.record_convert_result
 
     def qtextedit_custom_context_menu(self, pos):
         """
@@ -466,93 +347,91 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         _full_type_format_str_text = widgets_status.lineEdit_SendFormatStr.text()
         _send_str_Separator_text = widgets_status.lineEdit_StrSendSeparator.text()
 
-        try:
-            if widgets_status.checkBox_SendStringMode.isChecked():
-                if _int_checked + _float_checked + _str_checked == 1:
-                    if _int_checked:
-                        _send_fun(_int_text)
-                    elif _float_checked:
-                        _send_fun(_float_text)
-                    else:
-                        _send_fun(_str_text)
-
-                elif _int_checked + _float_checked + _str_checked == 2:
-                    if not _int_checked:
-                        if int(_float_seq) > int(_str_seq):
-                            _send_fun(_float_text + _send_str_Separator_text + _str_text)
-                        else:
-                            _send_fun(_str_text + _send_str_Separator_text + _float_text)
-                    elif not _float_checked:
-                        if int(_int_seq) > int(_str_seq):
-                            _send_fun(_int_text + _send_str_Separator_text + _str_text)
-                        else:
-                            _send_fun(_str_text + _send_str_Separator_text + _int_text)
-                    else:
-                        if int(_int_seq) > int(_float_seq):
-                            _send_fun(_int_text + _send_str_Separator_text + _float_text)
-                        else:
-                            _send_fun(_float_text + _send_str_Separator_text + _int_text)
-
-                elif _int_checked + _float_checked + _str_checked == 3:
-                    # 生成字列表，并对列表按键值做排序
-                    m_sequence_list = [[int(_int_seq), _int_text],
-                                       [int(_float_seq), _float_text],
-                                       [int(_str_seq), _str_text]]
-                    m_sequence_list.sort(key=lambda x: x[0], reverse=True)
-                    _send_fun(str(m_sequence_list[0][1]) + _send_str_Separator_text + str(m_sequence_list[1][1])
-                              + _send_str_Separator_text + str(m_sequence_list[2][1]))
+        if widgets_status.checkBox_SendStringMode.isChecked():
+            # send string
+            if _int_checked + _float_checked + _str_checked == 1:
+                if _int_checked:
+                    _send_fun(_int_text)
+                elif _float_checked:
+                    _send_fun(_float_text)
                 else:
-                    _send_fun(_full_type_str_text)
+                    _send_fun(_str_text)
+
+            elif _int_checked + _float_checked + _str_checked == 2:
+                if not _int_checked:
+                    if int(_float_seq) > int(_str_seq):
+                        _send_fun(_float_text + _send_str_Separator_text + _str_text)
+                    else:
+                        _send_fun(_str_text + _send_str_Separator_text + _float_text)
+                elif not _float_checked:
+                    if int(_int_seq) > int(_str_seq):
+                        _send_fun(_int_text + _send_str_Separator_text + _str_text)
+                    else:
+                        _send_fun(_str_text + _send_str_Separator_text + _int_text)
+                else:
+                    if int(_int_seq) > int(_float_seq):
+                        _send_fun(_int_text + _send_str_Separator_text + _float_text)
+                    else:
+                        _send_fun(_float_text + _send_str_Separator_text + _int_text)
+
+            elif _int_checked + _float_checked + _str_checked == 3:
+                # 生成字列表，并对列表按键值做排序
+                m_sequence_list = [[int(_int_seq), _int_text],
+                                   [int(_float_seq), _float_text],
+                                   [int(_str_seq), _str_text]]
+                m_sequence_list.sort(key=lambda x: x[0], reverse=True)
+                _send_fun(str(m_sequence_list[0][1]) + _send_str_Separator_text + str(m_sequence_list[1][1])
+                          + _send_str_Separator_text + str(m_sequence_list[2][1]))
             else:
-                if _int_checked + _float_checked + _str_checked == 1:
-                    if _int_checked:
-                        _send_fun(struct.pack("<h", int(_int_text)))
-                    elif _float_checked:
-                        _send_fun(struct.pack("<f", float(_float_text)))
-                    else:
-                        _send_fun(struct.pack("<f", str(_str_text)))
-
-                elif _int_checked + _float_checked + _str_checked == 2:
-                    if not _int_checked:
-                        if int(_float_seq) > int(_str_seq):
-                            _send_fun(struct.pack("<f{}s".format(len(_str_text)), float(_float_text), _str_text.encode()))
-                        else:
-                            _send_fun(struct.pack("<{}sf".format(len(_str_text)), _str_text.encode(), float(_float_text)))
-                    elif not _float_checked:
-                        if int(_int_seq) > int(_str_seq):
-                            _send_fun(struct.pack("<h{}s".format(len(_str_text)), int(_int_text), _str_text.encode()))
-                        else:
-                            _send_fun(struct.pack("<{}sh".format(len(_str_text)), _str_text.encode(), int(_int_text)))
-                    else:
-                        if int(_int_seq) > int(_float_seq):
-                            _send_fun(struct.pack("<hf", int(_int_text), float(_float_text)))
-                        else:
-                            _send_fun(struct.pack("<fh", float(_float_text), int(_int_text)))
-
-                elif _int_checked + _float_checked + _str_checked == 3:
-                    m_sequence_list = [
-                        [int(_int_seq), int(_int_text), "h"],
-                        [int(_float_seq), float(_float_text), "f"],
-                        [int(_str_seq), _str_text.encode(), "{}s".format(len(_str_text))]]
-
-                    m_sequence_list.sort(key=lambda x: x[0], reverse=True)
-                    _send_fun(struct.pack("<" + m_sequence_list[0][2] + m_sequence_list[1][2] + m_sequence_list[2][2],
-                                          m_sequence_list[0][1], m_sequence_list[1][1], m_sequence_list[2][1]))
+                _send_fun(_full_type_str_text)
+        else:
+            # Send rawbytes
+            if _int_checked + _float_checked + _str_checked == 1:
+                if _int_checked:
+                    _send_fun(struct.pack("<h", int(_int_text)))
+                elif _float_checked:
+                    _send_fun(struct.pack("<f", float(_float_text)))
                 else:
-                    list_re = re.findall(r"(h|f|\d+s)", _full_type_format_str_text)
-                    list_value = _full_type_str_text.split(_send_str_Separator_text)
-                    list_byte = bytes()
-                    for int_index in range(len(list_re)):
-                        if list_re[int_index] == "h":
-                            list_byte += (struct.pack("<" + list_re[int_index], int(list_value[int_index])))
-                        elif list_re[int_index] == "f":
-                            list_byte += (struct.pack("<" + list_re[int_index], float(list_value[int_index])))
-                        elif "s" in list_re[int_index]:
-                            list_byte += (struct.pack("<" + list_re[int_index], list_value[int_index].encode()))
-                    _send_fun(list_byte)
-        except ValueError as e:
-            self.record_socket_communication_result(str(e))
-            self.record_socket_communication_result("Send value format error, please check!")
+                    _send_fun(struct.pack("<f", str(_str_text)))
+
+            elif _int_checked + _float_checked + _str_checked == 2:
+                if not _int_checked:
+                    if int(_float_seq) > int(_str_seq):
+                        _send_fun(struct.pack("<f{}s".format(len(_str_text)), float(_float_text), _str_text.encode()))
+                    else:
+                        _send_fun(struct.pack("<{}sf".format(len(_str_text)), _str_text.encode(), float(_float_text)))
+                elif not _float_checked:
+                    if int(_int_seq) > int(_str_seq):
+                        _send_fun(struct.pack("<h{}s".format(len(_str_text)), int(_int_text), _str_text.encode()))
+                    else:
+                        _send_fun(struct.pack("<{}sh".format(len(_str_text)), _str_text.encode(), int(_int_text)))
+                else:
+                    if int(_int_seq) > int(_float_seq):
+                        _send_fun(struct.pack("<hf", int(_int_text), float(_float_text)))
+                    else:
+                        _send_fun(struct.pack("<fh", float(_float_text), int(_int_text)))
+
+            elif _int_checked + _float_checked + _str_checked == 3:
+                m_sequence_list = [
+                    [int(_int_seq), int(_int_text), "h"],
+                    [int(_float_seq), float(_float_text), "f"],
+                    [int(_str_seq), _str_text.encode(), "{}s".format(len(_str_text))]]
+
+                m_sequence_list.sort(key=lambda x: x[0], reverse=True)
+                _send_fun(struct.pack("<" + m_sequence_list[0][2] + m_sequence_list[1][2] + m_sequence_list[2][2],
+                                      m_sequence_list[0][1], m_sequence_list[1][1], m_sequence_list[2][1]))
+            else:
+                list_re = re.findall(r"(h|f|\d+s)", _full_type_format_str_text)
+                list_value = _full_type_str_text.split(_send_str_Separator_text)
+                list_byte = bytes()
+                for int_index in range(len(list_re)):
+                    if list_re[int_index] == "h":
+                        list_byte += (struct.pack("<" + list_re[int_index], int(list_value[int_index])))
+                    elif list_re[int_index] == "f":
+                        list_byte += (struct.pack("<" + list_re[int_index], float(list_value[int_index])))
+                    elif "s" in list_re[int_index]:
+                        list_byte += (struct.pack("<" + list_re[int_index], list_value[int_index].encode()))
+                _send_fun(list_byte)
 
     def socket_receive(self, widgets_status: SocketWidgetStruct) -> None:
         """
@@ -901,8 +780,8 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             widgets_status.lineEdit_ReceiveFullType.setFocusPolicy(Qt.NoFocus)
             widgets_status.lineEdit_ReceiveFullType.setEnabled(False)
 
-            self.uiUpdate_checkbox_toggle_init(self.server_widgets_status)
-            self.uiUpdate_checkbox_toggle_init(self.client_widgets_status)
+            # self.uiUpdate_checkbox_toggle_init(self.server_widgets_status)
+            # self.uiUpdate_checkbox_toggle_init(self.client_widgets_status)
 
         self.uiUpdate_checkbox_send_string_checked(self.server_widgets_status)
         self.uiUpdate_checkbox_send_string_checked(self.client_widgets_status)

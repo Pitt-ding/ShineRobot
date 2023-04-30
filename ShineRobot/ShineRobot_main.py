@@ -159,10 +159,11 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.pushButton_SerCreateConn.clicked.connect(lambda: self.pushButton_SerCloseConn.setEnabled(True))
         self.pushButton_SerCreateConn.clicked.connect(lambda: self.pushButton_SerCreateConn.setDisabled(True))
         self.pushButton_SerCloseConn.clicked.connect(self.close_socket_server)
-        self.pushButton_SerSend.clicked.connect(lambda: self.socket_server.socket_send(self.server_widgets_status))
-        self.pushButton_SerRecv.clicked.connect(lambda: self.socket_server.socket_receive(self.server_widgets_status))
+        self.pushButton_SerSend.clicked.connect(partial(self.socket_server.socket_send, self.server_widgets_status))
+        self.pushButton_SerRecv.clicked.connect(partial(self.socket_server.socket_send, self.server_widgets_status))
+        self.pushButton_SerClearCache.clicked.connect(self.socket_server.socket_clear_cache)
 
-        self.socket_server.signal_socket_server_accepted.connect(partial(self.uiUpdate_Socket_Server_communicate_enable, widgets_status=self.server_widgets_status))
+        self.socket_server.signal_socket_server_accepted.connect(partial(self.ui_update_socket_server_communicate_enable, widgets_status=self.server_widgets_status))
         self.socket_server.signal_record_result.connect(self.record_socket_communication_result)
         self.socket_server.signal_socket_server_closed.connect(self.pushButton_SerCreateConn.setEnabled)
         self.socket_server.signal_socket_server_closed.connect(self.pushButton_SerCloseConn.setDisabled)
@@ -172,10 +173,11 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
         self.pushButton_ClntCreatConn.clicked.connect(partial(self.socket_client.create_socket_client, (self.lineEdit_ClntIP.text(), int(self.lineEdit_ClntPort.text()))))
         self.pushButton_ClntCloseConn.clicked.connect(self.socket_client.close_socket_client)
-        self.pushButton_ClntSend.clicked.connect(lambda: self.socket_client.socket_send(self.client_widgets_status))
-        self.pushButton_ClntRecv.clicked.connect(lambda: self.socket_client.socket_receive(self.client_widgets_status))
+        self.pushButton_ClntSend.clicked.connect(partial(self.socket_client.socket_send, self.client_widgets_status))
+        self.pushButton_ClntRecv.clicked.connect(partial(self.socket_client.socket_send, self.client_widgets_status))
+        self.pushButton_ClntClearCache.clicked.connect(self.socket_client.socket_clear_cache)
         self.socket_client.signal_socket_client_connected.connect(self.pushButton_ClntCloseConn.setEnabled)
-        self.socket_client.signal_socket_client_connected.connect(partial(self.uiUpdate_Socket_Server_communicate_enable, widgets_status=self.client_widgets_status))
+        self.socket_client.signal_socket_client_connected.connect(partial(self.ui_update_socket_server_communicate_enable, widgets_status=self.client_widgets_status))
         self.socket_client.signal_record_result.connect(self.record_socket_communication_result)
 
         self.checkBox_ServerSendString.clicked.connect(lambda: self.ui_update_checkbox_send_string_checked(self.server_widgets_status))
@@ -190,51 +192,73 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.checkBox_SerSendInt.clicked.connect(lambda: self.ui_update_checkbox_toggle_init(self.server_widgets_status))
         self.checkBox_SerSendFloat.clicked.connect(lambda: self.ui_update_checkbox_toggle_init(self.server_widgets_status))
         self.checkBox_SerSendStr.clicked.connect(lambda: self.ui_update_checkbox_toggle_init(self.server_widgets_status))
+        self.checkBox_SerContinueSend.clicked.connect(lambda: self.ui_update_checkbox_toggle_init(self.server_widgets_status))
         self.checkBox_SerRecvInt.clicked.connect(lambda: self.ui_update_checkbox_toggle_init(self.server_widgets_status))
         self.checkBox_SerRecvFloat.clicked.connect(lambda: self.ui_update_checkbox_toggle_init(self.server_widgets_status))
         self.checkBox_SerRecvStr.clicked.connect(lambda: self.ui_update_checkbox_toggle_init(self.server_widgets_status))
+        self.checkBox_SerContinueRecv.clicked.connect(lambda: self.ui_update_checkbox_toggle_init(self.server_widgets_status))
 
         self.checkBox_ClntSendInt.clicked.connect(lambda: self.ui_update_checkbox_toggle_init(self.client_widgets_status))
         self.checkBox_ClntSendFloat.clicked.connect(lambda: self.ui_update_checkbox_toggle_init(self.client_widgets_status))
         self.checkBox_ClntSendStr.clicked.connect(lambda: self.ui_update_checkbox_toggle_init(self.client_widgets_status))
+        self.checkBox_ClntContinueSend.clicked.connect(lambda: self.ui_update_checkbox_toggle_init(self.client_widgets_status))
         self.checkBox_ClntRecvInt.clicked.connect(lambda: self.ui_update_checkbox_toggle_init(self.client_widgets_status))
         self.checkBox_ClntRecvFloat.clicked.connect(lambda: self.ui_update_checkbox_toggle_init(self.client_widgets_status))
         self.checkBox_ClntRecvStr.clicked.connect(lambda: self.ui_update_checkbox_toggle_init(self.client_widgets_status))
+        self.checkBox_ClntContinueRecv.clicked.connect(lambda: self.ui_update_checkbox_toggle_init(self.client_widgets_status))
 
         # check line edit widgets values
-        self.lineEdit_SerSendInt_Value.textChanged.connect(lambda: self.ui_update_ser_send_value_check(self.server_widgets_status))
-        self.lineEdit_SerSendFloat_Value.textChanged.connect(lambda: self.ui_update_ser_send_value_check(self.server_widgets_status))
-        self.lineEdit_SerSendstr_Value.textChanged.connect(lambda: self.ui_update_ser_send_value_check(self.server_widgets_status))
+        self.lineEdit_SerSendInt_Value.textChanged.connect(lambda: self.ui_update_send_value_check(self.server_widgets_status))
+        self.lineEdit_SerSendFloat_Value.textChanged.connect(lambda: self.ui_update_send_value_check(self.server_widgets_status))
+        self.lineEdit_SerSendstr_Value.textChanged.connect(lambda: self.ui_update_send_value_check(self.server_widgets_status))
+        self.lineEdit_ServerSendSeparator.textChanged.connect(lambda: self.ui_update_send_value_check(self.server_widgets_status))
+        self.lineEdit_ServerReceiveSeparator.textChanged.connect(lambda: self.ui_update_send_value_check(self.server_widgets_status))
+        self.lineEdit_SerRecvInt_Value.textChanged.connect(lambda: self.ui_update_send_value_check(self.server_widgets_status))
+        self.lineEdit_SerRecvFloat_Value.textChanged.connect(lambda: self.ui_update_send_value_check(self.server_widgets_status))
+        self.lineEdit_SerRecvStr_Value.textChanged.connect(lambda: self.ui_update_send_value_check(self.server_widgets_status))
+        self.lineEdit_ServerReceiveSeparator.textChanged.connect(lambda: self.ui_update_send_value_check(self.server_widgets_status))
+
         self.lineEdit_SevIP.textChanged.connect(self.uiUpdate_checkIPPort)
         self.lineEdit_SerPort.textChanged.connect(self.uiUpdate_checkIPPort)
 
-        self.lineEdit_ClntSendInt_Value.textChanged.connect(lambda: self.ui_update_ser_send_value_check(self.client_widgets_status))
-        self.lineEdit_ClntSendFloat_Value.textChanged.connect(lambda: self.ui_update_ser_send_value_check(self.client_widgets_status))
-        self.lineEdit_ClntSendStr_Value.textChanged.connect(lambda: self.ui_update_ser_send_value_check(self.client_widgets_status))
+        self.lineEdit_ClntSendInt_Value.textChanged.connect(lambda: self.ui_update_send_value_check(self.client_widgets_status))
+        self.lineEdit_ClntSendFloat_Value.textChanged.connect(lambda: self.ui_update_send_value_check(self.client_widgets_status))
+        self.lineEdit_ClntSendStr_Value.textChanged.connect(lambda: self.ui_update_send_value_check(self.client_widgets_status))
+        self.lineEdit_ClientSendSeparator.textChanged.connect(lambda: self.ui_update_send_value_check(self.client_widgets_status))
+        self.lineEdit_ClientReceiveSeparator.textChanged.connect(lambda: self.ui_update_send_value_check(self.client_widgets_status))
+        self.lineEdit_ClntRecvInt_Value.textChanged.connect(lambda: self.ui_update_send_value_check(self.client_widgets_status))
+        self.lineEdit_ClntRecvFloat_Value.textChanged.connect(lambda: self.ui_update_send_value_check(self.client_widgets_status))
+        self.lineEdit_ClntRecvStr_Value.textChanged.connect(lambda: self.ui_update_send_value_check(self.client_widgets_status))
+
         self.lineEdit_ClntIP.textChanged.connect(self.uiUpdate_checkIPPort)
         self.lineEdit_SerPort.textChanged.connect(self.uiUpdate_checkIPPort)
         # check spin box widgets sequences
-        self.spinBox_SerSendInt_Seq.textChanged.connect(lambda: self.ui_update_ser_send_value_check(self.server_widgets_status))
-        self.spinBox_SerSendFloat_Seq.textChanged.connect(lambda: self.ui_update_ser_send_value_check(self.server_widgets_status))
-        self.spinBox_SerSendStr_Seq.textChanged.connect(lambda: self.ui_update_ser_send_value_check(self.server_widgets_status))
-        self.spinBox_SerRecvInt_Seq.textChanged.connect(lambda: self.ui_update_ser_rec_value_check(self.server_widgets_status))
-        self.spinBox_SerRecvFloat_Seq.textChanged.connect(lambda: self.ui_update_ser_rec_value_check(self.server_widgets_status))
-        self.spinBox_SerRecvStr_Seq.textChanged.connect(lambda: self.ui_update_ser_rec_value_check(self.server_widgets_status))
+        self.spinBox_SerSendInt_Seq.textChanged.connect(lambda: self.ui_update_send_value_check(self.server_widgets_status))
+        self.spinBox_SerSendFloat_Seq.textChanged.connect(lambda: self.ui_update_send_value_check(self.server_widgets_status))
+        self.spinBox_SerSendStr_Seq.textChanged.connect(lambda: self.ui_update_send_value_check(self.server_widgets_status))
+        self.spinBox_SerRecvInt_Seq.textChanged.connect(lambda: self.ui_update_rec_value_check(self.server_widgets_status))
+        self.spinBox_SerRecvFloat_Seq.textChanged.connect(lambda: self.ui_update_rec_value_check(self.server_widgets_status))
+        self.spinBox_SerRecvStr_Seq.textChanged.connect(lambda: self.ui_update_rec_value_check(self.server_widgets_status))
 
-        self.spinBox_ClntSendInt_Seq.textChanged.connect(lambda: self.ui_update_ser_send_value_check(self.client_widgets_status))
-        self.spinBox_ClntSendFloat_Seq.textChanged.connect(lambda: self.ui_update_ser_send_value_check(self.client_widgets_status))
-        self.spinBox_ClntSendStr_Seq.textChanged.connect(lambda: self.ui_update_ser_send_value_check(self.client_widgets_status))
-        self.spinBox_ClntRecvInt_Seq.textChanged.connect(lambda: self.ui_update_ser_rec_value_check(self.client_widgets_status))
-        self.spinBox_ClntRecvFloat_Seq.textChanged.connect(lambda: self.ui_update_ser_rec_value_check(self.client_widgets_status))
-        self.spinBox_ClntRecvStr_Seq.textChanged.connect(lambda: self.ui_update_ser_rec_value_check(self.client_widgets_status))
+        self.spinBox_ClntSendInt_Seq.textChanged.connect(lambda: self.ui_update_send_value_check(self.client_widgets_status))
+        self.spinBox_ClntSendFloat_Seq.textChanged.connect(lambda: self.ui_update_send_value_check(self.client_widgets_status))
+        self.spinBox_ClntSendStr_Seq.textChanged.connect(lambda: self.ui_update_send_value_check(self.client_widgets_status))
+        self.spinBox_ClntRecvInt_Seq.textChanged.connect(lambda: self.ui_update_rec_value_check(self.client_widgets_status))
+        self.spinBox_ClntRecvFloat_Seq.textChanged.connect(lambda: self.ui_update_rec_value_check(self.client_widgets_status))
+        self.spinBox_ClntRecvStr_Seq.textChanged.connect(lambda: self.ui_update_rec_value_check(self.client_widgets_status))
 
         # socket server send and receive full type mode, auto uncheck the single mode check box
         self.lineEdit_SerSendFullType.textChanged.connect(lambda: self.ui_update_server_full_type_mode(self.server_widgets_status))
         self.lineEdit_SerSendFormatStr.textChanged.connect(lambda: self.ui_update_server_full_type_mode(self.server_widgets_status))
         self.lineEdit_SerRecvFormatStr.textChanged.connect(lambda: self.ui_update_server_full_type_mode(self.server_widgets_status))
+        self.lineEdit_SerSendInterval.textChanged.connect(lambda: self.ui_update_send_value_check(self.server_widgets_status))
+        self.lineEdit_SerRecvInterval.textChanged.connect(lambda: self.ui_update_rec_value_check(self.server_widgets_status))
+
         self.lineEdit_ClntSendFullType.textChanged.connect(lambda: self.ui_update_server_full_type_mode(self.client_widgets_status))
         self.lineEdit_ClntSendFormatStr.textChanged.connect(lambda: self.ui_update_server_full_type_mode(self.client_widgets_status))
         self.lineEdit_ClntRecvFormatStr.textChanged.connect(lambda: self.ui_update_server_full_type_mode(self.client_widgets_status))
+        self.lineEdit_ClntSendInterval.textChanged.connect(lambda: self.ui_update_send_value_check(self.client_widgets_status))
+        self.lineEdit_ClntRecvInterval.textChanged.connect(lambda: self.ui_update_rec_value_check(self.client_widgets_status))
         self.init_quaternion()
 
     # ------------------------------------------------------------------------------------------------------------------
@@ -669,7 +693,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
     # -----------------------------------uiUpdate-----------------------------------------------------------------------
     # ------------------------------------------------------------------------------------------------------------------
     @staticmethod
-    def uiUpdate_Socket_Server_communicate_enable(b_accepted: bool, widgets_status: SocketWidgetStruct) -> None:
+    def ui_update_socket_server_communicate_enable(b_accepted: bool, widgets_status: SocketWidgetStruct) -> None:
         """
         enable send and receive widgets after socket server accept connection
         :param b_accepted:
@@ -685,6 +709,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             widgets_status.checkBox_Send_Int.setEnabled(True)
             widgets_status.checkBox_Send_Str.setEnabled(True)
             widgets_status.checkBox_Send_Float.setEnabled(True)
+            widgets_status.checkBox_SendContinue.setEnabled(True)
 
             widgets_status.lineEdit_SendFullType.setEnabled(True)
             widgets_status.lineEdit_SendFullType.setFocusPolicy(Qt.StrongFocus)
@@ -695,6 +720,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             widgets_status.checkBox_ReceiveStrMode.setEnabled(True)
             widgets_status.lineEdit_StrReceiveSeparator.setEnabled(True)
             widgets_status.checkBox_ReceiveRawbytesMode.setEnabled(True)
+            widgets_status.checkBox_RecvContinue.setEnabled(True)
 
             widgets_status.checkBox_Receive_Int.setEnabled(True)
             widgets_status.checkBox_Receive_Str.setEnabled(True)
@@ -721,6 +747,9 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             widgets_status.checkBox_Send_Str.setChecked(False)
             widgets_status.checkBox_Send_Str.setEnabled(False)
 
+            widgets_status.checkBox_SendContinue.setChecked(False)
+            widgets_status.checkBox_SendContinue.setEnabled(False)
+
             widgets_status.lineEdit_SendFullType.clear()
             widgets_status.lineEdit_SendFullType.setEnabled(False)
             widgets_status.lineEdit_SendFormatStr.clear()
@@ -741,6 +770,9 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
             widgets_status.checkBox_Receive_Str.setChecked(False)
             widgets_status.checkBox_Receive_Str.setEnabled(False)
+
+            widgets_status.checkBox_RecvContinue.setChecked(False)
+            widgets_status.checkBox_RecvContinue.setEnabled(False)
 
             widgets_status.lineEdit_ReceiveFormatStr.clear()
             widgets_status.lineEdit_ReceiveFormatStr.setEnabled(False)
@@ -859,27 +891,35 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             widgets_status.spinBox_Send_Str.setStyleSheet("QLineEdit{background-color:rgb(240, 240, 240)}")
             widgets_status.lineEdit_Send_Str.setStyleSheet("QLineEdit{background-color:rgb(240, 240, 240)}")
 
+        if widgets_status.checkBox_SendContinue.isChecked() and widgets_status.checkBox_SendContinue.isEnabled():
+            widgets_status.lineEdit_SendInterval.setEnabled(True)
+        else:
+            widgets_status.lineEdit_SendInterval.setText("0.5")
+            widgets_status.lineEdit_SendInterval.setStyleSheet("QLineEdit{background-color:rgb(240, 240, 240)}")
+            widgets_status.lineEdit_SendInterval.setEnabled(False)
+
         if widgets_status.checkBox_Send_Int.isChecked() + widgets_status.checkBox_Send_Float.isChecked() + widgets_status.checkBox_Send_Str.isChecked() == 0 \
                 and widgets_status.checkBox_Send_Int.isEnabled() + widgets_status.checkBox_Send_Float.isEnabled() + widgets_status.checkBox_Send_Str.isEnabled() > 0:
             widgets_status.lineEdit_SendFullType.setEnabled(True)
             if widgets_status.checkBox_SendStringMode.isChecked():
-                widgets_status.lineEdit_SendFormatStr.clear()
+                widgets_status.lineEdit_SendFormatStr.setText("<hf5s")
                 widgets_status.lineEdit_SendFormatStr.setEnabled(False)
-                # if widgets_status.lineEdit_SendFullType.text() != "":
+                widgets_status.lineEdit_StrSendSeparator.setText(",")
+                widgets_status.lineEdit_StrSendSeparator.setStyleSheet("QLineEdit{background-color:rgb(240, 240, 240)}")
                 widgets_status.lineEdit_StrSendSeparator.setEnabled(False)
-                # else:
-                #     widgets_status.lineEdit_StrSendSeparator.setEnabled(True)
             else:
                 widgets_status.lineEdit_StrSendSeparator.setEnabled(True)
                 widgets_status.lineEdit_SendFormatStr.setEnabled(True)
         else:
             widgets_status.lineEdit_SendFullType.clear()
             widgets_status.lineEdit_SendFullType.setEnabled(False)
-            widgets_status.lineEdit_SendFormatStr.clear()
+            widgets_status.lineEdit_SendFormatStr.setText("<hf5s")
             widgets_status.lineEdit_SendFormatStr.setEnabled(False)
             if widgets_status.checkBox_SendStringMode.isChecked():
                 widgets_status.lineEdit_StrSendSeparator.setEnabled(True)
             else:
+                widgets_status.lineEdit_StrSendSeparator.setText(",")
+                widgets_status.lineEdit_StrSendSeparator.setStyleSheet("QLineEdit{background-color:rgb(240, 240, 240)}")
                 widgets_status.lineEdit_StrSendSeparator.setEnabled(False)
 
         # receive checkbox logic
@@ -887,7 +927,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             widgets_status.spinBox_Receive_Int.setEnabled(True)
             widgets_status.lineEdit_Receive_Int.setEnabled(True)
             widgets_status.lineEdit_Receive_Int.setReadOnly(True)
-            widgets_status.lineEdit_Receive_Int.setStyleSheet("QLineEdit{background-color:rgb(255, 255, 255)}")
+            # widgets_status.lineEdit_Receive_Int.setStyleSheet("QLineEdit{background-color:rgb(255, 255, 255)}")
         else:
             widgets_status.spinBox_Receive_Int.setValue(0)
             widgets_status.spinBox_Receive_Int.setEnabled(False)
@@ -900,7 +940,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             widgets_status.spinBox_Receive_Float.setEnabled(True)
             widgets_status.lineEdit_Receive_Float.setEnabled(True)
             widgets_status.lineEdit_Receive_Float.setReadOnly(True)
-            widgets_status.lineEdit_Receive_Float.setStyleSheet("QLineEdit{background-color:rgb(255, 255, 255)}")
+            # widgets_status.lineEdit_Receive_Float.setStyleSheet("QLineEdit{background-color:rgb(255, 255, 255)}")
         else:
             widgets_status.spinBox_Receive_Float.setValue(0)
             widgets_status.spinBox_Receive_Float.setEnabled(False)
@@ -911,23 +951,35 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
         if widgets_status.checkBox_Receive_Str.isChecked():
             widgets_status.spinBox_Receive_Str.setEnabled(True)
+            widgets_status.spinBox_ReceiveRawLength.setEnabled(True)
             widgets_status.lineEdit_Receive_Str.setEnabled(True)
             widgets_status.lineEdit_Receive_Str.setReadOnly(True)
-            widgets_status.lineEdit_Receive_Str.setStyleSheet("QLineEdit{background-color:rgb(255, 255, 255)}")
+            # widgets_status.lineEdit_Receive_Str.setStyleSheet("QLineEdit{background-color:rgb(255, 255, 255)}")
         else:
             widgets_status.spinBox_Receive_Str.setValue(0)
             widgets_status.spinBox_Receive_Str.setEnabled(False)
+            widgets_status.spinBox_ReceiveRawLength.setValue(5)
+            widgets_status.spinBox_ReceiveRawLength.setEnabled(False)
             widgets_status.lineEdit_Receive_Str.clear()
             widgets_status.lineEdit_Receive_Str.setEnabled(False)
             widgets_status.spinBox_Receive_Str.setStyleSheet("QLineEdit{background-color:rgb(240, 240, 240)}")
             widgets_status.lineEdit_Receive_Str.setStyleSheet("QLineEdit{background-color:rgb(240, 240, 240)}")
 
+        if widgets_status.checkBox_RecvContinue.isChecked() and widgets_status.checkBox_RecvContinue.isEnabled():
+            widgets_status.lineEdit_RecvInterval.setEnabled(True)
+        else:
+            widgets_status.lineEdit_RecvInterval.setText("0.5")
+            widgets_status.lineEdit_RecvInterval.setStyleSheet("QLineEdit{background-color:rgb(240, 240, 240)}")
+            widgets_status.lineEdit_RecvInterval.setEnabled(False)
+
         if widgets_status.checkBox_Receive_Int.isChecked() + widgets_status.checkBox_Receive_Float.isChecked() + widgets_status.checkBox_Receive_Str.isChecked() == 0 \
                 and widgets_status.checkBox_Receive_Int.isEnabled() + widgets_status.checkBox_Receive_Float.isEnabled() + widgets_status.checkBox_Receive_Str.isEnabled() > 0:
+            widgets_status.lineEdit_StrReceiveSeparator.setText(",")
+            widgets_status.lineEdit_StrReceiveSeparator.setStyleSheet("QLineEdit{background-color:rgb(240, 240, 240)}")
             widgets_status.lineEdit_StrReceiveSeparator.setEnabled(False)
             if widgets_status.checkBox_ReceiveStrMode.isChecked():
                 widgets_status.lineEdit_ReceiveFullType.setEnabled(True)
-                widgets_status.lineEdit_ReceiveFormatStr.clear()
+                widgets_status.lineEdit_ReceiveFormatStr.setText("<hf5s")
                 widgets_status.lineEdit_ReceiveFormatStr.setEnabled(False)
             else:
                 widgets_status.lineEdit_ReceiveFullType.setEnabled(True)
@@ -935,23 +987,28 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         else:
             widgets_status.lineEdit_ReceiveFullType.setEnabled(False)
             widgets_status.lineEdit_ReceiveFullType.clear()
-            widgets_status.lineEdit_ReceiveFormatStr.clear()
+            widgets_status.lineEdit_ReceiveFormatStr.setText("<hf5s")
             widgets_status.lineEdit_ReceiveFormatStr.setEnabled(False)
             if widgets_status.checkBox_ReceiveStrMode.isChecked():
                 widgets_status.lineEdit_StrReceiveSeparator.setEnabled(True)
             else:
+                widgets_status.lineEdit_StrReceiveSeparator.setText(",")
+                widgets_status.lineEdit_StrReceiveSeparator.setStyleSheet("QLineEdit{background-color:rgb(240, 240, 240)}")
                 widgets_status.lineEdit_StrReceiveSeparator.setEnabled(False)
 
-        MyMainWindow.ui_update_ser_send_value_check(widgets_status)
-        MyMainWindow.ui_update_ser_rec_value_check(widgets_status)
+        MyMainWindow.ui_update_send_value_check(widgets_status)
+        MyMainWindow.ui_update_rec_value_check(widgets_status)
         # MyMainWindow.ui_update_ser_send_value_check(widgets_status)
         # MyMainWindow.uiUpdate_serRecValueCheck(widgets_status)
 
     @staticmethod
-    def ui_update_ser_send_value_check(widgets_status: SocketWidgetStruct):
+    def ui_update_send_value_check(widgets_status: SocketWidgetStruct):
 
         b_lineedit_check_valid = False
         b_spinbox_check_valid = False
+        b_lineedit_send_seperator_check_valid = False
+        b_lineedit_send_interval_check_valid = False
+
         if widgets_status.checkBox_SendStringMode.isEnabled() or widgets_status.checkBox_SendRawbytesMode.isEnabled():
             if widgets_status.checkBox_Send_Int.isChecked():
                 ins_re_match = re.match(r"^\d+$", widgets_status.lineEdit_Send_Int.text())
@@ -1057,18 +1114,42 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                         b_spinbox_check_valid = True
                         widgets_status.spinBox_Send_Float.setStyleSheet("QSpinBox{background-color: rgb(255, 255, 255)}")
                         widgets_status.spinBox_Send_Str.setStyleSheet("QSpinBox{background-color: rgb(255, 255, 255)}")
+            if widgets_status.lineEdit_StrSendSeparator.isEnabled():
+                ins_re_match = re.match(r"[^A-Za-z\d.]", widgets_status.lineEdit_StrSendSeparator.text())
+                if ins_re_match is not None:
+                    widgets_status.lineEdit_StrSendSeparator.setStyleSheet("background-color: rgb(255, 255, 255);")
+                    b_lineedit_send_seperator_check_valid = True
+                else:
+                    widgets_status.lineEdit_StrSendSeparator.setStyleSheet("background-color: rgb(253, 183, 184);")
+                    b_lineedit_send_seperator_check_valid = False
+            else:
+                b_lineedit_send_seperator_check_valid = True
 
-        if b_spinbox_check_valid and b_lineedit_check_valid:
+            if widgets_status.lineEdit_SendInterval.isEnabled() and widgets_status.lineEdit_SendInterval.text() != "":
+                try:
+                    float(widgets_status.lineEdit_SendInterval.text())
+                    widgets_status.lineEdit_SendInterval.setStyleSheet("background-color: rgb(255, 255, 255);")
+                    b_lineedit_send_interval_check_valid = True
+                except ValueError:
+                    widgets_status.lineEdit_SendInterval.setStyleSheet("background-color: rgb(253, 183, 184);")
+                    b_lineedit_send_interval_check_valid = False
+            else:
+                b_lineedit_send_interval_check_valid = True
+
+        if b_spinbox_check_valid and b_lineedit_check_valid and b_lineedit_send_interval_check_valid and b_lineedit_send_seperator_check_valid:
             widgets_status.pushButton_Send.setEnabled(True)
         else:
             widgets_status.pushButton_Send.setEnabled(False)
 
     @staticmethod
-    def ui_update_ser_rec_value_check(widgets_status: SocketWidgetStruct):
+    def ui_update_rec_value_check(widgets_status: SocketWidgetStruct):
         """
 
         """
         b_spinbox_check_valid = False
+        b_lineedit_seperator_recv_check_valid = False
+        b_lineedit_recv_interval_check_valid = False
+
         if widgets_status.checkBox_ReceiveStrMode.isEnabled() or widgets_status.checkBox_ReceiveRawbytesMode.isEnabled():
             if widgets_status.checkBox_Receive_Int.isChecked() + widgets_status.checkBox_Receive_Float.isChecked() + widgets_status.checkBox_Receive_Str.isChecked() == 0:
                 if widgets_status.checkBox_ReceiveStrMode.isChecked():
@@ -1146,12 +1227,59 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                         b_spinbox_check_valid = True
                         widgets_status.spinBox_Receive_Float.setStyleSheet("QSpinBox{background-color: rgb(255, 255, 255)}")
                         widgets_status.spinBox_Receive_Str.setStyleSheet("QSpinBox{background-color: rgb(255, 255, 255)}")
-            if b_spinbox_check_valid:
+
+            if widgets_status.lineEdit_StrReceiveSeparator.isEnabled():
+                ins_re_match = re.match(r"[^A-Za-z\d.]", widgets_status.lineEdit_StrReceiveSeparator.text())
+                if ins_re_match is not None:
+                    widgets_status.lineEdit_StrReceiveSeparator.setStyleSheet("background-color: rgb(255, 255, 255);")
+                    b_lineedit_seperator_recv_check_valid = True
+                else:
+                    widgets_status.lineEdit_StrReceiveSeparator.setStyleSheet("background-color: rgb(253, 183, 184);")
+                    b_lineedit_seperator_recv_check_valid = False
+            else:
+                b_lineedit_seperator_recv_check_valid = True
+
+            if widgets_status.lineEdit_RecvInterval.isEnabled() and widgets_status.lineEdit_RecvInterval.text() != "":
+                try:
+                    float(widgets_status.lineEdit_RecvInterval.text())
+                    widgets_status.lineEdit_RecvInterval.setStyleSheet("background-color: rgb(255, 255, 255);")
+                    b_lineedit_recv_interval_check_valid = True
+                except ValueError:
+                    widgets_status.lineEdit_RecvInterval.setStyleSheet("background-color: rgb(253, 183, 184);")
+                    b_lineedit_recv_interval_check_valid = False
+            else:
+                b_lineedit_recv_interval_check_valid = True
+
+            if widgets_status.lineEdit_Receive_Int.isEnabled() and widgets_status.lineEdit_Receive_Int.text() != "":
+                try:
+                    int(widgets_status.lineEdit_Receive_Int.text())
+                    widgets_status.lineEdit_Receive_Int.setStyleSheet("background-color: rgb(255, 255, 255);")
+                except ValueError:
+                    widgets_status.lineEdit_Receive_Int.setStyleSheet("background-color: rgb(253, 183, 184);")
+
+            if widgets_status.lineEdit_Receive_Float.isEnabled() and widgets_status.lineEdit_Receive_Float.text() != "":
+                try:
+                    int(widgets_status.lineEdit_Receive_Float.text())
+                    widgets_status.lineEdit_Receive_Float.setStyleSheet("background-color: rgb(255, 255, 255);")
+                except ValueError:
+                    widgets_status.lineEdit_Receive_Float.setStyleSheet("background-color: rgb(253, 183, 184);")
+
+            if widgets_status.lineEdit_Receive_Str.isEnabled() and widgets_status.lineEdit_Receive_Str.text() != "":
+                try:
+                    int(widgets_status.lineEdit_Receive_Str.text())
+                    widgets_status.lineEdit_Receive_Str.setStyleSheet("background-color: rgb(255, 255, 255);")
+                except ValueError:
+                    widgets_status.lineEdit_Receive_Str.setStyleSheet("background-color: rgb(253, 183, 184);")
+
+            if b_spinbox_check_valid and b_lineedit_seperator_recv_check_valid and b_lineedit_recv_interval_check_valid:
                 widgets_status.pushButton_Receive.setEnabled(True)
+                widgets_status.pushButton_ClearCache.setEnabled(True)
             else:
                 widgets_status.pushButton_Receive.setEnabled(False)
+                widgets_status.pushButton_ClearCache.setEnabled(False)
         else:
             widgets_status.pushButton_Receive.setEnabled(False)
+            widgets_status.pushButton_ClearCache.setEnabled(False)
 
     def uiUpdate_checkIPPort(self):
         match_result_ip = re.match(r"((2(5[0-5]|[0-4]\d))|[0-1]?\d{1,2})(\.((2(5[0-5]|[0-4]\d))|[0-1]?\d{1,2})){3}", self.lineEdit_SevIP.text())

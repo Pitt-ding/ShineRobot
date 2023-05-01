@@ -9,20 +9,74 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1114</width>
-    <height>828</height>
+    <width>1109</width>
+    <height>903</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>ShineRobot 1.0.0</string>
   </property>
+  <property name="windowOpacity">
+   <double>0.900000000000000</double>
+  </property>
   <property name="styleSheet">
-   <string notr="true"/>
+   <string notr="true">background-color: rgb(255, 255, 255);</string>
+  </property>
+  <property name="locale">
+   <locale language="Chinese" country="China"/>
   </property>
   <widget class="QWidget" name="centralwidget_ShineRobot">
+   <property name="styleSheet">
+    <string notr="true">QPushButton{
+border-width: 1px;
+border-style: solid;
+border-radius: 4px;
+border-color:rgb(200, 200, 200);
+background-color: rgb(119, 190, 255); 
+margin:4px;
+}
+QPushButton:hover{background-color:rgb(85, 170, 255) }
+QPushButton:pressed{background-color:rgb(101, 163, 217) }
+
+QLineEdit{
+border-radius: 4px;
+border-width:2px;
+border-color: rgb(165, 165, 165);
+border-style: solid;
+margin-left:2px;
+margin-right:2px;
+}
+QLineEdit:disabled{
+	background-color: rgb(240, 240, 240);
+}
+
+QLineEdit:enabled{
+	background-color: rgb(255, 255, 255);
+}
+
+QSpinBox:disabled{
+	background-color: rgb(240, 240, 240);
+}
+QSpinBox:enabled{
+	background-color: rgb(255, 255, 255);
+}
+QCheckBox{
+border-radius: 4px;
+spacing: 5px;
+}
+QCheckBox::indicator {
+	width: 15px;
+	height: 15px;
+}</string>
+   </property>
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
      <widget class="QTabWidget" name="tabWidget">
+      <property name="font">
+       <font>
+        <family>Microsoft YaHei</family>
+       </font>
+      </property>
       <property name="styleSheet">
        <string notr="true">QTabWidget::tab-bar {
     left : 5px
@@ -62,15 +116,8 @@ QTabWidget::pane
 border-top: 2px solid #C2C7CB;
 position: absolute;
 top: -2px;
-
 }​
 
-QTableWidget&gt;QLineEdit{
-border-radius: 4px;
-border-width:2px;
-border-color: rgb(165, 165, 165);
-border-style: solid;
-}
 
 </string>
       </property>
@@ -85,25 +132,7 @@ border-style: solid;
       </property>
       <widget class="QWidget" name="tab">
        <property name="styleSheet">
-        <string notr="true">QLineEdit{
-border-radius: 4px;
-border-width:2px;
-border-color: rgb(165, 165, 165);
-border-style: solid;
-margin-left:2px;
-margin-right:2px;
-}
-QPushButton{
-border-width: 1px;
-border-style: solid;
-border-radius: 4px;
-border-color:rgb(200, 200, 200);
-background-color: rgb(119, 190, 255); 
-margin-left:2px;
-margin-right:2px;
-}
-QPushButton:hover{background-color:rgb(85, 170, 255) }
-QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
+        <string notr="true"/>
        </property>
        <attribute name="title">
         <string>四元数转换</string>
@@ -138,6 +167,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
                   <verstretch>0</verstretch>
                  </sizepolicy>
                 </property>
+                <property name="font">
+                 <font>
+                  <family>Microsoft YaHei</family>
+                 </font>
+                </property>
                 <property name="text">
                  <string>rotation_y</string>
                 </property>
@@ -145,6 +179,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
               </item>
               <item>
                <spacer name="horizontalSpacer_10">
+                <property name="font">
+                 <font>
+                  <family>Microsoft YaHei</family>
+                 </font>
+                </property>
                 <property name="orientation">
                  <enum>Qt::Horizontal</enum>
                 </property>
@@ -166,6 +205,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
                   <width>250</width>
                   <height>16777215</height>
                  </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <family>Microsoft YaHei</family>
+                 </font>
                 </property>
                 <property name="text">
                  <string>0.0</string>
@@ -190,6 +234,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
                   <verstretch>0</verstretch>
                  </sizepolicy>
                 </property>
+                <property name="font">
+                 <font>
+                  <family>Microsoft YaHei</family>
+                 </font>
+                </property>
                 <property name="text">
                  <string>rotation_z</string>
                 </property>
@@ -197,6 +246,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
               </item>
               <item>
                <spacer name="horizontalSpacer_11">
+                <property name="font">
+                 <font>
+                  <family>Microsoft YaHei</family>
+                 </font>
+                </property>
                 <property name="orientation">
                  <enum>Qt::Horizontal</enum>
                 </property>
@@ -224,6 +278,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
                   <width>250</width>
                   <height>16777215</height>
                  </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <family>Microsoft YaHei</family>
+                 </font>
                 </property>
                 <property name="text">
                  <string>0.0</string>
@@ -254,6 +313,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
                   <height>0</height>
                  </size>
                 </property>
+                <property name="font">
+                 <font>
+                  <family>Microsoft YaHei</family>
+                 </font>
+                </property>
                 <property name="text">
                  <string>rotation_x</string>
                 </property>
@@ -261,6 +325,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
               </item>
               <item>
                <spacer name="horizontalSpacer_9">
+                <property name="font">
+                 <font>
+                  <family>Microsoft YaHei</family>
+                 </font>
+                </property>
                 <property name="orientation">
                  <enum>Qt::Horizontal</enum>
                 </property>
@@ -288,6 +357,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
                   <width>250</width>
                   <height>16777215</height>
                  </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <family>Microsoft YaHei</family>
+                 </font>
                 </property>
                 <property name="text">
                  <string>0.0</string>
@@ -325,6 +399,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
                   <verstretch>0</verstretch>
                  </sizepolicy>
                 </property>
+                <property name="font">
+                 <font>
+                  <family>Microsoft YaHei</family>
+                 </font>
+                </property>
                 <property name="text">
                  <string>q3</string>
                 </property>
@@ -332,6 +411,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
               </item>
               <item>
                <spacer name="horizontalSpacer_7">
+                <property name="font">
+                 <font>
+                  <family>Microsoft YaHei</family>
+                 </font>
+                </property>
                 <property name="orientation">
                  <enum>Qt::Horizontal</enum>
                 </property>
@@ -353,6 +437,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
                   <width>250</width>
                   <height>16777215</height>
                  </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <family>Microsoft YaHei</family>
+                 </font>
                 </property>
                 <property name="text">
                  <string>0.0</string>
@@ -377,6 +466,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
                   <verstretch>0</verstretch>
                  </sizepolicy>
                 </property>
+                <property name="font">
+                 <font>
+                  <family>Microsoft YaHei</family>
+                 </font>
+                </property>
                 <property name="text">
                  <string>q4</string>
                 </property>
@@ -384,6 +478,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
               </item>
               <item>
                <spacer name="horizontalSpacer_8">
+                <property name="font">
+                 <font>
+                  <family>Microsoft YaHei</family>
+                 </font>
+                </property>
                 <property name="orientation">
                  <enum>Qt::Horizontal</enum>
                 </property>
@@ -405,6 +504,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
                   <width>250</width>
                   <height>16777215</height>
                  </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <family>Microsoft YaHei</family>
+                 </font>
                 </property>
                 <property name="text">
                  <string>0.0</string>
@@ -429,6 +533,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
                   <verstretch>0</verstretch>
                  </sizepolicy>
                 </property>
+                <property name="font">
+                 <font>
+                  <family>Microsoft YaHei</family>
+                 </font>
+                </property>
                 <property name="text">
                  <string>q2</string>
                 </property>
@@ -436,6 +545,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
               </item>
               <item>
                <spacer name="horizontalSpacer_6">
+                <property name="font">
+                 <font>
+                  <family>Microsoft YaHei</family>
+                 </font>
+                </property>
                 <property name="orientation">
                  <enum>Qt::Horizontal</enum>
                 </property>
@@ -457,6 +571,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
                   <width>250</width>
                   <height>16777215</height>
                  </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <family>Microsoft YaHei</family>
+                 </font>
                 </property>
                 <property name="text">
                  <string>0.0</string>
@@ -487,6 +606,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
                   <height>0</height>
                  </size>
                 </property>
+                <property name="font">
+                 <font>
+                  <family>Microsoft YaHei</family>
+                 </font>
+                </property>
                 <property name="text">
                  <string>q1</string>
                 </property>
@@ -494,6 +618,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
               </item>
               <item>
                <spacer name="horizontalSpacer_5">
+                <property name="font">
+                 <font>
+                  <family>Microsoft YaHei</family>
+                 </font>
+                </property>
                 <property name="orientation">
                  <enum>Qt::Horizontal</enum>
                 </property>
@@ -515,6 +644,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
                   <width>250</width>
                   <height>16777215</height>
                  </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <family>Microsoft YaHei</family>
+                 </font>
                 </property>
                 <property name="tabletTracking">
                  <bool>false</bool>
@@ -556,6 +690,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
+              <property name="font">
+               <font>
+                <family>Microsoft YaHei</family>
+               </font>
+              </property>
               <property name="text">
                <string>计算结果</string>
               </property>
@@ -563,6 +702,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
             </item>
             <item>
              <spacer name="horizontalSpacer_13">
+              <property name="font">
+               <font>
+                <family>Microsoft YaHei</family>
+               </font>
+              </property>
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
               </property>
@@ -591,6 +735,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
                 <height>16777215</height>
                </size>
               </property>
+              <property name="font">
+               <font>
+                <family>Microsoft YaHei</family>
+               </font>
+              </property>
               <property name="contextMenuPolicy">
                <enum>Qt::DefaultContextMenu</enum>
               </property>
@@ -609,8 +758,8 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
               </property>
               <property name="minimumSize">
                <size>
-                <width>0</width>
-                <height>0</height>
+                <width>80</width>
+                <height>30</height>
                </size>
               </property>
               <property name="maximumSize">
@@ -619,6 +768,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
                 <height>16777215</height>
                </size>
               </property>
+              <property name="font">
+               <font>
+                <family>Microsoft YaHei</family>
+               </font>
+              </property>
               <property name="text">
                <string>复制</string>
               </property>
@@ -626,6 +780,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
             </item>
             <item>
              <spacer name="horizontalSpacer_4">
+              <property name="font">
+               <font>
+                <family>Microsoft YaHei</family>
+               </font>
+              </property>
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
               </property>
@@ -658,6 +817,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
                 <height>40</height>
                </size>
               </property>
+              <property name="font">
+               <font>
+                <family>Microsoft YaHei</family>
+               </font>
+              </property>
               <property name="text">
                <string>请输入欧拉角</string>
               </property>
@@ -665,6 +829,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
             </item>
             <item>
              <spacer name="horizontalSpacer">
+              <property name="font">
+               <font>
+                <family>Microsoft YaHei</family>
+               </font>
+              </property>
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
               </property>
@@ -703,6 +872,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
+              <property name="font">
+               <font>
+                <family>Microsoft YaHei</family>
+               </font>
+              </property>
               <property name="text">
                <string>计算结果</string>
               </property>
@@ -710,6 +884,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
             </item>
             <item>
              <spacer name="horizontalSpacer_12">
+              <property name="font">
+               <font>
+                <family>Microsoft YaHei</family>
+               </font>
+              </property>
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
               </property>
@@ -738,6 +917,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
                 <height>16777215</height>
                </size>
               </property>
+              <property name="font">
+               <font>
+                <family>Microsoft YaHei</family>
+               </font>
+              </property>
              </widget>
             </item>
             <item>
@@ -750,8 +934,8 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
               </property>
               <property name="minimumSize">
                <size>
-                <width>0</width>
-                <height>0</height>
+                <width>80</width>
+                <height>30</height>
                </size>
               </property>
               <property name="maximumSize">
@@ -760,6 +944,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
                 <height>16777215</height>
                </size>
               </property>
+              <property name="font">
+               <font>
+                <family>Microsoft YaHei</family>
+               </font>
+              </property>
               <property name="text">
                <string>复制</string>
               </property>
@@ -767,6 +956,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
             </item>
             <item>
              <spacer name="horizontalSpacer_3">
+              <property name="font">
+               <font>
+                <family>Microsoft YaHei</family>
+               </font>
+              </property>
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
               </property>
@@ -804,9 +998,14 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
               </property>
               <property name="minimumSize">
                <size>
-                <width>0</width>
-                <height>0</height>
+                <width>160</width>
+                <height>50</height>
                </size>
+              </property>
+              <property name="font">
+               <font>
+                <family>Microsoft YaHei</family>
+               </font>
               </property>
               <property name="mouseTracking">
                <bool>true</bool>
@@ -829,9 +1028,14 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
               </property>
               <property name="minimumSize">
                <size>
-                <width>0</width>
-                <height>0</height>
+                <width>80</width>
+                <height>40</height>
                </size>
+              </property>
+              <property name="font">
+               <font>
+                <family>Microsoft YaHei</family>
+               </font>
               </property>
               <property name="text">
                <string>清除</string>
@@ -856,6 +1060,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
                 <height>40</height>
                </size>
               </property>
+              <property name="font">
+               <font>
+                <family>Microsoft YaHei</family>
+               </font>
+              </property>
               <property name="text">
                <string>请输入四元数</string>
               </property>
@@ -863,6 +1072,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
             </item>
             <item>
              <spacer name="horizontalSpacer_2">
+              <property name="font">
+               <font>
+                <family>Microsoft YaHei</family>
+               </font>
+              </property>
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
               </property>
@@ -878,6 +1092,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
           </item>
           <item row="0" column="2" rowspan="5">
            <widget class="Line" name="line_2">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="orientation">
              <enum>Qt::Vertical</enum>
             </property>
@@ -901,9 +1120,14 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
               </property>
               <property name="minimumSize">
                <size>
-                <width>0</width>
-                <height>0</height>
+                <width>160</width>
+                <height>50</height>
                </size>
+              </property>
+              <property name="font">
+               <font>
+                <family>Microsoft YaHei</family>
+               </font>
               </property>
               <property name="styleSheet">
                <string notr="true">QPushButton{
@@ -929,9 +1153,14 @@ QPushButton:hover{background-color:rgb(85, 170, 255) }</string>
               </property>
               <property name="minimumSize">
                <size>
-                <width>0</width>
-                <height>0</height>
+                <width>80</width>
+                <height>40</height>
                </size>
+              </property>
+              <property name="font">
+               <font>
+                <family>Microsoft YaHei</family>
+               </font>
               </property>
               <property name="text">
                <string>清除</string>
@@ -952,6 +1181,11 @@ QPushButton:hover{background-color:rgb(85, 170, 255) }</string>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
@@ -965,6 +1199,11 @@ QPushButton:hover{background-color:rgb(85, 170, 255) }</string>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="text">
              <string>历史记录</string>
             </property>
@@ -972,6 +1211,11 @@ QPushButton:hover{background-color:rgb(85, 170, 255) }</string>
           </item>
           <item>
            <widget class="QTextEdit" name="textEdit_result_record">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="focusPolicy">
              <enum>Qt::StrongFocus</enum>
             </property>
@@ -985,8 +1229,8 @@ QPushButton:hover{background-color:rgb(85, 170, 255) }</string>
              <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Microsoft YaHei'; font-size:12pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'MS Shell Dlg 2'; font-size:8pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
            </widget>
           </item>
@@ -1001,27 +1245,7 @@ p, li { white-space: pre-wrap; }
       </widget>
       <widget class="QWidget" name="tab_2">
        <property name="styleSheet">
-        <string notr="true">QLineEdit{
-border-radius: 4px;
-border-width:2px;
-border-color: rgb(165, 165, 165);
-border-style: solid;
-}
-QLineEdit:disabled{
-	background-color: rgb(240, 240, 240);
-}
-QPushButton{
-border-width: 1px;
-border-style: solid;
-border-radius: 4px;
-border-color:rgb(200, 200, 200);
-background-color: rgb(119, 190, 255); 
-min-height:24px;
-max-width :200px;
-margin:4px;
-}
-QPushButton:hover{background-color:rgb(85, 170, 255) }
-QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
+        <string notr="true"/>
        </property>
        <attribute name="title">
         <string>Socket通讯</string>
@@ -1033,7 +1257,7 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
            <widget class="QLabel" name="label_9">
             <property name="font">
              <font>
-              <family>Segoe UI</family>
+              <family>Microsoft YaHei</family>
               <pointsize>10</pointsize>
              </font>
             </property>
@@ -1047,6 +1271,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
             <property name="enabled">
              <bool>false</bool>
             </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="readOnly">
              <bool>true</bool>
             </property>
@@ -1054,6 +1283,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
           </item>
           <item row="5" column="5">
            <widget class="Line" name="line_10">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="orientation">
              <enum>Qt::Vertical</enum>
             </property>
@@ -1064,18 +1298,13 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
             <property name="enabled">
              <bool>false</bool>
             </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="text">
              <string>Rawbytes</string>
-            </property>
-           </widget>
-          </item>
-          <item row="23" column="1" colspan="2">
-           <widget class="QPushButton" name="pushButton_SerRecv">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="text">
-             <string>接收</string>
             </property>
            </widget>
           </item>
@@ -1084,12 +1313,22 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
             <property name="enabled">
              <bool>false</bool>
             </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
            </widget>
           </item>
           <item row="20" column="1">
            <widget class="QCheckBox" name="checkBox_SerRecvFloat">
             <property name="enabled">
              <bool>false</bool>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
             </property>
             <property name="text">
              <string>浮点数类型</string>
@@ -1098,6 +1337,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
           </item>
           <item row="2" column="1">
            <widget class="QLabel" name="label">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="text">
              <string>IP地址</string>
             </property>
@@ -1108,6 +1352,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
             <property name="enabled">
              <bool>false</bool>
             </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="text">
              <string>字符串</string>
             </property>
@@ -1115,6 +1364,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
           </item>
           <item row="22" column="1">
            <widget class="QLabel" name="label_15">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="text">
              <string>Rawbytes接收格式字符</string>
             </property>
@@ -1125,6 +1379,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
             <property name="enabled">
              <bool>false</bool>
             </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
            </widget>
           </item>
           <item row="11" column="2" colspan="5">
@@ -1132,12 +1391,22 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
             <property name="enabled">
              <bool>false</bool>
             </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
            </widget>
           </item>
           <item row="19" column="1">
            <widget class="QCheckBox" name="checkBox_SerRecvInt">
             <property name="enabled">
              <bool>false</bool>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
             </property>
             <property name="text">
              <string>整数类型</string>
@@ -1161,6 +1430,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
               <height>16777215</height>
              </size>
             </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="text">
              <string>,</string>
             </property>
@@ -1170,6 +1444,17 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
            <widget class="QPushButton" name="pushButton_SerCreateConn">
             <property name="enabled">
              <bool>true</bool>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>50</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
             </property>
             <property name="text">
              <string>建立通讯</string>
@@ -1181,6 +1466,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
             <property name="enabled">
              <bool>false</bool>
             </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="text">
              <string>Rawbytes</string>
             </property>
@@ -1191,10 +1481,26 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
             <property name="enabled">
              <bool>false</bool>
             </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="toolTip">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&amp;lt;h: 1个整数&lt;/p&gt;&lt;p&gt;&amp;lt;f: 1个浮点数&lt;/p&gt;&lt;p&gt;&amp;lt;5s: 5个字符&lt;/p&gt;&lt;p&gt;&amp;lt;hf5s: 从前到后依次1个整数1个浮点数5个字符 &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="text">
+             <string>&lt;hf5s</string>
+            </property>
            </widget>
           </item>
           <item row="15" column="1" colspan="6">
            <widget class="Line" name="line_6">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
@@ -1204,6 +1510,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
            <widget class="QCheckBox" name="checkBox_ServerReceiveString">
             <property name="enabled">
              <bool>false</bool>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
             </property>
             <property name="text">
              <string>String</string>
@@ -1215,6 +1526,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
           </item>
           <item row="2" column="2" colspan="2">
            <widget class="QLineEdit" name="lineEdit_SevIP">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="toolTip">
              <string>eg:127.0.0.1</string>
             </property>
@@ -1226,36 +1542,13 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
             </property>
            </widget>
           </item>
-          <item row="3" column="6">
-           <widget class="QPushButton" name="pushButton_SerCloseConn">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>34</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>210</width>
-              <height>16777215</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>关闭通讯</string>
-            </property>
-           </widget>
-          </item>
           <item row="4" column="1" colspan="6">
            <widget class="Line" name="line_5">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
@@ -1263,8 +1556,16 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
           </item>
           <item row="16" column="3">
            <widget class="QLabel" name="label_ServerReceiveSeparator">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="text">
              <string>间隔符</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
             </property>
            </widget>
           </item>
@@ -1278,7 +1579,7 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
             </property>
             <property name="font">
              <font>
-              <family>Segoe UI</family>
+              <family>Microsoft YaHei</family>
               <pointsize>14</pointsize>
              </font>
             </property>
@@ -1289,6 +1590,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
           </item>
           <item row="24" column="1">
            <widget class="QLabel" name="label_11">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="text">
              <string>全类型接收数值</string>
             </property>
@@ -1296,15 +1602,13 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
           </item>
           <item row="16" column="5">
            <widget class="Line" name="line_11">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="orientation">
              <enum>Qt::Vertical</enum>
-            </property>
-           </widget>
-          </item>
-          <item row="22" column="2" colspan="5">
-           <widget class="QLineEdit" name="lineEdit_SerRecvFormatStr">
-            <property name="enabled">
-             <bool>false</bool>
             </property>
            </widget>
           </item>
@@ -1312,7 +1616,7 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
            <widget class="QLabel" name="label_10">
             <property name="font">
              <font>
-              <family>Segoe UI</family>
+              <family>Microsoft YaHei</family>
               <pointsize>10</pointsize>
              </font>
             </property>
@@ -1323,15 +1627,31 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
           </item>
           <item row="5" column="3">
            <widget class="QLabel" name="label_ServerSendSeparator">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="text">
              <string>间隔符</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
             </property>
            </widget>
           </item>
           <item row="18" column="2">
            <widget class="QLabel" name="label_27">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="text">
              <string>接收顺序</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
             </property>
            </widget>
           </item>
@@ -1352,6 +1672,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
               <height>16777215</height>
              </size>
             </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="styleSheet">
              <string notr="true"/>
             </property>
@@ -1361,6 +1686,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
            <widget class="QSpinBox" name="spinBox_SerSendFloat_Seq">
             <property name="enabled">
              <bool>false</bool>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
             </property>
            </widget>
           </item>
@@ -1381,6 +1711,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
               <height>16777215</height>
              </size>
             </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="text">
              <string>,</string>
             </property>
@@ -1391,10 +1726,20 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
             <property name="enabled">
              <bool>false</bool>
             </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
            </widget>
           </item>
           <item row="2" column="4">
            <widget class="QLabel" name="label_2">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="text">
              <string>端口号</string>
             </property>
@@ -1402,6 +1747,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
           </item>
           <item row="6" column="2" colspan="5">
            <widget class="Line" name="line_9">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
@@ -1412,6 +1762,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
             <property name="enabled">
              <bool>false</bool>
             </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="text">
              <string>字符串</string>
             </property>
@@ -1419,6 +1774,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
           </item>
           <item row="12" column="1">
            <widget class="QLabel" name="label_6">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="text">
              <string>Rawbytes发送格式字符</string>
             </property>
@@ -1429,10 +1789,20 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
             <property name="enabled">
              <bool>false</bool>
             </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
            </widget>
           </item>
           <item row="2" column="6">
            <widget class="QLineEdit" name="lineEdit_SerPort">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="inputMethodHints">
              <set>Qt::ImhNone</set>
             </property>
@@ -1446,6 +1816,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
             <property name="enabled">
              <bool>false</bool>
             </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="text">
              <string>浮点数类型</string>
             </property>
@@ -1456,23 +1831,23 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
             <property name="enabled">
              <bool>false</bool>
             </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="text">
              <string>整数类型</string>
             </property>
            </widget>
           </item>
-          <item row="14" column="1" colspan="2">
-           <widget class="QPushButton" name="pushButton_SerSend">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="text">
-             <string>发送</string>
-            </property>
-           </widget>
-          </item>
           <item row="11" column="1">
            <widget class="QLabel" name="label_8">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="text">
              <string>全类型发送数值</string>
             </property>
@@ -1482,6 +1857,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
            <widget class="QCheckBox" name="checkBox_ServerSendString">
             <property name="enabled">
              <bool>false</bool>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
             </property>
             <property name="text">
              <string>String</string>
@@ -1493,6 +1873,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
           </item>
           <item row="17" column="2" colspan="5">
            <widget class="Line" name="line_15">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
@@ -1500,20 +1885,41 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
           </item>
           <item row="7" column="2">
            <widget class="QLabel" name="label_31">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="text">
              <string>发送顺序</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
             </property>
            </widget>
           </item>
           <item row="7" column="3" colspan="4">
            <widget class="QLabel" name="label_32">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="text">
              <string>发送内容</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
             </property>
            </widget>
           </item>
           <item row="10" column="3">
            <widget class="QLabel" name="label_37">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="text">
              <string>发送数值</string>
             </property>
@@ -1521,6 +1927,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
           </item>
           <item row="9" column="3">
            <widget class="QLabel" name="label_36">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="text">
              <string>发送数值</string>
             </property>
@@ -1528,6 +1939,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
           </item>
           <item row="8" column="3">
            <widget class="QLabel" name="label_35">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="text">
              <string>发送数值</string>
             </property>
@@ -1538,12 +1954,22 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
             <property name="enabled">
              <bool>false</bool>
             </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
            </widget>
           </item>
           <item row="9" column="4" colspan="3">
            <widget class="QLineEdit" name="lineEdit_SerSendFloat_Value">
             <property name="enabled">
              <bool>false</bool>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
             </property>
            </widget>
           </item>
@@ -1552,40 +1978,350 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
             <property name="enabled">
              <bool>false</bool>
             </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
            </widget>
           </item>
           <item row="18" column="3" colspan="4">
            <widget class="QLabel" name="label_28">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="text">
              <string>接收内容</string>
             </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
            </widget>
+          </item>
+          <item row="14" column="1">
+           <widget class="QPushButton" name="pushButton_SerSend">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>40</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="text">
+             <string>发送</string>
+            </property>
+           </widget>
+          </item>
+          <item row="23" column="1">
+           <widget class="QPushButton" name="pushButton_SerRecv">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>40</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="text">
+             <string>接收</string>
+            </property>
+           </widget>
+          </item>
+          <item row="14" column="2">
+           <widget class="QCheckBox" name="checkBox_SerContinueSend">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>90</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="text">
+             <string>连续发送</string>
+            </property>
+           </widget>
+          </item>
+          <item row="23" column="2">
+           <widget class="QCheckBox" name="checkBox_SerContinueRecv">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>90</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="text">
+             <string>连续接收</string>
+            </property>
+           </widget>
+          </item>
+          <item row="14" column="4">
+           <widget class="QLineEdit" name="lineEdit_SerSendInterval">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>50</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="text">
+             <string>0.5</string>
+            </property>
+           </widget>
+          </item>
+          <item row="23" column="4">
+           <widget class="QLineEdit" name="lineEdit_SerRecvInterval">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>50</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="text">
+             <string>0.5</string>
+            </property>
+           </widget>
+          </item>
+          <item row="14" column="3">
+           <widget class="QLabel" name="label_3">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="text">
+             <string>发送间隔</string>
+            </property>
+           </widget>
+          </item>
+          <item row="23" column="3">
+           <widget class="QLabel" name="label_4">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="text">
+             <string>接收间隔</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="6">
+           <layout class="QHBoxLayout" name="horizontalLayout_14">
+            <item>
+             <spacer name="horizontalSpacer_14">
+              <property name="font">
+               <font>
+                <family>Microsoft YaHei</family>
+               </font>
+              </property>
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton_SerCloseConn">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>80</width>
+                <height>40</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <family>Microsoft YaHei</family>
+               </font>
+              </property>
+              <property name="text">
+               <string>关闭通讯</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
           <item row="21" column="3">
-           <widget class="QLabel" name="label_14">
+           <widget class="QLabel" name="label_43">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="text">
-             <string>接收数值</string>
+             <string>接收长度</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
             </property>
            </widget>
           </item>
-          <item row="20" column="3">
-           <widget class="QLabel" name="label_13">
-            <property name="text">
-             <string>接收数值</string>
+          <item row="21" column="5" colspan="2">
+           <widget class="QLineEdit" name="lineEdit_SerRecvStr_Value">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
             </property>
            </widget>
           </item>
-          <item row="19" column="3">
-           <widget class="QLabel" name="label_12">
-            <property name="text">
-             <string>接收数值</string>
+          <item row="21" column="4">
+           <widget class="QSpinBox" name="spinBox_SerRecvRawLength">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="toolTip">
+             <string>接收Rawbytes长度</string>
+            </property>
+            <property name="minimum">
+             <number>1</number>
+            </property>
+            <property name="maximum">
+             <number>299</number>
+            </property>
+            <property name="value">
+             <number>5</number>
             </property>
            </widget>
           </item>
-          <item row="19" column="4" colspan="3">
+          <item row="22" column="2" colspan="5">
+           <widget class="QLineEdit" name="lineEdit_SerRecvFormatStr">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="toolTip">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&amp;lt;h: 1个整数&lt;/p&gt;&lt;p&gt;&amp;lt;f: 1个浮点数&lt;/p&gt;&lt;p&gt;&amp;lt;5s: 5个字符&lt;/p&gt;&lt;p&gt;&amp;lt;hf5s: 从前到后依次1个整数1个浮点数5个字符 &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="text">
+             <string>&lt;hf5s</string>
+            </property>
+           </widget>
+          </item>
+          <item row="20" column="3" colspan="4">
+           <widget class="QLineEdit" name="lineEdit_SerRecvFloat_Value">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="19" column="3" colspan="4">
            <widget class="QLineEdit" name="lineEdit_SerRecvInt_Value">
             <property name="enabled">
              <bool>false</bool>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
             </property>
             <property name="inputMethodHints">
              <set>Qt::ImhNone</set>
@@ -1598,30 +2334,53 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
             </property>
            </widget>
           </item>
-          <item row="20" column="4" colspan="3">
-           <widget class="QLineEdit" name="lineEdit_SerRecvFloat_Value">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="readOnly">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="21" column="4" colspan="3">
-           <widget class="QLineEdit" name="lineEdit_SerRecvStr_Value">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="readOnly">
-             <bool>true</bool>
-            </property>
-           </widget>
+          <item row="23" column="6">
+           <layout class="QHBoxLayout" name="horizontalLayout_16">
+            <item>
+             <spacer name="horizontalSpacer_16">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton_SerClearCache">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>100</width>
+                <height>40</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <family>Microsoft YaHei</family>
+               </font>
+              </property>
+              <property name="text">
+               <string>清除缓存</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
          </layout>
         </item>
         <item row="0" column="1">
          <widget class="Line" name="line_4">
+          <property name="font">
+           <font>
+            <family>Microsoft YaHei</family>
+           </font>
+          </property>
           <property name="orientation">
            <enum>Qt::Vertical</enum>
           </property>
@@ -1631,6 +2390,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
          <layout class="QGridLayout" name="gridLayout_5">
           <item row="24" column="1">
            <widget class="QLabel" name="label_24">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="text">
              <string>全类型接收数值</string>
             </property>
@@ -1640,6 +2404,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
            <widget class="QCheckBox" name="checkBox_ClientSendRawbytes">
             <property name="enabled">
              <bool>false</bool>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
             </property>
             <property name="text">
              <string>Rawbytes</string>
@@ -1651,6 +2420,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
             <property name="enabled">
              <bool>false</bool>
             </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="text">
              <string>浮点数类型</string>
             </property>
@@ -1658,6 +2432,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
           </item>
           <item row="12" column="1">
            <widget class="QLabel" name="label_23">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="text">
              <string>Rawbytes发送格式字符</string>
             </property>
@@ -1668,6 +2447,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
             <property name="enabled">
              <bool>false</bool>
             </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
            </widget>
           </item>
           <item row="10" column="2">
@@ -1675,12 +2459,22 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
             <property name="enabled">
              <bool>false</bool>
             </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
            </widget>
           </item>
           <item row="16" column="2">
            <widget class="QCheckBox" name="checkBox_ClientReceiveString">
             <property name="enabled">
              <bool>false</bool>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
             </property>
             <property name="text">
              <string>String</string>
@@ -1695,6 +2489,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
             <property name="enabled">
              <bool>false</bool>
             </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
            </widget>
           </item>
           <item row="19" column="2">
@@ -1702,10 +2501,20 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
             <property name="enabled">
              <bool>false</bool>
             </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
            </widget>
           </item>
           <item row="15" column="1" colspan="6">
            <widget class="Line" name="line_8">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
@@ -1713,13 +2522,26 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
           </item>
           <item row="16" column="3">
            <widget class="QLabel" name="label_ClientReceiveSeparator">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="text">
              <string>间隔符</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
             </property>
            </widget>
           </item>
           <item row="5" column="5">
            <widget class="Line" name="line_12">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="orientation">
              <enum>Qt::Vertical</enum>
             </property>
@@ -1735,7 +2557,7 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
             </property>
             <property name="font">
              <font>
-              <family>Segoe UI</family>
+              <family>Microsoft YaHei</family>
               <pointsize>14</pointsize>
              </font>
             </property>
@@ -1746,6 +2568,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
           </item>
           <item row="22" column="1">
            <widget class="QLabel" name="label_30">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="text">
              <string>Rawbytes接收格式字符</string>
             </property>
@@ -1753,6 +2580,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
           </item>
           <item row="16" column="5">
            <widget class="Line" name="line_13">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="orientation">
              <enum>Qt::Vertical</enum>
             </property>
@@ -1775,6 +2607,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
               <height>16777215</height>
              </size>
             </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="text">
              <string>,</string>
             </property>
@@ -1782,24 +2619,13 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
           </item>
           <item row="2" column="1">
            <widget class="QLabel" name="label_19">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="text">
              <string>IP地址</string>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="6">
-           <widget class="QPushButton" name="pushButton_ClntCloseConn">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>210</width>
-              <height>16777215</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>关闭通讯</string>
             </property>
            </widget>
           </item>
@@ -1808,15 +2634,16 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
             <property name="enabled">
              <bool>false</bool>
             </property>
-           </widget>
-          </item>
-          <item row="23" column="1" colspan="2">
-           <widget class="QPushButton" name="pushButton_ClntRecv">
-            <property name="enabled">
-             <bool>false</bool>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="toolTip">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&amp;lt;h: 1个整数&lt;/p&gt;&lt;p&gt;&amp;lt;f: 1个浮点数&lt;/p&gt;&lt;p&gt;&amp;lt;5s: 5个字符&lt;/p&gt;&lt;p&gt;&amp;lt;hf5s: 从前到后依次1个整数1个浮点数5个字符 &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
             <property name="text">
-             <string>接收</string>
+             <string>&lt;hf5s</string>
             </property>
            </widget>
           </item>
@@ -1825,12 +2652,25 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
             <property name="enabled">
              <bool>false</bool>
             </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
            </widget>
           </item>
           <item row="18" column="2">
            <widget class="QLabel" name="label_29">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="text">
              <string>接收顺序</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
             </property>
            </widget>
           </item>
@@ -1838,6 +2678,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
            <widget class="QCheckBox" name="checkBox_ClientReceiveRawbytes">
             <property name="enabled">
              <bool>false</bool>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
             </property>
             <property name="text">
              <string>Rawbytes</string>
@@ -1849,6 +2694,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
             <property name="enabled">
              <bool>false</bool>
             </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="text">
              <string>字符串</string>
             </property>
@@ -1859,6 +2709,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
             <property name="enabled">
              <bool>false</bool>
             </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="text">
              <string>整数类型</string>
             </property>
@@ -1868,6 +2723,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
            <widget class="QCheckBox" name="checkBox_ClientSendString">
             <property name="enabled">
              <bool>false</bool>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
             </property>
             <property name="text">
              <string>String</string>
@@ -1882,6 +2742,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
             <property name="enabled">
              <bool>false</bool>
             </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="readOnly">
              <bool>true</bool>
             </property>
@@ -1891,7 +2756,7 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
            <widget class="QLabel" name="label_25">
             <property name="font">
              <font>
-              <family>Segoe UI</family>
+              <family>Microsoft YaHei</family>
               <pointsize>10</pointsize>
              </font>
             </property>
@@ -1902,6 +2767,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
           </item>
           <item row="11" column="1">
            <widget class="QLabel" name="label_17">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="text">
              <string>全类型发送数值</string>
             </property>
@@ -1912,20 +2782,29 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
             <property name="enabled">
              <bool>false</bool>
             </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="text">
              <string>字符串</string>
             </property>
            </widget>
           </item>
-          <item row="22" column="2" colspan="5">
-           <widget class="QLineEdit" name="lineEdit_ClntRecvFormatStr">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-           </widget>
-          </item>
           <item row="3" column="1" colspan="2">
            <widget class="QPushButton" name="pushButton_ClntCreatConn">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>50</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="text">
              <string>建立通讯</string>
             </property>
@@ -1933,6 +2812,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
           </item>
           <item row="6" column="2" colspan="5">
            <widget class="Line" name="line_14">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
@@ -1942,6 +2826,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
            <widget class="QCheckBox" name="checkBox_ClntRecvInt">
             <property name="enabled">
              <bool>false</bool>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
             </property>
             <property name="text">
              <string>整数类型</string>
@@ -1953,12 +2842,22 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
             <property name="enabled">
              <bool>false</bool>
             </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
            </widget>
           </item>
           <item row="9" column="1">
            <widget class="QCheckBox" name="checkBox_ClntSendFloat">
             <property name="enabled">
              <bool>false</bool>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
             </property>
             <property name="text">
              <string>浮点数类型</string>
@@ -1967,8 +2866,16 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
           </item>
           <item row="7" column="2">
            <widget class="QLabel" name="label_33">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="text">
              <string>发送顺序</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
             </property>
            </widget>
           </item>
@@ -1976,7 +2883,7 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
            <widget class="QLabel" name="label_20">
             <property name="font">
              <font>
-              <family>Segoe UI</family>
+              <family>Microsoft YaHei</family>
               <pointsize>10</pointsize>
              </font>
             </property>
@@ -1987,6 +2894,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
           </item>
           <item row="4" column="1" colspan="6">
            <widget class="Line" name="line_7">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
@@ -1997,10 +2909,20 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
             <property name="enabled">
              <bool>false</bool>
             </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
            </widget>
           </item>
           <item row="2" column="4">
            <widget class="QLabel" name="label_21">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="text">
              <string>端口号</string>
             </property>
@@ -2008,25 +2930,28 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
           </item>
           <item row="2" column="6">
            <widget class="QLineEdit" name="lineEdit_ClntPort">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="text">
              <string>1026</string>
             </property>
            </widget>
           </item>
-          <item row="14" column="1" colspan="2">
-           <widget class="QPushButton" name="pushButton_ClntSend">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="text">
-             <string>发送</string>
-            </property>
-           </widget>
-          </item>
           <item row="5" column="3">
            <widget class="QLabel" name="label_ClientSendSeparator">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="text">
              <string>间隔符</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
             </property>
            </widget>
           </item>
@@ -2047,6 +2972,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
               <height>16777215</height>
              </size>
             </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="text">
              <string>,</string>
             </property>
@@ -2054,6 +2984,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
           </item>
           <item row="17" column="2" colspan="5">
            <widget class="Line" name="line_16">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
@@ -2061,13 +2996,26 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
           </item>
           <item row="7" column="3" colspan="4">
            <widget class="QLabel" name="label_34">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="text">
              <string>发送内容</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
             </property>
            </widget>
           </item>
           <item row="8" column="3">
            <widget class="QLabel" name="label_38">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="text">
              <string>发送数值</string>
             </property>
@@ -2075,6 +3023,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
           </item>
           <item row="9" column="3">
            <widget class="QLabel" name="label_39">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="text">
              <string>发送数值</string>
             </property>
@@ -2082,6 +3035,11 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
           </item>
           <item row="10" column="3">
            <widget class="QLabel" name="label_40">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="text">
              <string>发送数值</string>
             </property>
@@ -2092,12 +3050,22 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
             <property name="enabled">
              <bool>false</bool>
             </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
            </widget>
           </item>
           <item row="9" column="4" colspan="3">
            <widget class="QLineEdit" name="lineEdit_ClntSendFloat_Value">
             <property name="enabled">
              <bool>false</bool>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
             </property>
            </widget>
           </item>
@@ -2106,77 +3074,415 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
             <property name="enabled">
              <bool>false</bool>
             </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
            </widget>
           </item>
           <item row="18" column="3" colspan="4">
            <widget class="QLabel" name="label_41">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="text">
              <string>接收内容</string>
             </property>
-           </widget>
-          </item>
-          <item row="19" column="3">
-           <widget class="QLabel" name="label_18">
-            <property name="text">
-             <string>接收数值</string>
-            </property>
-           </widget>
-          </item>
-          <item row="20" column="3">
-           <widget class="QLabel" name="label_22">
-            <property name="text">
-             <string>接收数值</string>
-            </property>
-           </widget>
-          </item>
-          <item row="21" column="3">
-           <widget class="QLabel" name="label_16">
-            <property name="text">
-             <string>接收数值</string>
-            </property>
-           </widget>
-          </item>
-          <item row="19" column="4" colspan="3">
-           <widget class="QLineEdit" name="lineEdit_ClntRecvInt_Value">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="readOnly">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="20" column="4" colspan="3">
-           <widget class="QLineEdit" name="lineEdit_ClntRecvFloat_Value">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="readOnly">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="21" column="4" colspan="3">
-           <widget class="QLineEdit" name="lineEdit_ClntRecvStr_Value">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="readOnly">
-             <bool>true</bool>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
             </property>
            </widget>
           </item>
           <item row="2" column="2" colspan="2">
            <widget class="QLineEdit" name="lineEdit_ClntIP">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
             <property name="text">
              <string>127.0.0.1</string>
             </property>
            </widget>
           </item>
+          <item row="23" column="1">
+           <widget class="QPushButton" name="pushButton_ClntRecv">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>40</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="text">
+             <string>接收</string>
+            </property>
+           </widget>
+          </item>
+          <item row="14" column="1">
+           <widget class="QPushButton" name="pushButton_ClntSend">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>40</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="text">
+             <string>发送</string>
+            </property>
+           </widget>
+          </item>
+          <item row="14" column="2">
+           <widget class="QCheckBox" name="checkBox_ClntContinueSend">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>90</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="text">
+             <string>连续发送</string>
+            </property>
+           </widget>
+          </item>
+          <item row="14" column="4">
+           <widget class="QLineEdit" name="lineEdit_ClntSendInterval">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>50</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="text">
+             <string>0.5</string>
+            </property>
+           </widget>
+          </item>
+          <item row="23" column="4">
+           <widget class="QLineEdit" name="lineEdit_ClntRecvInterval">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>50</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="text">
+             <string>0.5</string>
+            </property>
+           </widget>
+          </item>
+          <item row="14" column="3">
+           <widget class="QLabel" name="label_5">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="text">
+             <string>发送间隔</string>
+            </property>
+           </widget>
+          </item>
+          <item row="23" column="2">
+           <widget class="QCheckBox" name="checkBox_ClntContinueRecv">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>90</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">
+
+
+</string>
+            </property>
+            <property name="text">
+             <string>连续接收</string>
+            </property>
+           </widget>
+          </item>
+          <item row="23" column="3">
+           <widget class="QLabel" name="label_42">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="text">
+             <string>接收间隔</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="6">
+           <layout class="QHBoxLayout" name="horizontalLayout_15">
+            <item>
+             <spacer name="horizontalSpacer_15">
+              <property name="font">
+               <font>
+                <family>Microsoft YaHei</family>
+               </font>
+              </property>
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton_ClntCloseConn">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>80</width>
+                <height>40</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <family>Microsoft YaHei</family>
+               </font>
+              </property>
+              <property name="text">
+               <string>关闭通讯</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item row="19" column="3" colspan="4">
+           <widget class="QLineEdit" name="lineEdit_ClntRecvInt_Value">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="20" column="3" colspan="4">
+           <widget class="QLineEdit" name="lineEdit_ClntRecvFloat_Value">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="21" column="3">
+           <widget class="QLabel" name="label_44">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="text">
+             <string>接收长度</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="21" column="5" colspan="2">
+           <widget class="QLineEdit" name="lineEdit_ClntRecvStr_Value">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="21" column="4">
+           <widget class="QSpinBox" name="spinBox_ClntRecvRawLength">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="toolTip">
+             <string>接收Rawbytes长度</string>
+            </property>
+            <property name="minimum">
+             <number>1</number>
+            </property>
+            <property name="maximum">
+             <number>299</number>
+            </property>
+            <property name="value">
+             <number>5</number>
+            </property>
+           </widget>
+          </item>
+          <item row="22" column="2" colspan="5">
+           <widget class="QLineEdit" name="lineEdit_ClntRecvFormatStr">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="toolTip">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&amp;lt;h: 1个整数&lt;/p&gt;&lt;p&gt;&amp;lt;f: 1个浮点数&lt;/p&gt;&lt;p&gt;&amp;lt;5s: 5个字符&lt;/p&gt;&lt;p&gt;&amp;lt;hf5s: 从前到后依次1个整数1个浮点数5个字符 &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="text">
+             <string>&lt;hf5s</string>
+            </property>
+           </widget>
+          </item>
+          <item row="23" column="6">
+           <layout class="QHBoxLayout" name="horizontalLayout_17">
+            <item>
+             <spacer name="horizontalSpacer_17">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton_ClntClearCache">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>100</width>
+                <height>40</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <family>Microsoft YaHei</family>
+               </font>
+              </property>
+              <property name="text">
+               <string>清除缓存</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
          </layout>
         </item>
         <item row="1" column="0" colspan="3">
          <widget class="Line" name="line_3">
+          <property name="font">
+           <font>
+            <family>Microsoft YaHei</family>
+           </font>
+          </property>
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
@@ -2186,6 +3492,7 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
          <widget class="QTextEdit" name="textEdit_Log">
           <property name="font">
            <font>
+            <family>Microsoft YaHei</family>
             <pointsize>12</pointsize>
            </font>
           </property>
@@ -2199,8 +3506,8 @@ QPushButton:pressed{background-color:rgb(101, 163, 217) }</string>
            <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:12pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Socket communication...&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Microsoft YaHei'; font-size:12pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2'; font-size:10pt;&quot;&gt;Socket communication...&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
         </item>
@@ -2220,6 +3527,171 @@ p, li { white-space: pre-wrap; }
        <attribute name="title">
         <string>ABB编程样例</string>
        </attribute>
+       <layout class="QGridLayout" name="gridLayout_7">
+        <item row="0" column="0">
+         <widget class="QTextEdit" name="textEdit">
+          <property name="html">
+           <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:12pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;  ! ===================================================================================================================================================================&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    !&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    ! Func          : rSocket_ServerComm&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    ! Function      : Socket server Communication demo&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    ! Description   :  &lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    ! Return		:&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    ! Parameters	:&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    ! Author        : YuanQiang.Ding&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    ! Date          : 2022-11-11&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    ! &lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    ! ===================================================================================================================================================================&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    PROC rSocket_ServerComm()&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        CONST string sServerIP:=&amp;quot;127.0.0.1&amp;quot;;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        CONST num nServerPort:=1026;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        VAR num nCommunicateType:=10;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        VAR string sSocket_Receive;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        VAR rawbytes rbSocket_Send;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        VAR rawbytes rbSocket_Receive;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        VAR num nSocketReceive_int;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        VAR num nSocketReceive_float;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        VAR string sSocketReceive_str;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        VAR socketdev sdServer_Socket;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        VAR socketdev sdClinet_Socket;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        TEST nCommunicateType&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        CASE 10:&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            !Send string type &lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            !****Append process logic here&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            WHILE TRUE DO&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                SocketSend sdClinet_Socket,\Str:=&amp;quot;ABB Robot: Message Sended&amp;quot;;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                WaitTime 1;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            ENDWHILE&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        CASE 11:&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            WHILE TRUE DO&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                SocketReceive sdClinet_Socket,\Str:=sSocket_Receive\Time:=WAIT_MAX;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                TPWrite &amp;quot;Receive clinet string: &amp;quot;+sSocket_Receive;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                sSocket_Receive:=&amp;quot;&amp;quot;;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            ENDWHILE&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        CASE 20:&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            WHILE TRUE DO&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                !Send rawbytes type here &lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                ClearRawBytes rbSocket_Send;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                !---Assign the type sequence and number here---&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                PackRawBytes temp_integer,rbSocket_Send,1\IntX:=INT;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                PackRawBytes temp_float,rbSocket_Send,(RawBytesLen(rbSocket_Send)+1)\Float4;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                PackRawBytes temp_string,rbSocket_Send,(RawBytesLen(rbSocket_Send)+1)\ASCII;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                !****Append process logic here&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                SocketSend sdClinet_Socket,\RawData:=rbSocket_Send;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                WaitTime 1;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            ENDWHILE&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        CASE 21:&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            WHILE TRUE DO&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                SocketReceive sdClinet_Socket,\RawData:=rbSocket_Receive\Time:=WAIT_MAX;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                UnpackRawBytes rbSocket_Receive,1,nSocketReceive_int\IntX:=INT;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                UnpackRawBytes rbSocket_Receive,3,nSocketReceive_float\Float4;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                UnpackRawBytes rbSocket_Receive,7,nSocketReceive_float\ASCII:=5;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                TPWrite &amp;quot;Received int value: &amp;quot;\Num:=nSocketReceive_int;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                TPWrite &amp;quot;Received float value: &amp;quot;\Num:=nSocketReceive_float;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            ENDWHILE&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        DEFAULT:&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            TPWrite &amp;quot;Wrong process no.&amp;quot;;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        ENDTEST&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    ERROR&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        !initial the socket connection &lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        IF ERRNO=ERR_SOCK_TIMEOUT THEN&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            RETRY;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        ELSEIF ERRNO=ERR_SOCK_CLOSED&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            or ERRNO=ERR_SOCK_NET_UNREACH&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            OR ERRNO=ERR_SOCK_NOT_CONN&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            OR ERRNO=ERR_SOCK_UNSPEC THEN&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            SocketClose sdServer_Socket;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            SocketClose sdClinet_Socket;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            SocketCreate sdServer_Socket;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            SocketBind sdServer_Socket,sServerIP,nServerPort;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            SocketListen sdServer_Socket;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            SocketAccept sdServer_Socket,sdClinet_Socket\Time:=WAIT_MAX;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            RETRY;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        ELSE&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            RAISE ;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        ENDIF&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    ENDPROC&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    ! ===================================================================================================================================================================&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    !&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    ! Func          : rSocket_ClientComm&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    ! Function      : Socket client Communication demo, change nSocker_SendDataType value to switch send string or rawbytes&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    ! Description   : you need to define the type sequence for rawbytes firstly,the receiver need to decode the data as your type sequence &lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    ! Return		:&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    ! Parameters	:&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    ! Author        : YuanQiang.Ding&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    ! Date          : 2022-11-11a&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    ! &lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    ! ===================================================================================================================================================================&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    PROC rSocket_ClientComm()&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        CONST num nSocket_SendDataType:=1;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        CONST string sServerIP:=&amp;quot;127.0.0.1&amp;quot;;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        CONST num nServerPort:=1025;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        VAR socketdev sdClinet_Socket;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        VAR rawbytes rbSocket_Send;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        VAR rawbytes rbSocket_Receive;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        VAR num nSocketReceive_int;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        VAR num nSocketReceive_float;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        VAR string sSocket_Receive;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        !VAR bool bKeep_listening:=TRUE;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        SocketCreate sdClinet_Socket;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        SocketConnect sdClinet_Socket,sServerIP,nServerPort\Time:=WAIT_MAX;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        IF nSocket_SendDataType=0 THEN&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            !Send string type &lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            !****Append process logic here&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            SocketSend sdClinet_Socket,\Str:=&amp;quot;ABB Robot: Message Sended&amp;quot;;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            SocketReceive sdClinet_Socket,\Str:=sSocket_Receive;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            TPWrite &amp;quot;Receive clinet string: &amp;quot;+sSocket_Receive;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            sSocket_Receive:=&amp;quot;&amp;quot;;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        ELSE&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            !Send rawbytes type here &lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            ClearRawBytes rbSocket_Send;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            !---Assign the type sequence and number here---&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            PackRawBytes temp_integer,rbSocket_Send,1\IntX:=INT;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            PackRawBytes temp_float,rbSocket_Send,(RawBytesLen(rbSocket_Send)+1)\Float4;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            !****Append process logic here&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            SocketSend sdClinet_Socket,\RawData:=rbSocket_Send;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            SocketReceive sdClinet_Socket,\RawData:=rbSocket_Receive;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            UnpackRawBytes rbSocket_Receive,1,nSocketReceive_int\IntX:=INT;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            UnpackRawBytes rbSocket_Receive,3,nSocketReceive_float\Float4;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            TPWrite &amp;quot;Received int value: &amp;quot;\Num:=nSocketReceive_int;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            TPWrite &amp;quot;Received float value: &amp;quot;\Num:=nSocketReceive_float;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        ENDIF&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        SocketClose sdClinet_Socket;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    ERROR&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        !initial the socket connection&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        IF ERRNO=ERR_SOCK_CLOSED&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            or ERRNO=ERR_SOCK_NET_UNREACH&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            OR ERRNO=ERR_SOCK_NOT_CONN&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            OR ERRNO=ERR_SOCK_UNSPEC&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            THEN&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            SocketClose sdClinet_Socket;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            SocketCreate sdClinet_Socket;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            SocketConnect sdClinet_Socket,sServerIP,nServerPort\Time:=WAIT_MAX;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            RETRY;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        ELSE&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            RAISE ;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        ENDIF&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        !RETRY;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    UNDO&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        SocketClose sdClinet_Socket;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    ENDPROC&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </widget>
      </widget>
     </item>
@@ -2231,7 +3703,6 @@ p, li { white-space: pre-wrap; }
   <tabstop>lineEdit_SevIP</tabstop>
   <tabstop>lineEdit_SerPort</tabstop>
   <tabstop>pushButton_SerCreateConn</tabstop>
-  <tabstop>pushButton_SerCloseConn</tabstop>
   <tabstop>checkBox_SerSendInt</tabstop>
   <tabstop>spinBox_SerSendInt_Seq</tabstop>
   <tabstop>lineEdit_SerSendInt_Value</tabstop>
@@ -2259,7 +3730,6 @@ p, li { white-space: pre-wrap; }
   <tabstop>lineEdit_ClntIP</tabstop>
   <tabstop>lineEdit_ClntPort</tabstop>
   <tabstop>pushButton_ClntCreatConn</tabstop>
-  <tabstop>pushButton_ClntCloseConn</tabstop>
   <tabstop>checkBox_ClntSendInt</tabstop>
   <tabstop>spinBox_ClntSendInt_Seq</tabstop>
   <tabstop>lineEdit_ClntSendInt_Value</tabstop>

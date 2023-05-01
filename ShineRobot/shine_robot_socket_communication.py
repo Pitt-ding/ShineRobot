@@ -20,6 +20,10 @@ class SocketWidgetStruct:
         self.receive_fun = None
         self.log_fun = None
 
+        self.lineEdit_IP = None
+        self.lineEdit_Port = None
+        self.pushButton_CreateConnection = None
+        self.pushButton_CloseConnection = None
         self.checkBox_SendStringMode = None
         self.lineEdit_StrSendSeparator = None
         self.checkBox_SendRawbytesMode = None

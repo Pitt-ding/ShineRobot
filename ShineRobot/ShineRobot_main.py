@@ -12,7 +12,7 @@ import ctypes
 import re
 from PyQt5 import QtCore
 from ShineRobot import Ui_MainWindow
-from PyQt5.QtWidgets import QApplication, QMainWindow, QMenu, QAction, QWidget
+from PyQt5.QtWidgets import QApplication, QMainWindow, QMenu, QAction
 from PyQt5.Qt import QStandardItemModel, QCursor, Qt, QThread, pyqtSignal
 from PyQt5.QtGui import QTextCursor
 from shine_robot_socket_communication import SocketServer, SocketServerCloseClient, SocketClient, SocketWidgetStruct
@@ -24,6 +24,12 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
     # initial the windows class
     # Signal should define in class not in instance
     signal_socket_server_not_accepted_close = pyqtSignal()
+    str_lineedit_style_invalid = "QLineEdit{background-color: rgb(253, 183, 184)}"
+    str_lineedit_style_enable = "QLineEdit{background-color: rgb(255, 255, 255)}"
+    str_lineedit_style_disable = "QLineEdit{background-color: rgb(240, 240, 240)};"
+    str_spinbox_style_enable = "QSpinBox{background-color: rgb(255, 255, 255)}"
+    str_spinbox_style_invalid = "QSpinBox{background-color: rgb(253, 183, 184)}"
+    str_spinbox_style_disable = "QSpinBox{background-color: rgb(240, 240, 240)}"
 
     def __init__(self):
         super(MyMainWindow, self).__init__()
@@ -58,6 +64,10 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.server_widgets_status = SocketWidgetStruct()
         # self.server_widgets_status.send_fun = self.socket_server.socket_send_bytes
         # self.server_widgets_status.receive_fun = self.socket_server.socket_receive_bytes
+        self.server_widgets_status.lineEdit_IP = self.lineEdit_SevIP
+        self.server_widgets_status.lineEdit_Port = self.lineEdit_SerPort
+        self.server_widgets_status.pushButton_CreateConnection = self.pushButton_SerCreateConn
+        self.server_widgets_status.pushButton_CloseConnection = self.pushButton_SerCloseConn
         self.server_widgets_status.log_fun = self.record_socket_communication_result
 
         self.server_widgets_status.checkBox_SendStringMode = self.checkBox_ServerSendString
@@ -104,6 +114,10 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.client_widgets_status = SocketWidgetStruct()
         # self.client_widgets_status.send_fun = self.socket_client.socket_send_bytes
         # self.client_widgets_status.receive_fun = self.socket_client.socket_receive_bytes
+        self.client_widgets_status.lineEdit_IP = self.lineEdit_ClntIP
+        self.client_widgets_status.lineEdit_Port = self.lineEdit_ClntPort
+        self.client_widgets_status.pushButton_CreateConnection = self.pushButton_ClntCreatConn
+        self.client_widgets_status.pushButton_CloseConnection = self.pushButton_ClntCloseConn
         self.client_widgets_status.log_fun = self.record_socket_communication_result
 
         self.client_widgets_status.checkBox_SendStringMode = self.checkBox_ClientSendString
@@ -218,8 +232,8 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.lineEdit_SerRecvStr_Value.textChanged.connect(lambda: self.ui_update_send_value_check(self.server_widgets_status))
         self.lineEdit_ServerReceiveSeparator.textChanged.connect(lambda: self.ui_update_send_value_check(self.server_widgets_status))
 
-        self.lineEdit_SevIP.textChanged.connect(self.uiUpdate_checkIPPort)
-        self.lineEdit_SerPort.textChanged.connect(self.uiUpdate_checkIPPort)
+        self.lineEdit_SevIP.textChanged.connect(lambda: self.ui_update_check_ip_port(self.server_widgets_status))
+        self.lineEdit_SerPort.textChanged.connect(lambda: self.ui_update_check_ip_port(self.server_widgets_status))
 
         self.lineEdit_ClntSendInt_Value.textChanged.connect(lambda: self.ui_update_send_value_check(self.client_widgets_status))
         self.lineEdit_ClntSendFloat_Value.textChanged.connect(lambda: self.ui_update_send_value_check(self.client_widgets_status))
@@ -230,8 +244,8 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.lineEdit_ClntRecvFloat_Value.textChanged.connect(lambda: self.ui_update_send_value_check(self.client_widgets_status))
         self.lineEdit_ClntRecvStr_Value.textChanged.connect(lambda: self.ui_update_send_value_check(self.client_widgets_status))
 
-        self.lineEdit_ClntIP.textChanged.connect(self.uiUpdate_checkIPPort)
-        self.lineEdit_SerPort.textChanged.connect(self.uiUpdate_checkIPPort)
+        self.lineEdit_ClntIP.textChanged.connect(lambda: self.ui_update_check_ip_port(self.client_widgets_status))
+        self.lineEdit_ClntPort.textChanged.connect(lambda: self.ui_update_check_ip_port(self.client_widgets_status))
         # check spin box widgets sequences
         self.spinBox_SerSendInt_Seq.textChanged.connect(lambda: self.ui_update_send_value_check(self.server_widgets_status))
         self.spinBox_SerSendFloat_Seq.textChanged.connect(lambda: self.ui_update_send_value_check(self.server_widgets_status))
@@ -866,8 +880,8 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             widgets_status.spinBox_Send_Int.setEnabled(False)
             widgets_status.lineEdit_Send_Int.clear()
             widgets_status.lineEdit_Send_Int.setEnabled(False)
-            widgets_status.spinBox_Send_Int.setStyleSheet("QLineEdit{background-color:rgb(240, 240, 240)}")
-            widgets_status.lineEdit_Send_Int.setStyleSheet("QLineEdit{background-color:rgb(240, 240, 240)}")
+            widgets_status.spinBox_Send_Int.setStyleSheet(MyMainWindow.str_spinbox_style_disable)
+            widgets_status.lineEdit_Send_Int.setStyleSheet(MyMainWindow.str_lineedit_style_disable)
 
         if widgets_status.checkBox_Send_Float.isChecked():
             widgets_status.spinBox_Send_Float.setEnabled(True)
@@ -877,8 +891,8 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             widgets_status.spinBox_Send_Float.setEnabled(False)
             widgets_status.lineEdit_Send_Float.clear()
             widgets_status.lineEdit_Send_Float.setEnabled(False)
-            widgets_status.spinBox_Send_Float.setStyleSheet("QLineEdit{background-color:rgb(240, 240, 240)}")
-            widgets_status.lineEdit_Send_Float.setStyleSheet("QLineEdit{background-color:rgb(240, 240, 240)}")
+            widgets_status.spinBox_Send_Float.setStyleSheet(MyMainWindow.str_spinbox_style_disable)
+            widgets_status.lineEdit_Send_Float.setStyleSheet(MyMainWindow.str_lineedit_style_disable)
 
         if widgets_status.checkBox_Send_Str.isChecked():
             widgets_status.spinBox_Send_Str.setEnabled(True)
@@ -888,14 +902,14 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             widgets_status.spinBox_Send_Str.setEnabled(False)
             widgets_status.lineEdit_Send_Str.clear()
             widgets_status.lineEdit_Send_Str.setEnabled(False)
-            widgets_status.spinBox_Send_Str.setStyleSheet("QLineEdit{background-color:rgb(240, 240, 240)}")
-            widgets_status.lineEdit_Send_Str.setStyleSheet("QLineEdit{background-color:rgb(240, 240, 240)}")
+            widgets_status.spinBox_Send_Str.setStyleSheet(MyMainWindow.str_lineedit_style_disable)
+            widgets_status.lineEdit_Send_Str.setStyleSheet(MyMainWindow.str_lineedit_style_disable)
 
         if widgets_status.checkBox_SendContinue.isChecked() and widgets_status.checkBox_SendContinue.isEnabled():
             widgets_status.lineEdit_SendInterval.setEnabled(True)
         else:
             widgets_status.lineEdit_SendInterval.setText("0.5")
-            widgets_status.lineEdit_SendInterval.setStyleSheet("QLineEdit{background-color:rgb(240, 240, 240)}")
+            widgets_status.lineEdit_SendInterval.setStyleSheet(MyMainWindow.str_lineedit_style_disable)
             widgets_status.lineEdit_SendInterval.setEnabled(False)
 
         if widgets_status.checkBox_Send_Int.isChecked() + widgets_status.checkBox_Send_Float.isChecked() + widgets_status.checkBox_Send_Str.isChecked() == 0 \
@@ -905,7 +919,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                 widgets_status.lineEdit_SendFormatStr.setText("<hf5s")
                 widgets_status.lineEdit_SendFormatStr.setEnabled(False)
                 widgets_status.lineEdit_StrSendSeparator.setText(",")
-                widgets_status.lineEdit_StrSendSeparator.setStyleSheet("QLineEdit{background-color:rgb(240, 240, 240)}")
+                widgets_status.lineEdit_StrSendSeparator.setStyleSheet(MyMainWindow.str_lineedit_style_disable)
                 widgets_status.lineEdit_StrSendSeparator.setEnabled(False)
             else:
                 widgets_status.lineEdit_StrSendSeparator.setEnabled(True)
@@ -919,7 +933,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                 widgets_status.lineEdit_StrSendSeparator.setEnabled(True)
             else:
                 widgets_status.lineEdit_StrSendSeparator.setText(",")
-                widgets_status.lineEdit_StrSendSeparator.setStyleSheet("QLineEdit{background-color:rgb(240, 240, 240)}")
+                widgets_status.lineEdit_StrSendSeparator.setStyleSheet(MyMainWindow.str_lineedit_style_disable)
                 widgets_status.lineEdit_StrSendSeparator.setEnabled(False)
 
         # receive checkbox logic
@@ -933,8 +947,8 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             widgets_status.spinBox_Receive_Int.setEnabled(False)
             widgets_status.lineEdit_Receive_Int.clear()
             widgets_status.lineEdit_Receive_Int.setEnabled(False)
-            widgets_status.spinBox_Receive_Int.setStyleSheet("QLineEdit{background-color:rgb(240, 240, 240)}")
-            widgets_status.lineEdit_Receive_Int.setStyleSheet("QLineEdit{background-color:rgb(240, 240, 240)}")
+            widgets_status.spinBox_Receive_Int.setStyleSheet(MyMainWindow.str_spinbox_style_disable)
+            widgets_status.lineEdit_Receive_Int.setStyleSheet(MyMainWindow.str_lineedit_style_disable)
 
         if widgets_status.checkBox_Receive_Float.isChecked():
             widgets_status.spinBox_Receive_Float.setEnabled(True)
@@ -946,8 +960,8 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             widgets_status.spinBox_Receive_Float.setEnabled(False)
             widgets_status.lineEdit_Receive_Float.clear()
             widgets_status.lineEdit_Receive_Float.setEnabled(False)
-            widgets_status.spinBox_Receive_Float.setStyleSheet("QLineEdit{background-color:rgb(240, 240, 240)}")
-            widgets_status.lineEdit_Receive_Float.setStyleSheet("QLineEdit{background-color:rgb(240, 240, 240)}")
+            widgets_status.spinBox_Receive_Float.setStyleSheet(MyMainWindow.str_spinbox_style_disable)
+            widgets_status.lineEdit_Receive_Float.setStyleSheet(MyMainWindow.str_lineedit_style_disable)
 
         if widgets_status.checkBox_Receive_Str.isChecked():
             widgets_status.spinBox_Receive_Str.setEnabled(True)
@@ -962,20 +976,20 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             widgets_status.spinBox_ReceiveRawLength.setEnabled(False)
             widgets_status.lineEdit_Receive_Str.clear()
             widgets_status.lineEdit_Receive_Str.setEnabled(False)
-            widgets_status.spinBox_Receive_Str.setStyleSheet("QLineEdit{background-color:rgb(240, 240, 240)}")
-            widgets_status.lineEdit_Receive_Str.setStyleSheet("QLineEdit{background-color:rgb(240, 240, 240)}")
+            widgets_status.spinBox_Receive_Str.setStyleSheet(MyMainWindow.str_spinbox_style_disable)
+            widgets_status.lineEdit_Receive_Str.setStyleSheet(MyMainWindow.str_lineedit_style_disable)
 
         if widgets_status.checkBox_RecvContinue.isChecked() and widgets_status.checkBox_RecvContinue.isEnabled():
             widgets_status.lineEdit_RecvInterval.setEnabled(True)
         else:
             widgets_status.lineEdit_RecvInterval.setText("0.5")
-            widgets_status.lineEdit_RecvInterval.setStyleSheet("QLineEdit{background-color:rgb(240, 240, 240)}")
+            widgets_status.lineEdit_RecvInterval.setStyleSheet(MyMainWindow.str_lineedit_style_disable)
             widgets_status.lineEdit_RecvInterval.setEnabled(False)
 
         if widgets_status.checkBox_Receive_Int.isChecked() + widgets_status.checkBox_Receive_Float.isChecked() + widgets_status.checkBox_Receive_Str.isChecked() == 0 \
                 and widgets_status.checkBox_Receive_Int.isEnabled() + widgets_status.checkBox_Receive_Float.isEnabled() + widgets_status.checkBox_Receive_Str.isEnabled() > 0:
             widgets_status.lineEdit_StrReceiveSeparator.setText(",")
-            widgets_status.lineEdit_StrReceiveSeparator.setStyleSheet("QLineEdit{background-color:rgb(240, 240, 240)}")
+            widgets_status.lineEdit_StrReceiveSeparator.setStyleSheet(MyMainWindow.str_lineedit_style_disable)
             widgets_status.lineEdit_StrReceiveSeparator.setEnabled(False)
             if widgets_status.checkBox_ReceiveStrMode.isChecked():
                 widgets_status.lineEdit_ReceiveFullType.setEnabled(True)
@@ -993,7 +1007,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                 widgets_status.lineEdit_StrReceiveSeparator.setEnabled(True)
             else:
                 widgets_status.lineEdit_StrReceiveSeparator.setText(",")
-                widgets_status.lineEdit_StrReceiveSeparator.setStyleSheet("QLineEdit{background-color:rgb(240, 240, 240)}")
+                widgets_status.lineEdit_StrReceiveSeparator.setStyleSheet(MyMainWindow.str_lineedit_style_disable)
                 widgets_status.lineEdit_StrReceiveSeparator.setEnabled(False)
 
         MyMainWindow.ui_update_send_value_check(widgets_status)
@@ -1013,27 +1027,27 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             if widgets_status.checkBox_Send_Int.isChecked():
                 ins_re_match = re.match(r"^\d+$", widgets_status.lineEdit_Send_Int.text())
                 if ins_re_match is not None:
-                    widgets_status.lineEdit_Send_Int.setStyleSheet("background-color: rgb(255, 255, 255);")
+                    widgets_status.lineEdit_Send_Int.setStyleSheet(MyMainWindow.str_lineedit_style_enable)
                     b_lineedit_check_valid = True
                 else:
-                    widgets_status.lineEdit_Send_Int.setStyleSheet("background-color: rgb(253, 183, 184);")
+                    widgets_status.lineEdit_Send_Int.setStyleSheet(MyMainWindow.str_lineedit_style_invalid)
                     b_lineedit_check_valid = False
             if widgets_status.checkBox_Send_Float.isChecked():
                 ins_re_match = re.match(r"^\d+\.\d+$", widgets_status.lineEdit_Send_Float.text())
                 if ins_re_match is not None:
-                    widgets_status.lineEdit_Send_Float.setStyleSheet("background-color: rgb(255, 255, 255);")
+                    widgets_status.lineEdit_Send_Float.setStyleSheet(MyMainWindow.str_lineedit_style_enable)
                     b_lineedit_check_valid = True
                 else:
-                    widgets_status.lineEdit_Send_Float.setStyleSheet("background-color: rgb(253, 183, 184);")
+                    widgets_status.lineEdit_Send_Float.setStyleSheet(MyMainWindow.str_lineedit_style_invalid)
                     b_lineedit_check_valid = False
 
             if widgets_status.checkBox_Send_Str.isChecked():
                 ins_re_match = re.match(r"^\S+$", widgets_status.lineEdit_Send_Str.text())
                 if ins_re_match is not None:
-                    widgets_status.lineEdit_Send_Str.setStyleSheet("background-color: rgb(255, 255, 255);")
+                    widgets_status.lineEdit_Send_Str.setStyleSheet(MyMainWindow.str_lineedit_style_enable)
                     b_lineedit_check_valid = True
                 else:
-                    widgets_status.lineEdit_Send_Str.setStyleSheet("background-color: rgb(253, 183, 184);")
+                    widgets_status.lineEdit_Send_Str.setStyleSheet(MyMainWindow.str_lineedit_style_invalid)
                     b_lineedit_check_valid = False
                 # Server send sequence check
             if widgets_status.checkBox_Send_Int.isChecked() + widgets_status.checkBox_Send_Float.isChecked() + widgets_status.checkBox_Send_Str.isChecked() == 0:
@@ -1048,79 +1062,79 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
             elif widgets_status.checkBox_Send_Int.isChecked() + widgets_status.checkBox_Send_Float.isChecked() + widgets_status.checkBox_Send_Str.isChecked() == 1:
                 if widgets_status.checkBox_Send_Int.isChecked():
-                    widgets_status.spinBox_Send_Int.setStyleSheet("QSpinBox{background-color:rgb(255, 255, 255)}")
+                    widgets_status.spinBox_Send_Int.setStyleSheet(MyMainWindow.str_spinbox_style_enable)
                 elif widgets_status.checkBox_Send_Float.isChecked():
-                    widgets_status.spinBox_Send_Float.setStyleSheet("QSpinBox{background-color:rgb(255, 255, 255)}")
+                    widgets_status.spinBox_Send_Float.setStyleSheet(MyMainWindow.str_spinbox_style_enable)
                 else:
-                    widgets_status.spinBox_Send_Str.setStyleSheet("QSpinBox{background-color:rgb(255, 255, 255)}")
+                    widgets_status.spinBox_Send_Str.setStyleSheet(MyMainWindow.str_spinbox_style_enable)
                 b_spinbox_check_valid = True
             elif widgets_status.checkBox_Send_Int.isChecked() + widgets_status.checkBox_Send_Float.isChecked() + widgets_status.checkBox_Send_Str.isChecked() == 2:
                 if not widgets_status.checkBox_Send_Int.isChecked():
                     if widgets_status.spinBox_Send_Float.text() == widgets_status.spinBox_Send_Str.text():
-                        widgets_status.spinBox_Send_Float.setStyleSheet("QSpinBox{background-color: rgb(253, 183, 184)}")
-                        widgets_status.spinBox_Send_Str.setStyleSheet("QSpinBox{background-color: rgb(253, 183, 184)}")
+                        widgets_status.spinBox_Send_Float.setStyleSheet(MyMainWindow.str_spinbox_style_invalid)
+                        widgets_status.spinBox_Send_Str.setStyleSheet(MyMainWindow.str_spinbox_style_invalid)
                         b_spinbox_check_valid = False
                     else:
-                        widgets_status.spinBox_Send_Float.setStyleSheet("QSpinBox{background-color: rgb(255, 255, 255)}")
-                        widgets_status.spinBox_Send_Str.setStyleSheet("QSpinBox{background-color: rgb(255, 255, 255)}")
+                        widgets_status.spinBox_Send_Float.setStyleSheet(MyMainWindow.str_spinbox_style_enable)
+                        widgets_status.spinBox_Send_Str.setStyleSheet(MyMainWindow.str_spinbox_style_enable)
                         b_spinbox_check_valid = True
 
                 elif not widgets_status.checkBox_Send_Float.isChecked():
                     if widgets_status.spinBox_Send_Int.text() == widgets_status.spinBox_Send_Str.text():
-                        widgets_status.spinBox_Send_Int.setStyleSheet("QSpinBox{background-color: rgb(253, 183, 184)}")
-                        widgets_status.spinBox_Send_Str.setStyleSheet("QSpinBox{background-color: rgb(253, 183, 184)}")
+                        widgets_status.spinBox_Send_Int.setStyleSheet(MyMainWindow.str_spinbox_style_invalid)
+                        widgets_status.spinBox_Send_Str.setStyleSheet(MyMainWindow.str_spinbox_style_invalid)
                         b_spinbox_check_valid = False
                     else:
-                        widgets_status.spinBox_Send_Int.setStyleSheet("QSpinBox{background-color: rgb(255, 255, 255)}")
-                        widgets_status.spinBox_Send_Str.setStyleSheet("QSpinBox{background-color: rgb(255, 255, 255)}")
+                        widgets_status.spinBox_Send_Int.setStyleSheet(MyMainWindow.str_spinbox_style_enable)
+                        widgets_status.spinBox_Send_Str.setStyleSheet(MyMainWindow.str_spinbox_style_enable)
                         b_spinbox_check_valid = True
                 else:
                     if widgets_status.spinBox_Send_Int.text() == widgets_status.spinBox_Send_Float.text():
-                        widgets_status.spinBox_Send_Float.setStyleSheet("QSpinBox{background-color: rgb(253, 183, 184)}")
-                        widgets_status.spinBox_Send_Int.setStyleSheet("QSpinBox{background-color: rgb(253, 183, 184)}")
+                        widgets_status.spinBox_Send_Float.setStyleSheet(MyMainWindow.str_spinbox_style_invalid)
+                        widgets_status.spinBox_Send_Int.setStyleSheet(MyMainWindow.str_spinbox_style_invalid)
                         b_spinbox_check_valid = False
                     else:
-                        widgets_status.spinBox_Send_Float.setStyleSheet("QSpinBox{background-color: rgb(255, 255, 255)}")
-                        widgets_status.spinBox_Send_Int.setStyleSheet("QSpinBox{background-color: rgb(255, 255, 255)}")
+                        widgets_status.spinBox_Send_Float.setStyleSheet(MyMainWindow.str_spinbox_style_enable)
+                        widgets_status.spinBox_Send_Int.setStyleSheet(MyMainWindow.str_spinbox_style_enable)
                         b_spinbox_check_valid = True
 
             elif widgets_status.checkBox_Send_Int.isChecked() + widgets_status.checkBox_Send_Float.isChecked() + widgets_status.checkBox_Send_Str.isChecked() == 3:
                 if widgets_status.spinBox_Send_Int.text() == widgets_status.spinBox_Send_Float.text():
                     b_spinbox_check_valid = False
-                    widgets_status.spinBox_Send_Int.setStyleSheet("QSpinBox{background-color: rgb(253, 183, 184)}")
-                    widgets_status.spinBox_Send_Float.setStyleSheet("QSpinBox{background-color: rgb(253, 183, 184)}")
+                    widgets_status.spinBox_Send_Int.setStyleSheet(MyMainWindow.str_spinbox_style_invalid)
+                    widgets_status.spinBox_Send_Float.setStyleSheet(MyMainWindow.str_spinbox_style_invalid)
                     if widgets_status.spinBox_Send_Int.text() == widgets_status.spinBox_Send_Str.text():
-                        widgets_status.spinBox_Send_Int.setStyleSheet("QSpinBox{background-color: rgb(253, 183, 184)}")
-                        widgets_status.spinBox_Send_Str.setStyleSheet("QSpinBox{background-color: rgb(253, 183, 184)}")
+                        widgets_status.spinBox_Send_Int.setStyleSheet(MyMainWindow.str_spinbox_style_invalid)
+                        widgets_status.spinBox_Send_Str.setStyleSheet(MyMainWindow.str_spinbox_style_invalid)
                     else:
-                        widgets_status.spinBox_Send_Str.setStyleSheet("QSpinBox{background-color: rgb(255, 255, 255)}")
+                        widgets_status.spinBox_Send_Str.setStyleSheet(MyMainWindow.str_spinbox_style_enable)
                 elif widgets_status.spinBox_Send_Int.text() == widgets_status.spinBox_Send_Str.text():
                     b_spinbox_check_valid = False
-                    widgets_status.spinBox_Send_Float.setStyleSheet("QSpinBox{background-color: rgb(255, 255, 255)}")
-                    widgets_status.spinBox_Send_Int.setStyleSheet("QSpinBox{background-color: rgb(253, 183, 184)}")
-                    widgets_status.spinBox_Send_Str.setStyleSheet("QSpinBox{background-color: rgb(253, 183, 184)}")
+                    widgets_status.spinBox_Send_Float.setStyleSheet(MyMainWindow.str_spinbox_style_enable)
+                    widgets_status.spinBox_Send_Int.setStyleSheet(MyMainWindow.str_spinbox_style_invalid)
+                    widgets_status.spinBox_Send_Str.setStyleSheet(MyMainWindow.str_spinbox_style_invalid)
                     if widgets_status.spinBox_Send_Float.text() == widgets_status.spinBox_Send_Str.text():
-                        widgets_status.spinBox_Send_Float.setStyleSheet("QSpinBox{background-color: rgb(253, 183, 184)}")
-                        widgets_status.spinBox_Send_Str.setStyleSheet("QSpinBox{background-color: rgb(253, 183, 184)}")
+                        widgets_status.spinBox_Send_Float.setStyleSheet(MyMainWindow.str_spinbox_style_invalid)
+                        widgets_status.spinBox_Send_Str.setStyleSheet(MyMainWindow.str_spinbox_style_invalid)
                     else:
-                        widgets_status.spinBox_Send_Float.setStyleSheet("QSpinBox{background-color: rgb(255, 255, 255)}")
+                        widgets_status.spinBox_Send_Float.setStyleSheet(MyMainWindow.str_spinbox_style_enable)
                 elif widgets_status.spinBox_Send_Int.text() != widgets_status.spinBox_Send_Str.text():
-                    widgets_status.spinBox_Send_Int.setStyleSheet("QSpinBox{background-color: rgb(255, 255, 255)}")
+                    widgets_status.spinBox_Send_Int.setStyleSheet(MyMainWindow.str_spinbox_style_enable)
                     if widgets_status.spinBox_Send_Float.text() == widgets_status.spinBox_Send_Str.text():
                         b_spinbox_check_valid = False
-                        widgets_status.spinBox_Send_Float.setStyleSheet("QSpinBox{background-color: rgb(253, 183, 184)}")
-                        widgets_status.spinBox_Send_Str.setStyleSheet("QSpinBox{background-color: rgb(253, 183, 184)}")
+                        widgets_status.spinBox_Send_Float.setStyleSheet(MyMainWindow.str_spinbox_style_invalid)
+                        widgets_status.spinBox_Send_Str.setStyleSheet(MyMainWindow.str_spinbox_style_invalid)
                     else:
                         b_spinbox_check_valid = True
-                        widgets_status.spinBox_Send_Float.setStyleSheet("QSpinBox{background-color: rgb(255, 255, 255)}")
-                        widgets_status.spinBox_Send_Str.setStyleSheet("QSpinBox{background-color: rgb(255, 255, 255)}")
+                        widgets_status.spinBox_Send_Float.setStyleSheet(MyMainWindow.str_spinbox_style_enable)
+                        widgets_status.spinBox_Send_Str.setStyleSheet(MyMainWindow.str_spinbox_style_enable)
             if widgets_status.lineEdit_StrSendSeparator.isEnabled():
                 ins_re_match = re.match(r"[^A-Za-z\d.]", widgets_status.lineEdit_StrSendSeparator.text())
                 if ins_re_match is not None:
-                    widgets_status.lineEdit_StrSendSeparator.setStyleSheet("background-color: rgb(255, 255, 255);")
+                    widgets_status.lineEdit_StrSendSeparator.setStyleSheet(MyMainWindow.str_lineedit_style_enable)
                     b_lineedit_send_seperator_check_valid = True
                 else:
-                    widgets_status.lineEdit_StrSendSeparator.setStyleSheet("background-color: rgb(253, 183, 184);")
+                    widgets_status.lineEdit_StrSendSeparator.setStyleSheet(MyMainWindow.str_lineedit_style_invalid)
                     b_lineedit_send_seperator_check_valid = False
             else:
                 b_lineedit_send_seperator_check_valid = True
@@ -1128,10 +1142,10 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             if widgets_status.lineEdit_SendInterval.isEnabled() and widgets_status.lineEdit_SendInterval.text() != "":
                 try:
                     float(widgets_status.lineEdit_SendInterval.text())
-                    widgets_status.lineEdit_SendInterval.setStyleSheet("background-color: rgb(255, 255, 255);")
+                    widgets_status.lineEdit_SendInterval.setStyleSheet(MyMainWindow.str_lineedit_style_enable)
                     b_lineedit_send_interval_check_valid = True
                 except ValueError:
-                    widgets_status.lineEdit_SendInterval.setStyleSheet("background-color: rgb(253, 183, 184);")
+                    widgets_status.lineEdit_SendInterval.setStyleSheet(MyMainWindow.str_lineedit_style_invalid)
                     b_lineedit_send_interval_check_valid = False
             else:
                 b_lineedit_send_interval_check_valid = True
@@ -1161,80 +1175,80 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                         b_spinbox_check_valid = False
             elif widgets_status.checkBox_Receive_Int.isChecked() + widgets_status.checkBox_Receive_Float.isChecked() + widgets_status.checkBox_Receive_Str.isChecked() == 1:
                 if widgets_status.checkBox_Receive_Int.isChecked():
-                    widgets_status.spinBox_Receive_Int.setStyleSheet("QSpinBox{background-color:rgb(255, 255, 255)}")
+                    widgets_status.spinBox_Receive_Int.setStyleSheet(MyMainWindow.str_spinbox_style_enable)
                 elif widgets_status.checkBox_Receive_Float.isChecked():
-                    widgets_status.spinBox_Receive_Float.setStyleSheet("QSpinBox{background-color:rgb(255, 255, 255)}")
+                    widgets_status.spinBox_Receive_Float.setStyleSheet(MyMainWindow.str_spinbox_style_enable)
                 else:
-                    widgets_status.spinBox_Receive_Str.setStyleSheet("QSpinBox{background-color:rgb(255, 255, 255)}")
+                    widgets_status.spinBox_Receive_Str.setStyleSheet(MyMainWindow.str_spinbox_style_enable)
                 b_spinbox_check_valid = True
             elif widgets_status.checkBox_Receive_Int.isChecked() + widgets_status.checkBox_Receive_Float.isChecked() + widgets_status.checkBox_Receive_Str.isChecked() == 2:
                 if not widgets_status.checkBox_Receive_Int.isChecked():
                     if widgets_status.spinBox_Receive_Float.text() == widgets_status.spinBox_Receive_Str.text():
-                        widgets_status.spinBox_Receive_Float.setStyleSheet("QSpinBox{background-color: rgb(253, 183, 184)}")
-                        widgets_status.spinBox_Receive_Str.setStyleSheet("QSpinBox{background-color: rgb(253, 183, 184)}")
+                        widgets_status.spinBox_Receive_Float.setStyleSheet(MyMainWindow.str_spinbox_style_invalid)
+                        widgets_status.spinBox_Receive_Str.setStyleSheet(MyMainWindow.str_spinbox_style_invalid)
                         b_spinbox_check_valid = False
                     else:
-                        widgets_status.spinBox_Receive_Float.setStyleSheet("QSpinBox{background-color: rgb(255, 255, 255)}")
-                        widgets_status.spinBox_Receive_Str.setStyleSheet("QSpinBox{background-color: rgb(255, 255, 255)}")
+                        widgets_status.spinBox_Receive_Float.setStyleSheet(MyMainWindow.str_spinbox_style_enable)
+                        widgets_status.spinBox_Receive_Str.setStyleSheet(MyMainWindow.str_spinbox_style_enable)
                         b_spinbox_check_valid = True
 
                 elif not widgets_status.checkBox_Receive_Float.isChecked():
                     if widgets_status.spinBox_Receive_Int.text() == widgets_status.spinBox_Receive_Str.text():
-                        widgets_status.spinBox_Receive_Int.setStyleSheet("QSpinBox{background-color: rgb(253, 183, 184)}")
-                        widgets_status.spinBox_Receive_Str.setStyleSheet("QSpinBox{background-color: rgb(253, 183, 184)}")
+                        widgets_status.spinBox_Receive_Int.setStyleSheet(MyMainWindow.str_spinbox_style_invalid)
+                        widgets_status.spinBox_Receive_Str.setStyleSheet(MyMainWindow.str_spinbox_style_invalid)
                         b_spinbox_check_valid = False
                     else:
-                        widgets_status.spinBox_Receive_Int.setStyleSheet("QSpinBox{background-color: rgb(255, 255, 255)}")
-                        widgets_status.spinBox_Receive_Str.setStyleSheet("QSpinBox{background-color: rgb(255, 255, 255)}")
+                        widgets_status.spinBox_Receive_Int.setStyleSheet(MyMainWindow.str_spinbox_style_enable)
+                        widgets_status.spinBox_Receive_Str.setStyleSheet(MyMainWindow.str_spinbox_style_enable)
                         b_spinbox_check_valid = True
                 else:
                     if widgets_status.spinBox_Receive_Int.text() == widgets_status.spinBox_Receive_Float.text():
-                        widgets_status.spinBox_Receive_Float.setStyleSheet("QSpinBox{background-color: rgb(253, 183, 184)}")
-                        widgets_status.spinBox_Receive_Int.setStyleSheet("QSpinBox{background-color: rgb(253, 183, 184)}")
+                        widgets_status.spinBox_Receive_Float.setStyleSheet(MyMainWindow.str_spinbox_style_invalid)
+                        widgets_status.spinBox_Receive_Int.setStyleSheet(MyMainWindow.str_spinbox_style_invalid)
                         b_spinbox_check_valid = False
                     else:
-                        widgets_status.spinBox_Receive_Float.setStyleSheet("QSpinBox{background-color: rgb(255, 255, 255)}")
-                        widgets_status.spinBox_Receive_Int.setStyleSheet("QSpinBox{background-color: rgb(255, 255, 255)}")
+                        widgets_status.spinBox_Receive_Float.setStyleSheet(MyMainWindow.str_spinbox_style_enable)
+                        widgets_status.spinBox_Receive_Int.setStyleSheet(MyMainWindow.str_spinbox_style_enable)
                         b_spinbox_check_valid = True
 
             elif widgets_status.checkBox_Receive_Int.isChecked() + widgets_status.checkBox_Receive_Float.isChecked() + widgets_status.checkBox_Receive_Str.isChecked() == 3:
                 if widgets_status.spinBox_Receive_Int.text() == widgets_status.spinBox_Receive_Float.text():
                     b_spinbox_check_valid = False
-                    widgets_status.spinBox_Receive_Int.setStyleSheet("QSpinBox{background-color: rgb(253, 183, 184)}")
-                    widgets_status.spinBox_Receive_Float.setStyleSheet("QSpinBox{background-color: rgb(253, 183, 184)}")
+                    widgets_status.spinBox_Receive_Int.setStyleSheet(MyMainWindow.str_spinbox_style_invalid)
+                    widgets_status.spinBox_Receive_Float.setStyleSheet(MyMainWindow.str_spinbox_style_invalid)
                     if widgets_status.spinBox_Receive_Int.text() == widgets_status.spinBox_Receive_Str.text():
-                        widgets_status.spinBox_Receive_Int.setStyleSheet("QSpinBox{background-color: rgb(253, 183, 184)}")
-                        widgets_status.spinBox_Receive_Str.setStyleSheet("QSpinBox{background-color: rgb(253, 183, 184)}")
+                        widgets_status.spinBox_Receive_Int.setStyleSheet(MyMainWindow.str_spinbox_style_invalid)
+                        widgets_status.spinBox_Receive_Str.setStyleSheet(MyMainWindow.str_spinbox_style_invalid)
                     else:
-                        widgets_status.spinBox_Receive_Str.setStyleSheet("QSpinBox{background-color: rgb(255, 255, 255)}")
+                        widgets_status.spinBox_Receive_Str.setStyleSheet(MyMainWindow.str_spinbox_style_enable)
                 elif widgets_status.spinBox_Receive_Int.text() == widgets_status.spinBox_Receive_Str.text():
                     b_spinbox_check_valid = False
-                    widgets_status.spinBox_Receive_Float.setStyleSheet("QSpinBox{background-color: rgb(255, 255, 255)}")
-                    widgets_status.spinBox_Receive_Int.setStyleSheet("QSpinBox{background-color: rgb(253, 183, 184)}")
-                    widgets_status.spinBox_Receive_Str.setStyleSheet("QSpinBox{background-color: rgb(253, 183, 184)}")
+                    widgets_status.spinBox_Receive_Float.setStyleSheet(MyMainWindow.str_spinbox_style_enable)
+                    widgets_status.spinBox_Receive_Int.setStyleSheet(MyMainWindow.str_spinbox_style_invalid)
+                    widgets_status.spinBox_Receive_Str.setStyleSheet(MyMainWindow.str_spinbox_style_invalid)
                     if widgets_status.spinBox_Receive_Float.text() == widgets_status.spinBox_Receive_Str.text():
-                        widgets_status.spinBox_Receive_Float.setStyleSheet("QSpinBox{background-color: rgb(253, 183, 184)}")
-                        widgets_status.spinBox_Receive_Str.setStyleSheet("QSpinBox{background-color: rgb(253, 183, 184)}")
+                        widgets_status.spinBox_Receive_Float.setStyleSheet(MyMainWindow.str_spinbox_style_invalid)
+                        widgets_status.spinBox_Receive_Str.setStyleSheet(MyMainWindow.str_spinbox_style_invalid)
                     else:
-                        widgets_status.spinBox_Receive_Float.setStyleSheet("QSpinBox{background-color: rgb(255, 255, 255)}")
+                        widgets_status.spinBox_Receive_Float.setStyleSheet(MyMainWindow.str_spinbox_style_enable)
                 elif widgets_status.spinBox_Receive_Int.text() != widgets_status.spinBox_Receive_Str.text():
-                    widgets_status.spinBox_Receive_Int.setStyleSheet("QSpinBox{background-color: rgb(255, 255, 255)}")
+                    widgets_status.spinBox_Receive_Int.setStyleSheet(MyMainWindow.str_spinbox_style_enable)
                     if widgets_status.spinBox_Receive_Float.text() == widgets_status.spinBox_Receive_Str.text():
                         b_spinbox_check_valid = False
-                        widgets_status.spinBox_Receive_Float.setStyleSheet("QSpinBox{background-color: rgb(253, 183, 184)}")
-                        widgets_status.spinBox_Receive_Str.setStyleSheet("QSpinBox{background-color: rgb(253, 183, 184)}")
+                        widgets_status.spinBox_Receive_Float.setStyleSheet(MyMainWindow.str_spinbox_style_invalid)
+                        widgets_status.spinBox_Receive_Str.setStyleSheet(MyMainWindow.str_spinbox_style_invalid)
                     else:
                         b_spinbox_check_valid = True
-                        widgets_status.spinBox_Receive_Float.setStyleSheet("QSpinBox{background-color: rgb(255, 255, 255)}")
-                        widgets_status.spinBox_Receive_Str.setStyleSheet("QSpinBox{background-color: rgb(255, 255, 255)}")
+                        widgets_status.spinBox_Receive_Float.setStyleSheet(MyMainWindow.str_spinbox_style_enable)
+                        widgets_status.spinBox_Receive_Str.setStyleSheet(MyMainWindow.str_spinbox_style_enable)
 
             if widgets_status.lineEdit_StrReceiveSeparator.isEnabled():
                 ins_re_match = re.match(r"[^A-Za-z\d.]", widgets_status.lineEdit_StrReceiveSeparator.text())
                 if ins_re_match is not None:
-                    widgets_status.lineEdit_StrReceiveSeparator.setStyleSheet("background-color: rgb(255, 255, 255);")
+                    widgets_status.lineEdit_StrReceiveSeparator.setStyleSheet(MyMainWindow.str_lineedit_style_enable)
                     b_lineedit_seperator_recv_check_valid = True
                 else:
-                    widgets_status.lineEdit_StrReceiveSeparator.setStyleSheet("background-color: rgb(253, 183, 184);")
+                    widgets_status.lineEdit_StrReceiveSeparator.setStyleSheet(MyMainWindow.str_lineedit_style_invalid)
                     b_lineedit_seperator_recv_check_valid = False
             else:
                 b_lineedit_seperator_recv_check_valid = True
@@ -1242,10 +1256,10 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             if widgets_status.lineEdit_RecvInterval.isEnabled() and widgets_status.lineEdit_RecvInterval.text() != "":
                 try:
                     float(widgets_status.lineEdit_RecvInterval.text())
-                    widgets_status.lineEdit_RecvInterval.setStyleSheet("background-color: rgb(255, 255, 255);")
+                    widgets_status.lineEdit_RecvInterval.setStyleSheet(MyMainWindow.str_lineedit_style_enable)
                     b_lineedit_recv_interval_check_valid = True
                 except ValueError:
-                    widgets_status.lineEdit_RecvInterval.setStyleSheet("background-color: rgb(253, 183, 184);")
+                    widgets_status.lineEdit_RecvInterval.setStyleSheet(MyMainWindow.str_lineedit_style_invalid)
                     b_lineedit_recv_interval_check_valid = False
             else:
                 b_lineedit_recv_interval_check_valid = True
@@ -1253,23 +1267,23 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             if widgets_status.lineEdit_Receive_Int.isEnabled() and widgets_status.lineEdit_Receive_Int.text() != "":
                 try:
                     int(widgets_status.lineEdit_Receive_Int.text())
-                    widgets_status.lineEdit_Receive_Int.setStyleSheet("background-color: rgb(255, 255, 255);")
+                    widgets_status.lineEdit_Receive_Int.setStyleSheet(MyMainWindow.str_lineedit_style_enable)
                 except ValueError:
-                    widgets_status.lineEdit_Receive_Int.setStyleSheet("background-color: rgb(253, 183, 184);")
+                    widgets_status.lineEdit_Receive_Int.setStyleSheet(MyMainWindow.str_lineedit_style_invalid)
 
             if widgets_status.lineEdit_Receive_Float.isEnabled() and widgets_status.lineEdit_Receive_Float.text() != "":
                 try:
                     int(widgets_status.lineEdit_Receive_Float.text())
-                    widgets_status.lineEdit_Receive_Float.setStyleSheet("background-color: rgb(255, 255, 255);")
+                    widgets_status.lineEdit_Receive_Float.setStyleSheet(MyMainWindow.str_lineedit_style_enable)
                 except ValueError:
-                    widgets_status.lineEdit_Receive_Float.setStyleSheet("background-color: rgb(253, 183, 184);")
+                    widgets_status.lineEdit_Receive_Float.setStyleSheet(MyMainWindow.str_lineedit_style_invalid)
 
             if widgets_status.lineEdit_Receive_Str.isEnabled() and widgets_status.lineEdit_Receive_Str.text() != "":
                 try:
                     int(widgets_status.lineEdit_Receive_Str.text())
-                    widgets_status.lineEdit_Receive_Str.setStyleSheet("background-color: rgb(255, 255, 255);")
+                    widgets_status.lineEdit_Receive_Str.setStyleSheet(MyMainWindow.str_lineedit_style_enable)
                 except ValueError:
-                    widgets_status.lineEdit_Receive_Str.setStyleSheet("background-color: rgb(253, 183, 184);")
+                    widgets_status.lineEdit_Receive_Str.setStyleSheet(MyMainWindow.str_lineedit_style_invalid)
 
             if b_spinbox_check_valid and b_lineedit_seperator_recv_check_valid and b_lineedit_recv_interval_check_valid:
                 widgets_status.pushButton_Receive.setEnabled(True)
@@ -1281,54 +1295,31 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             widgets_status.pushButton_Receive.setEnabled(False)
             widgets_status.pushButton_ClearCache.setEnabled(False)
 
-    def uiUpdate_checkIPPort(self):
-        match_result_ip = re.match(r"((2(5[0-5]|[0-4]\d))|[0-1]?\d{1,2})(\.((2(5[0-5]|[0-4]\d))|[0-1]?\d{1,2})){3}", self.lineEdit_SevIP.text())
-        match_result_port = re.match(r"^\d+$", self.lineEdit_SerPort.text())
+    @staticmethod
+    def ui_update_check_ip_port(widgets_status: SocketWidgetStruct):
+        match_result_ip = re.match(r"((2(5[0-5]|[0-4]\d))|[0-1]?\d{1,2})(\.((2(5[0-5]|[0-4]\d))|[0-1]?\d{1,2})){3}", widgets_status.lineEdit_IP.text())
+        match_result_port = re.match(r"^\d+$", widgets_status.lineEdit_Port.text())
         if match_result_ip is None:
-            self.lineEdit_SevIP.setStyleSheet("background-color: rgb(253, 183, 184)")
-
+            widgets_status.lineEdit_IP.setStyleSheet(MyMainWindow.str_lineedit_style_invalid)
         else:
-            self.lineEdit_SevIP.setStyleSheet("background-color: rgb(255, 255, 255)")
-            self.pushButton_SerCreateConn.setEnabled(True)
+            widgets_status.lineEdit_IP.setStyleSheet(MyMainWindow.str_lineedit_style_enable)
 
         if match_result_port is None:
-            self.lineEdit_SerPort.setStyleSheet("background-color: rgb(253, 183, 184)")
+            widgets_status.lineEdit_Port.setStyleSheet(MyMainWindow.str_lineedit_style_invalid)
         else:
-            self.lineEdit_SerPort.setStyleSheet("background-color: rgb(255, 255, 255)")
+            widgets_status.lineEdit_Port.setStyleSheet(MyMainWindow.str_lineedit_style_enable)
 
         if match_result_ip is None or match_result_port is None:
-            self.pushButton_SerCreateConn.setEnabled(False)
+            widgets_status.pushButton_CreateConnection.setEnabled(False)
         else:
-            self.pushButton_SerCreateConn.setEnabled(True)
-
-        match_result_ip = re.match(r"((2(5[0-5]|[0-4]\d))|[0-1]?\d{1,2})(\.((2(5[0-5]|[0-4]\d))|[0-1]?\d{1,2})){3}",
-                                self.lineEdit_ClntIP.text())
-        match_result_port = re.match(r"^\d+$", self.lineEdit_ClntPort.text())
-        if match_result_ip is None:
-            self.lineEdit_ClntIP.setStyleSheet("background-color: rgb(253, 183, 184)")
-        else:
-            self.lineEdit_ClntIP.setStyleSheet("background-color: rgb(255, 255, 255)")
-
-        if match_result_port is None:
-            self.lineEdit_ClntPort.setStyleSheet("background-color: rgb(253, 183, 184)")
-        else:
-            self.lineEdit_ClntPort.setStyleSheet("background-color: rgb(255, 255, 255)")
-
-        if match_result_ip is None or match_result_port is None:
-            self.pushButton_ClntCreatConn.setEnabled(False)
-        else:
-            self.pushButton_ClntCreatConn.setEnabled(True)
+            widgets_status.pushButton_CreateConnection.setEnabled(True)
 
 
 if __name__ == '__main__':
     # format the application interface show as designer display
     QtCore.QCoreApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling)
     gui_app = QApplication(sys.argv)
-    # main = QMainWindow()
     myWin = MyMainWindow()
-    # widget = QWidget()
-    # myWin.setupUi(widget)
-    # widget.show()
     myWin.show()
     # print("Main thread", QThread.currentThread())
     sys.exit(gui_app.exec())

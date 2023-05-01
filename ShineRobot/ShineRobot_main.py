@@ -17,19 +17,72 @@ from ShineRobot import Ui_MainWindow
 from PyQt5.QtWidgets import QApplication, QMainWindow, QMenu, QAction
 from PyQt5.Qt import QStandardItemModel, QCursor, Qt, QThread, pyqtSignal
 from PyQt5.QtGui import QTextCursor
-from shine_robot_socket_communication import SocketServer, SocketServerCloseClient, SocketClient, SocketWidgetStruct, SocketCommunicate
+from shine_robot_socket_communication import SocketServer, SocketServerCloseClient, SocketClient, SocketCommunicate
 from functools import partial
 from Pyqt_Quaternion_Euler import QuaternionEuler
+
+
+class SocketWidgetStruct:
+    def __int__(self):
+        self.send_fun = None
+        self.receive_fun = None
+        self.log_fun = None
+        # self.send_continue = None
+        # self.send_interval = None
+
+        self.lineEdit_IP = None
+        self.lineEdit_Port = None
+        self.pushButton_CreateConnection = None
+        self.pushButton_CloseConnection = None
+        self.checkBox_SendStringMode = None
+        self.lineEdit_StrSendSeparator = None
+        self.checkBox_SendRawbytesMode = None
+
+        self.checkBox_Send_Int = None
+        self.spinBox_Send_Int = None
+        self.lineEdit_Send_Int = None
+        self.checkBox_Send_Float = None
+        self.spinBox_Send_Float = None
+        self.lineEdit_Send_Float = None
+        self.checkBox_Send_Str = None
+        self.spinBox_Send_Str = None
+        self.lineEdit_Send_Str = None
+
+        self.lineEdit_SendFullType = None
+        self.lineEdit_SendFormatStr = None
+
+        self.checkBox_ReceiveStrMode = None
+        self.lineEdit_StrReceiveSeparator = None
+        self.checkBox_ReceiveRawbytesMode = None
+
+        self.checkBox_Receive_Int = None
+        self.spinBox_Receive_Int = None
+        self.lineEdit_Receive_Int = None
+        self.checkBox_Receive_Float = None
+        self.spinBox_Receive_Float = None
+        self.lineEdit_Receive_Float = None
+        self.checkBox_Receive_Str = None
+        self.spinBox_Receive_Str = None
+        self.spinBox_ReceiveRawLength = None
+        self.lineEdit_Receive_Str = None
+
+        self.lineEdit_ReceiveFullType = None
+        self.lineEdit_ReceiveFormatStr = None
+        self.pushButton_Send = None
+        self.checkBox_SendContinue = None
+        self.lineEdit_SendInterval = None
+        self.pushButton_Receive = None
+        self.checkBox_RecvContinue = None
+        self.lineEdit_RecvInterval = None
+        self.pushButton_ClearCache = None
 
 
 class MyMainWindow(QMainWindow, Ui_MainWindow):
     # Signal should define in class not in instance
     signal_socket_server_not_accepted_close = pyqtSignal()
-    signal_server_send = pyqtSignal(str)  # , bool, str
+    signal_server_send = pyqtSignal(str)
     # signal that send interval check valid in order to update send parameters
-    # signal_server_send_interval_check_valid = pyqtSignal(bool)
     signal_client_send = pyqtSignal(str)
-    # signal_client_send_interval_check_valid = pyqtSignal(bool)
 
     # widget style sheet
     str_lineedit_style_invalid = "QLineEdit{background-color: rgb(253, 183, 184)}"
@@ -187,29 +240,33 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.pushButton_SerCreateConn.clicked.connect(lambda: self.pushButton_SerCreateConn.setDisabled(True))
         self.pushButton_SerCloseConn.clicked.connect(self.close_socket_server)
         self.pushButton_SerSend.clicked.connect(partial(self.socket_send, self.signal_server_send,  self.server_widgets_status))
-        self.pushButton_SerRecv.clicked.connect(partial(self.socket_server.socket_send, self.server_widgets_status))
+        self.pushButton_SerRecv.clicked.connect(self.socket_server.socket_receive)
         self.pushButton_SerClearCache.clicked.connect(self.socket_server.socket_clear_cache)
 
         self.socket_server.signal_socket_server_accepted.connect(partial(self.ui_update_socket_server_communicate_enable, widgets_status=self.server_widgets_status, _socket=self.socket_server))
         self.socket_server.signal_record_result.connect(self.record_socket_communication_result)
         self.socket_server.signal_socket_server_closed.connect(self.pushButton_SerCreateConn.setEnabled)
         self.socket_server.signal_socket_server_closed.connect(self.pushButton_SerCloseConn.setDisabled)
+        self.socket_server.signal_socket_receive_bytes.connect(partial(self.socket_receive, widgets_status=self.server_widgets_status))
+        self.socket_server.signal_socket_sending.connect(partial(self.ui_update_pushbutton_send, widgets_status=self.server_widgets_status))
+        self.socket_server.signal_socket_receiving.connect(partial(self.ui_update_pushbutton_recv, widgets_status=self.server_widgets_status))
+
         self.socket_server_client.signal_record_result.connect(self.record_socket_communication_result)
         self.socket_server_client.signal_socket_server_client_closed.connect(self.socket_server.close_socket_server)
         self.signal_socket_server_not_accepted_close.connect(self.socket_server_client.connect_to_server)
 
-        # self.signal_client_send.connect(partial(self.socket_client.socket_send,  _b_continue_send=self.checkBox_ClntContinueSend.isChecked(), _send_interval=self.lineEdit_ClntSendInterval.text()))
         self.signal_client_send.connect(self.socket_client.socket_send)
-        # self.signal_client_send_interval_check_valid.connect(self.update_send_parameter)
         self.pushButton_ClntCreatConn.clicked.connect(partial(self.socket_client.create_socket_client, (self.lineEdit_ClntIP.text(), int(self.lineEdit_ClntPort.text()))))
         self.pushButton_ClntCloseConn.clicked.connect(self.socket_client.close_socket_client)
         self.pushButton_ClntSend.clicked.connect(lambda: self.socket_send(self.signal_client_send, self.client_widgets_status))
-        # self.checkBox_ClntContinueSend.clicked.connect(lambda: self.socket_send(self.signal_client_send, self.client_widgets_status))
-        self.pushButton_ClntRecv.clicked.connect(partial(self.socket_client.socket_send, self.client_widgets_status))
+        self.pushButton_ClntRecv.clicked.connect(self.socket_client.socket_receive)
         self.pushButton_ClntClearCache.clicked.connect(self.socket_client.socket_clear_cache)
         self.socket_client.signal_socket_client_connected.connect(self.pushButton_ClntCloseConn.setEnabled)
         self.socket_client.signal_socket_client_connected.connect(partial(self.ui_update_socket_server_communicate_enable, widgets_status=self.client_widgets_status, _socket=self.socket_client))
         self.socket_client.signal_record_result.connect(self.record_socket_communication_result)
+        self.socket_client.signal_socket_receive_bytes.connect(partial(self.socket_receive, widgets_status=self.client_widgets_status))
+        self.socket_client.signal_socket_sending.connect(partial(self.ui_update_pushbutton_send, widgets_status=self.client_widgets_status))
+        self.socket_client.signal_socket_receiving.connect(partial(self.ui_update_pushbutton_recv, widgets_status=self.client_widgets_status))
 
         self.checkBox_ServerSendString.clicked.connect(lambda: self.ui_update_checkbox_send_string_checked(self.server_widgets_status, self.socket_server))
         self.checkBox_ServerSendRawbytes.clicked.connect(lambda: self.ui_update_checkbox_send_rawbytes_checked(self.server_widgets_status, self.socket_server))
@@ -353,10 +410,6 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             self.record_socket_communication_result("OSError happened when close the socket server connection,"
                                                     " please check!")
 
-
-    # def call_socket_receive(self, _fun_recv):
-    #     _fun_recv()
-
     def record_socket_communication_result(self, str_record: str):
         """
         write record and date to textedit
@@ -370,6 +423,36 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
     # ------------------------------------------------------------------------------------------------------------------
     # -----------------------------------uiUpdate-----------------------------------------------------------------------
     # ------------------------------------------------------------------------------------------------------------------
+    @staticmethod
+    def ui_update_pushbutton_send(_b_sending: bool, widgets_status: SocketWidgetStruct) -> None:
+        if _b_sending:
+            widgets_status.pushButton_Send.setText("发送中...")
+            widgets_status.pushButton_Send.setEnabled(False)
+            if widgets_status.checkBox_SendContinue.isChecked():
+                widgets_status.checkBox_SendContinue.setStyleSheet("QCheckBox{background-color: rgb(119, 190, 255)}")
+            else:
+                widgets_status.checkBox_SendContinue.setStyleSheet("QCheckBox{background-color: rgb(255, 255, 255)}")
+        else:
+            widgets_status.pushButton_Send.setText("发送")
+            widgets_status.pushButton_Send.setEnabled(True)
+            widgets_status.checkBox_SendContinue.setStyleSheet("QCheckBox{background-color: rgb(255, 255, 255)}")
+
+    @staticmethod
+    def ui_update_pushbutton_recv(_b_receiving: bool, widgets_status: SocketWidgetStruct) -> None:
+        if _b_receiving:
+            widgets_status.pushButton_Receive.setText("接收中...")
+            widgets_status.pushButton_ClearCache.setEnabled(False)
+            widgets_status.pushButton_Receive.setEnabled(False)
+            if widgets_status.checkBox_RecvContinue.isChecked():
+                widgets_status.checkBox_RecvContinue.setStyleSheet("QCheckBox{background-color: rgb(119, 190, 255)}")
+            else:
+                widgets_status.checkBox_RecvContinue.setStyleSheet("QCheckBox{background-color: rgb(255, 255, 255)}")
+        else:
+            widgets_status.pushButton_Receive.setText("接收")
+            widgets_status.pushButton_ClearCache.setEnabled(True)
+            widgets_status.pushButton_Receive.setEnabled(True)
+            widgets_status.checkBox_RecvContinue.setStyleSheet("QCheckBox{background-color: rgb(255, 255, 255)}")
+
     @staticmethod
     def socket_send(_signal_send: pyqtSignal, widgets_status: SocketWidgetStruct) -> None:
         """
@@ -488,11 +571,12 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         except ConnectionAbortedError:
             return
 
-    def socket_receive(self, widgets_status: SocketWidgetStruct) -> None:
+    @staticmethod
+    def socket_receive(_recv_str: bytes, widgets_status: SocketWidgetStruct) -> None:
         """
         Base send widgets status quote receive string function,use name tuple as input args,suit for both server and client
         """
-        _recv_fun = self.socket_receive_bytes
+        # _recv_fun = self.socket_receive_bytes
         _int_checked = widgets_status.checkBox_Receive_Int.isChecked()
         _int_seq = widgets_status.spinBox_Receive_Int.text()
         _int_text_lineedit = widgets_status.lineEdit_Receive_Int
@@ -508,281 +592,281 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         _log_fun = widgets_status.log_fun
 
         try:
-            while True:
-                if widgets_status.checkBox_ReceiveStrMode.isChecked():
-                    if _int_checked + _float_checked + _str_checked == 0:
-                        try:
-                            _full_type_str_text_lineedit.setText(_recv_fun().decode())
-                        except AttributeError as e:
-                            print(e)
-                            _full_type_str_text_lineedit.clear()
-                    if _int_checked + _float_checked + _str_checked == 1:
-                        if _int_checked:
-                            try:
-                                _int_text_lineedit.clear()
-                                m_int = int(_recv_fun().decode())
-                                _int_text_lineedit.setText(str(m_int))
-                            except ValueError:
-                                _int_text_lineedit.clear()
-                                _log_fun("Can't parse receive string bytes as type setting,please check")
-                                return
 
-                        elif _float_checked:
-                            try:
-                                _float_text_lineedit.clear()
-                                m_float = float(_recv_fun().decode())
-                                _float_text_lineedit.setText(str(m_float))
-                            except ValueError:
-                                _float_text_lineedit.clear()
-                                _log_fun("Can't parse receive string bytes as type setting,please check")
-                                return
-                        else:
-                            try:
-                                _str_text_lineedit.clear()
-                                m_str = _recv_fun().decode()
-                                _str_text_lineedit.setText(m_str)
-                            except ValueError:
-                                _str_text_lineedit.clear()
-                                _log_fun("Can't parse receive string bytes as type setting,please check")
-                                return
-
-                    elif _int_checked + _float_checked + _str_checked == 2:
-                        if not _int_checked:
-                            if int(_float_seq) > int(_str_seq):
-                                try:
-                                    _float_text_lineedit.clear()
-                                    _str_text_lineedit.clear()
-                                    _float_str, _string = _recv_fun().decode().split(_recv_str_Separator_text)
-                                    _float_text_lineedit.setText(_float_str)
-                                    _str_text_lineedit.setText(_string)
-                                except ValueError:
-                                    _float_text_lineedit.clear()
-                                    _str_text_lineedit.clear()
-                                    _log_fun("Can't parse receive string bytes as type setting,please check")
-                                    return
-                            else:
-                                try:
-                                    _float_text_lineedit.clear()
-                                    _str_text_lineedit.clear()
-                                    _string, _float_str = _recv_fun().decode().split(_recv_str_Separator_text)
-                                    _float_text_lineedit.setText(_float_str)
-                                    _str_text_lineedit.setText(_string)
-                                except ValueError:
-                                    _float_text_lineedit.clear()
-                                    _str_text_lineedit.clear()
-                                    _log_fun("Can't parse receive string bytes as type setting,please check")
-                                    return
-                        elif not _float_checked:
-                            if int(_int_seq) > int(_str_seq):
-                                try:
-                                    _int_text_lineedit.clear()
-                                    _str_text_lineedit.clear()
-                                    _int_str, _string = _recv_fun().decode().split(_recv_str_Separator_text)
-                                    _int_text_lineedit.setText(_int_str)
-                                    _str_text_lineedit.setText(_string)
-                                except ValueError:
-                                    _int_text_lineedit.clear()
-                                    _str_text_lineedit.clear()
-                                    _log_fun("Can't parse receive string bytes as type setting,please check")
-                                    return
-                            else:
-                                try:
-                                    _int_text_lineedit.clear()
-                                    _str_text_lineedit.clear()
-                                    _string, _int_str = _recv_fun().decode().split(_recv_str_Separator_text)
-                                    _int_text_lineedit.setText(_int_str)
-                                    _str_text_lineedit.setText(_string)
-                                except ValueError:
-                                    _int_text_lineedit.clear()
-                                    _str_text_lineedit.clear()
-                                    _log_fun("Can't parse receive string bytes as type setting,please check")
-                                    return
-                        else:
-                            if int(_int_seq) > int(_float_seq):
-                                try:
-                                    _int_text_lineedit.clear()
-                                    _float_text_lineedit.clear()
-                                    _int_str, _float_str = _recv_fun().decode().split(_recv_str_Separator_text)
-                                    _int_text_lineedit.setText(_int_str)
-                                    _float_text_lineedit.setText(_float_str)
-                                except ValueError:
-                                    _int_text_lineedit.clear()
-                                    _float_text_lineedit.clear()
-                                    _log_fun("Can't parse receive string bytes as type setting,please check")
-                                    return
-                            else:
-                                try:
-                                    _int_text_lineedit.clear()
-                                    _float_text_lineedit.clear()
-                                    _float_str, _int_str = _recv_fun().decode().split(_recv_str_Separator_text)
-                                    _int_text_lineedit.setText(_int_str)
-                                    _float_text_lineedit.setText(_float_str)
-                                except ValueError:
-                                    _int_text_lineedit.clear()
-                                    _float_text_lineedit.clear()
-                                    _log_fun("Can't parse receive string bytes as type setting,please check")
-                                    return
-
-                    elif _int_checked + _float_checked + _str_checked == 3:
+            if widgets_status.checkBox_ReceiveStrMode.isChecked():
+                if _int_checked + _float_checked + _str_checked == 0:
+                    try:
+                        _full_type_str_text_lineedit.setText(_recv_str.decode())
+                    except AttributeError as e:
+                        print(e)
+                        _full_type_str_text_lineedit.clear()
+                if _int_checked + _float_checked + _str_checked == 1:
+                    if _int_checked:
                         try:
                             _int_text_lineedit.clear()
-                            _float_text_lineedit.clear()
-                            _str_text_lineedit.clear()
-                            # sort receive sequence value as sequence settlement
-                            list_type = sorted([[_int_seq, None], [_float_seq, None], [_str_seq, None]],
-                                               key=lambda x: int(x[0]), reverse=True)
-                            list_type[0][1], list_type[1][1], list_type[2][1] = _recv_fun().decode().split(
-                                _recv_str_Separator_text)
-                            _int_text_lineedit.setText([x[1] for x in list_type if x[0] == _int_seq][0])
-                            _float_text_lineedit.setText([x[1] for x in list_type if x[0] == _float_seq][0])
-                            _str_text_lineedit.setText([x[1] for x in list_type if x[0] == _str_seq][0])
+                            m_int = int(_recv_str.decode())
+                            _int_text_lineedit.setText(str(m_int))
                         except ValueError:
                             _int_text_lineedit.clear()
+                            _log_fun("Can't parse receive string bytes as type setting,please check")
+                            return
+
+                    elif _float_checked:
+                        try:
                             _float_text_lineedit.clear()
+                            m_float = float(_recv_str.decode())
+                            _float_text_lineedit.setText(str(m_float))
+                        except ValueError:
+                            _float_text_lineedit.clear()
+                            _log_fun("Can't parse receive string bytes as type setting,please check")
+                            return
+                    else:
+                        try:
+                            _str_text_lineedit.clear()
+                            m_str = _recv_str.decode()
+                            _str_text_lineedit.setText(m_str)
+                        except ValueError:
                             _str_text_lineedit.clear()
                             _log_fun("Can't parse receive string bytes as type setting,please check")
-                else:
-                    _server_receive_rawbytes_length = int(widgets_status.spinBox_ReceiveRawLength.text())
-                    if _int_checked + _float_checked + _str_checked == 0:
-                        try:
-                            _full_type_str_text_lineedit.clear()
-                            # print("parse full type rawbytes")
-                            _tuple = struct.unpack(_full_type_format_str_text, _recv_fun())
-                            _full_type_str_text_lineedit.setText(str(_tuple))
-                        except (struct.error, ValueError):
-                            _full_type_str_text_lineedit.clear()
-                            _log_fun("Can't parse receive rawbytes as type setting,please check")
+                            return
 
-                    if _int_checked + _float_checked + _str_checked == 1:
-                        if _int_checked:
-                            try:
-                                _int_text_lineedit.clear()
-                                _int, = struct.unpack('<h', _recv_fun())
-                                _int_text_lineedit.setText(str(_int))
-                            except (struct.error, ValueError):
-                                _int_text_lineedit.clear()
-                                _log_fun("Can't parse receive rawbytes as type setting,please check")
-
-                        elif _float_checked:
+                elif _int_checked + _float_checked + _str_checked == 2:
+                    if not _int_checked:
+                        if int(_float_seq) > int(_str_seq):
                             try:
                                 _float_text_lineedit.clear()
-                                _float, = struct.unpack('<f', _recv_fun())
+                                _str_text_lineedit.clear()
+                                _float_str, _string = _recv_str.decode().split(_recv_str_Separator_text)
+                                _float_text_lineedit.setText(_float_str)
+                                _str_text_lineedit.setText(_string)
+                            except ValueError:
+                                _float_text_lineedit.clear()
+                                _str_text_lineedit.clear()
+                                _log_fun("Can't parse receive string bytes as type setting,please check")
+                                return
+                        else:
+                            try:
+                                _float_text_lineedit.clear()
+                                _str_text_lineedit.clear()
+                                _string, _float_str = _recv_str.decode().split(_recv_str_Separator_text)
+                                _float_text_lineedit.setText(_float_str)
+                                _str_text_lineedit.setText(_string)
+                            except ValueError:
+                                _float_text_lineedit.clear()
+                                _str_text_lineedit.clear()
+                                _log_fun("Can't parse receive string bytes as type setting,please check")
+                                return
+                    elif not _float_checked:
+                        if int(_int_seq) > int(_str_seq):
+                            try:
+                                _int_text_lineedit.clear()
+                                _str_text_lineedit.clear()
+                                _int_str, _string = _recv_str.decode().split(_recv_str_Separator_text)
+                                _int_text_lineedit.setText(_int_str)
+                                _str_text_lineedit.setText(_string)
+                            except ValueError:
+                                _int_text_lineedit.clear()
+                                _str_text_lineedit.clear()
+                                _log_fun("Can't parse receive string bytes as type setting,please check")
+                                return
+                        else:
+                            try:
+                                _int_text_lineedit.clear()
+                                _str_text_lineedit.clear()
+                                _string, _int_str = _recv_str.decode().split(_recv_str_Separator_text)
+                                _int_text_lineedit.setText(_int_str)
+                                _str_text_lineedit.setText(_string)
+                            except ValueError:
+                                _int_text_lineedit.clear()
+                                _str_text_lineedit.clear()
+                                _log_fun("Can't parse receive string bytes as type setting,please check")
+                                return
+                    else:
+                        if int(_int_seq) > int(_float_seq):
+                            try:
+                                _int_text_lineedit.clear()
+                                _float_text_lineedit.clear()
+                                _int_str, _float_str = _recv_str.decode().split(_recv_str_Separator_text)
+                                _int_text_lineedit.setText(_int_str)
+                                _float_text_lineedit.setText(_float_str)
+                            except ValueError:
+                                _int_text_lineedit.clear()
+                                _float_text_lineedit.clear()
+                                _log_fun("Can't parse receive string bytes as type setting,please check")
+                                return
+                        else:
+                            try:
+                                _int_text_lineedit.clear()
+                                _float_text_lineedit.clear()
+                                _float_str, _int_str = _recv_str.decode().split(_recv_str_Separator_text)
+                                _int_text_lineedit.setText(_int_str)
+                                _float_text_lineedit.setText(_float_str)
+                            except ValueError:
+                                _int_text_lineedit.clear()
+                                _float_text_lineedit.clear()
+                                _log_fun("Can't parse receive string bytes as type setting,please check")
+                                return
+
+                elif _int_checked + _float_checked + _str_checked == 3:
+                    try:
+                        _int_text_lineedit.clear()
+                        _float_text_lineedit.clear()
+                        _str_text_lineedit.clear()
+                        # sort receive sequence value as sequence settlement
+                        list_type = sorted([[_int_seq, None], [_float_seq, None], [_str_seq, None]],
+                                           key=lambda x: int(x[0]), reverse=True)
+                        list_type[0][1], list_type[1][1], list_type[2][1] = _recv_str.decode().split(
+                            _recv_str_Separator_text)
+                        _int_text_lineedit.setText([x[1] for x in list_type if x[0] == _int_seq][0])
+                        _float_text_lineedit.setText([x[1] for x in list_type if x[0] == _float_seq][0])
+                        _str_text_lineedit.setText([x[1] for x in list_type if x[0] == _str_seq][0])
+                    except ValueError:
+                        _int_text_lineedit.clear()
+                        _float_text_lineedit.clear()
+                        _str_text_lineedit.clear()
+                        _log_fun("Can't parse receive string bytes as type setting,please check")
+            else:
+                _server_receive_rawbytes_length = int(widgets_status.spinBox_ReceiveRawLength.text())
+                if _int_checked + _float_checked + _str_checked == 0:
+                    try:
+                        _full_type_str_text_lineedit.clear()
+                        # print("parse full type rawbytes")
+                        _tuple = struct.unpack(_full_type_format_str_text, _recv_str)
+                        _full_type_str_text_lineedit.setText(str(_tuple))
+                    except (struct.error, ValueError):
+                        _full_type_str_text_lineedit.clear()
+                        _log_fun("Can't parse receive rawbytes as type setting,please check")
+
+                if _int_checked + _float_checked + _str_checked == 1:
+                    if _int_checked:
+                        try:
+                            _int_text_lineedit.clear()
+                            _int, = struct.unpack('<h', _recv_str)
+                            _int_text_lineedit.setText(str(_int))
+                        except (struct.error, ValueError):
+                            _int_text_lineedit.clear()
+                            _log_fun("Can't parse receive rawbytes as type setting,please check")
+
+                    elif _float_checked:
+                        try:
+                            _float_text_lineedit.clear()
+                            _float, = struct.unpack('<f', _recv_str)
+                            _float_text_lineedit.setText(str(_float))
+                        except (struct.error, ValueError):
+                            _float_text_lineedit.clear()
+                            _log_fun("Can't parse receive rawbytes as type setting,please check")
+
+                    else:
+                        try:
+                            _str_text_lineedit.clear()
+                            _string, = struct.unpack('<{}s'.format(_server_receive_rawbytes_length), _recv_str)
+                            _str_text_lineedit.setText(str(_string.decode()))
+                        except (struct.error, ValueError):
+                            _str_text_lineedit.clear()
+                            _log_fun("Can't parse receive rawbytes as type setting,please check")
+
+                elif _int_checked + _float_checked + _str_checked == 2:
+                    if not _int_checked:
+                        if int(_float_seq) > int(_str_seq):
+                            try:
+                                _float_text_lineedit.clear()
+                                _str_text_lineedit.clear()
+                                _float, _str = struct.unpack('<f{}s'.format(_server_receive_rawbytes_length),
+                                                             _recv_str)
+                                _float_text_lineedit.setText(str(_float))
+                                _str_text_lineedit.setText(str(_str.decode()))
+                            except (struct.error, ValueError):
+                                _float_text_lineedit.clear()
+                                _str_text_lineedit.clear()
+                                _log_fun("Can't parse receive rawbytes as type setting,please check")
+
+                        else:
+                            try:
+                                _float_text_lineedit.clear()
+                                _str_text_lineedit.clear()
+                                _str, _float = struct.unpack('<{}sf'.format(_server_receive_rawbytes_length),
+                                                             _recv_str)
+                                _float_text_lineedit.setText(str(_float))
+                                _str_text_lineedit.setText(str(_str.decode()))
+                            except (struct.error, ValueError):
+                                _float_text_lineedit.clear()
+                                _str_text_lineedit.clear()
+                                _log_fun("Can't parse receive rawbytes as type setting,please check")
+
+                    elif not _float_checked:
+                        if int(_int_seq) > int(_str_seq):
+                            try:
+                                _int_text_lineedit.clear()
+                                _str_text_lineedit.clear()
+                                _int, _str = struct.unpack('<h{}s'.format(_server_receive_rawbytes_length),
+                                                           _recv_str)
+                                _int_text_lineedit.setText(str(_int))
+                                _str_text_lineedit.setText(str(_str.decode()))
+                            except (struct.error, ValueError):
+                                _int_text_lineedit.clear()
+                                _str_text_lineedit.clear()
+                                _log_fun("Can't parse receive rawbytes as type setting,please check")
+                        else:
+                            try:
+                                _int_text_lineedit.clear()
+                                _str_text_lineedit.clear()
+                                _str, _int, = struct.unpack('<{}sh'.format(_server_receive_rawbytes_length),
+                                                            _recv_str)
+                                _int_text_lineedit.setText(str(_int))
+                                _str_text_lineedit.setText(str(_str.decode()))
+                            except (struct.error, ValueError):
+                                _int_text_lineedit.clear()
+                                _str_text_lineedit.clear()
+                                _log_fun("Can't parse receive rawbytes as type setting,please check")
+                    else:
+                        if int(_int_seq) > int(_float_seq):
+                            try:
+                                _int_text_lineedit.clear()
+                                _float_text_lineedit.clear()
+                                _int, _float = struct.unpack('<hf', _recv_str)
+                                _int_text_lineedit.setText(str(_int))
                                 _float_text_lineedit.setText(str(_float))
                             except (struct.error, ValueError):
+                                _int_text_lineedit.clear()
                                 _float_text_lineedit.clear()
                                 _log_fun("Can't parse receive rawbytes as type setting,please check")
-
                         else:
                             try:
-                                _str_text_lineedit.clear()
-                                _string, = struct.unpack('<{}s'.format(_server_receive_rawbytes_length), _recv_fun())
-                                _str_text_lineedit.setText(str(_string.decode()))
+                                _int_text_lineedit.clear()
+                                _float_text_lineedit.clear()
+                                _float, _int = struct.unpack('<fh', _recv_str)
+                                _int_text_lineedit.setText(str(_int))
+                                _float_text_lineedit.setText(str(_float))
                             except (struct.error, ValueError):
-                                _str_text_lineedit.clear()
+                                _int_text_lineedit.clear()
+                                _float_text_lineedit.clear()
                                 _log_fun("Can't parse receive rawbytes as type setting,please check")
+                elif _int_checked + _float_checked + _str_checked == 3:
+                    try:
+                        _int_text_lineedit.clear()
+                        _float_text_lineedit.clear()
+                        _str_text_lineedit.clear()
+                        # append sort logic
+                        list_type = sorted(
+                            [[_int_seq, None, "h"], [_float_seq, None, "f"], [_str_seq, None, "{}s"]],
+                            key=lambda x: int(x[0]),
+                            reverse=True)
+                        _unpack_format_str = "<" + list_type[0][2] + list_type[1][2] + list_type[2][2]
+                        list_type[0][1], list_type[1][1], list_type[2][1] = list(
+                            struct.unpack(_unpack_format_str.format(_server_receive_rawbytes_length), _recv_str))
 
-                    elif _int_checked + _float_checked + _str_checked == 2:
-                        if not _int_checked:
-                            if int(_float_seq) > int(_str_seq):
-                                try:
-                                    _float_text_lineedit.clear()
-                                    _str_text_lineedit.clear()
-                                    _float, _str = struct.unpack('<f{}s'.format(_server_receive_rawbytes_length),
-                                                                 _recv_fun())
-                                    _float_text_lineedit.setText(str(_float))
-                                    _str_text_lineedit.setText(str(_str.decode()))
-                                except (struct.error, ValueError):
-                                    _float_text_lineedit.clear()
-                                    _str_text_lineedit.clear()
-                                    _log_fun("Can't parse receive rawbytes as type setting,please check")
+                        _int_text_lineedit.setText([str(x[1]) for x in list_type if x[0] == _int_seq][0])
+                        _float_text_lineedit.setText([str(x[1]) for x in list_type if x[0] == _float_seq][0])
+                        _str_text_lineedit.setText([str(x[1].decode()) for x in list_type if x[0] == _str_seq][0])
+                    except (struct.error, ValueError):
+                        _int_text_lineedit.clear()
+                        _float_text_lineedit.clear()
+                        _str_text_lineedit.clear()
+                        _log_fun("Can't parse receive rawbytes as type setting,please check")
 
-                            else:
-                                try:
-                                    _float_text_lineedit.clear()
-                                    _str_text_lineedit.clear()
-                                    _str, _float = struct.unpack('<{}sf'.format(_server_receive_rawbytes_length),
-                                                                 _recv_fun())
-                                    _float_text_lineedit.setText(str(_float))
-                                    _str_text_lineedit.setText(str(_str.decode()))
-                                except (struct.error, ValueError):
-                                    _float_text_lineedit.clear()
-                                    _str_text_lineedit.clear()
-                                    _log_fun("Can't parse receive rawbytes as type setting,please check")
-
-                        elif not _float_checked:
-                            if int(_int_seq) > int(_str_seq):
-                                try:
-                                    _int_text_lineedit.clear()
-                                    _str_text_lineedit.clear()
-                                    _int, _str = struct.unpack('<h{}s'.format(_server_receive_rawbytes_length),
-                                                               _recv_fun())
-                                    _int_text_lineedit.setText(str(_int))
-                                    _str_text_lineedit.setText(str(_str.decode()))
-                                except (struct.error, ValueError):
-                                    _int_text_lineedit.clear()
-                                    _str_text_lineedit.clear()
-                                    _log_fun("Can't parse receive rawbytes as type setting,please check")
-                            else:
-                                try:
-                                    _int_text_lineedit.clear()
-                                    _str_text_lineedit.clear()
-                                    _str, _int, = struct.unpack('<{}sh'.format(_server_receive_rawbytes_length),
-                                                                _recv_fun())
-                                    _int_text_lineedit.setText(str(_int))
-                                    _str_text_lineedit.setText(str(_str.decode()))
-                                except (struct.error, ValueError):
-                                    _int_text_lineedit.clear()
-                                    _str_text_lineedit.clear()
-                                    _log_fun("Can't parse receive rawbytes as type setting,please check")
-                        else:
-                            if int(_int_seq) > int(_float_seq):
-                                try:
-                                    _int_text_lineedit.clear()
-                                    _float_text_lineedit.clear()
-                                    _int, _float = struct.unpack('<hf', _recv_fun())
-                                    _int_text_lineedit.setText(str(_int))
-                                    _float_text_lineedit.setText(str(_float))
-                                except (struct.error, ValueError):
-                                    _int_text_lineedit.clear()
-                                    _float_text_lineedit.clear()
-                                    _log_fun("Can't parse receive rawbytes as type setting,please check")
-                            else:
-                                try:
-                                    _int_text_lineedit.clear()
-                                    _float_text_lineedit.clear()
-                                    _float, _int = struct.unpack('<fh', _recv_fun())
-                                    _int_text_lineedit.setText(str(_int))
-                                    _float_text_lineedit.setText(str(_float))
-                                except (struct.error, ValueError):
-                                    _int_text_lineedit.clear()
-                                    _float_text_lineedit.clear()
-                                    _log_fun("Can't parse receive rawbytes as type setting,please check")
-                    elif _int_checked + _float_checked + _str_checked == 3:
-                        try:
-                            _int_text_lineedit.clear()
-                            _float_text_lineedit.clear()
-                            _str_text_lineedit.clear()
-                            # append sort logic
-                            list_type = sorted(
-                                [[_int_seq, None, "h"], [_float_seq, None, "f"], [_str_seq, None, "{}s"]],
-                                key=lambda x: int(x[0]),
-                                reverse=True)
-                            _unpack_format_str = "<" + list_type[0][2] + list_type[1][2] + list_type[2][2]
-                            list_type[0][1], list_type[1][1], list_type[2][1] = list(
-                                struct.unpack(_unpack_format_str.format(_server_receive_rawbytes_length), _recv_fun()))
-
-                            _int_text_lineedit.setText([str(x[1]) for x in list_type if x[0] == _int_seq][0])
-                            _float_text_lineedit.setText([str(x[1]) for x in list_type if x[0] == _float_seq][0])
-                            _str_text_lineedit.setText([str(x[1].decode()) for x in list_type if x[0] == _str_seq][0])
-                        except (struct.error, ValueError):
-                            _int_text_lineedit.clear()
-                            _float_text_lineedit.clear()
-                            _str_text_lineedit.clear()
-                            _log_fun("Can't parse receive rawbytes as type setting,please check")
-
-                time.sleep(float(widgets_status.lineEdit_RecvInterval.text()))
-                if not widgets_status.checkBox_RecvContinue.isChecked():
-                    break
+            # time.sleep(float(widgets_status.lineEdit_RecvInterval.text()))
+            # if not widgets_status.checkBox_RecvContinue.isChecked():
+            #     break
         # 检查调用Socket receive方法是否接收数据超时，如果是则发布信息并return
         except OSError as e:
             _log_fun(str(e))
@@ -1042,9 +1126,13 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
         if widgets_status.checkBox_Receive_Str.isChecked():
             widgets_status.spinBox_Receive_Str.setEnabled(True)
-            widgets_status.spinBox_ReceiveRawLength.setEnabled(True)
             widgets_status.lineEdit_Receive_Str.setEnabled(True)
             widgets_status.lineEdit_Receive_Str.setReadOnly(True)
+            if widgets_status.checkBox_ReceiveStrMode.isEnabled() and widgets_status.checkBox_ReceiveStrMode.isChecked():
+                widgets_status.spinBox_ReceiveRawLength.setValue(5)
+                widgets_status.spinBox_ReceiveRawLength.setEnabled(False)
+            else:
+                widgets_status.spinBox_ReceiveRawLength.setEnabled(True)
         else:
             widgets_status.spinBox_Receive_Str.setValue(0)
             widgets_status.spinBox_Receive_Str.setEnabled(False)
@@ -1061,6 +1149,8 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             widgets_status.lineEdit_RecvInterval.setText("0.5")
             widgets_status.lineEdit_RecvInterval.setStyleSheet(MyMainWindow.str_lineedit_style_disable)
             widgets_status.lineEdit_RecvInterval.setEnabled(False)
+            _socket.b_continue_recv = widgets_status.checkBox_RecvContinue.isChecked()
+            _socket.str_recv_interval = widgets_status.lineEdit_RecvInterval.text()
 
         if widgets_status.checkBox_Receive_Int.isChecked() + widgets_status.checkBox_Receive_Float.isChecked() + widgets_status.checkBox_Receive_Str.isChecked() == 0 \
                 and widgets_status.checkBox_Receive_Int.isEnabled() + widgets_status.checkBox_Receive_Float.isEnabled() + widgets_status.checkBox_Receive_Str.isEnabled() > 0:
@@ -1336,11 +1426,15 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                     float(widgets_status.lineEdit_RecvInterval.text())
                     widgets_status.lineEdit_RecvInterval.setStyleSheet(MyMainWindow.str_lineedit_style_enable)
                     b_lineedit_recv_interval_check_valid = True
+                    _socket.b_continue_recv = widgets_status.checkBox_RecvContinue.isChecked()
+                    _socket.str_recv_interval = widgets_status.lineEdit_RecvInterval.text()
                 except ValueError:
                     widgets_status.lineEdit_RecvInterval.setStyleSheet(MyMainWindow.str_lineedit_style_invalid)
                     b_lineedit_recv_interval_check_valid = False
             else:
                 b_lineedit_recv_interval_check_valid = True
+                _socket.b_continue_recv = False
+                _socket.str_recv_interval = widgets_status.lineEdit_RecvInterval.text()
 
             if widgets_status.lineEdit_Receive_Int.isEnabled() and widgets_status.lineEdit_Receive_Int.text() != "":
                 try:
@@ -1351,14 +1445,14 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
             if widgets_status.lineEdit_Receive_Float.isEnabled() and widgets_status.lineEdit_Receive_Float.text() != "":
                 try:
-                    int(widgets_status.lineEdit_Receive_Float.text())
+                    float(widgets_status.lineEdit_Receive_Float.text())
                     widgets_status.lineEdit_Receive_Float.setStyleSheet(MyMainWindow.str_lineedit_style_enable)
                 except ValueError:
                     widgets_status.lineEdit_Receive_Float.setStyleSheet(MyMainWindow.str_lineedit_style_invalid)
 
             if widgets_status.lineEdit_Receive_Str.isEnabled() and widgets_status.lineEdit_Receive_Str.text() != "":
                 try:
-                    int(widgets_status.lineEdit_Receive_Str.text())
+                    str(widgets_status.lineEdit_Receive_Str.text())
                     widgets_status.lineEdit_Receive_Str.setStyleSheet(MyMainWindow.str_lineedit_style_enable)
                 except ValueError:
                     widgets_status.lineEdit_Receive_Str.setStyleSheet(MyMainWindow.str_lineedit_style_invalid)

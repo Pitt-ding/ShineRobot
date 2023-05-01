@@ -15,7 +15,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.setEnabled(True)
-        MainWindow.resize(1024, 799)
+        MainWindow.resize(1097, 887)
         MainWindow.setWindowOpacity(0.9)
         MainWindow.setStyleSheet("background-color: rgb(255, 255, 255);")
         MainWindow.setLocale(QtCore.QLocale(QtCore.QLocale.Chinese, QtCore.QLocale.China))
@@ -52,6 +52,14 @@ class Ui_MainWindow(object):
 "}\n"
 "QSpinBox:enabled{\n"
 "    background-color: rgb(255, 255, 255);\n"
+"}\n"
+"QCheckBox{\n"
+"border-radius: 4px;\n"
+"spacing: 5px;\n"
+"}\n"
+"QCheckBox::indicator {\n"
+"    width: 15px;\n"
+"    height: 15px;\n"
 "}")
         self.centralwidget_ShineRobot.setObjectName("centralwidget_ShineRobot")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.centralwidget_ShineRobot)
@@ -338,7 +346,7 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.pushButton_euler_copy.sizePolicy().hasHeightForWidth())
         self.pushButton_euler_copy.setSizePolicy(sizePolicy)
-        self.pushButton_euler_copy.setMinimumSize(QtCore.QSize(50, 30))
+        self.pushButton_euler_copy.setMinimumSize(QtCore.QSize(80, 30))
         self.pushButton_euler_copy.setMaximumSize(QtCore.QSize(40, 16777215))
         font = QtGui.QFont()
         font.setFamily("Microsoft YaHei")
@@ -396,7 +404,7 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.pushButton_quaternion_copy.sizePolicy().hasHeightForWidth())
         self.pushButton_quaternion_copy.setSizePolicy(sizePolicy)
-        self.pushButton_quaternion_copy.setMinimumSize(QtCore.QSize(50, 30))
+        self.pushButton_quaternion_copy.setMinimumSize(QtCore.QSize(80, 30))
         self.pushButton_quaternion_copy.setMaximumSize(QtCore.QSize(40, 16777215))
         font = QtGui.QFont()
         font.setFamily("Microsoft YaHei")
@@ -416,7 +424,7 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.pushButton_quaternion_euler.sizePolicy().hasHeightForWidth())
         self.pushButton_quaternion_euler.setSizePolicy(sizePolicy)
-        self.pushButton_quaternion_euler.setMinimumSize(QtCore.QSize(120, 50))
+        self.pushButton_quaternion_euler.setMinimumSize(QtCore.QSize(160, 50))
         font = QtGui.QFont()
         font.setFamily("Microsoft YaHei")
         self.pushButton_quaternion_euler.setFont(font)
@@ -471,7 +479,7 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.pushButton_euler_quaternion.sizePolicy().hasHeightForWidth())
         self.pushButton_euler_quaternion.setSizePolicy(sizePolicy)
-        self.pushButton_euler_quaternion.setMinimumSize(QtCore.QSize(120, 50))
+        self.pushButton_euler_quaternion.setMinimumSize(QtCore.QSize(160, 50))
         font = QtGui.QFont()
         font.setFamily("Microsoft YaHei")
         self.pushButton_euler_quaternion.setFont(font)
@@ -941,6 +949,7 @@ class Ui_MainWindow(object):
         self.gridLayout_3.addWidget(self.pushButton_SerRecv, 23, 1, 1, 1)
         self.checkBox_SerContinueSend = QtWidgets.QCheckBox(self.tab_2)
         self.checkBox_SerContinueSend.setEnabled(False)
+        self.checkBox_SerContinueSend.setMinimumSize(QtCore.QSize(90, 0))
         font = QtGui.QFont()
         font.setFamily("Microsoft YaHei")
         self.checkBox_SerContinueSend.setFont(font)
@@ -948,6 +957,7 @@ class Ui_MainWindow(object):
         self.gridLayout_3.addWidget(self.checkBox_SerContinueSend, 14, 2, 1, 1)
         self.checkBox_SerContinueRecv = QtWidgets.QCheckBox(self.tab_2)
         self.checkBox_SerContinueRecv.setEnabled(False)
+        self.checkBox_SerContinueRecv.setMinimumSize(QtCore.QSize(90, 0))
         font = QtGui.QFont()
         font.setFamily("Microsoft YaHei")
         self.checkBox_SerContinueRecv.setFont(font)
@@ -1476,6 +1486,7 @@ class Ui_MainWindow(object):
         self.gridLayout_5.addWidget(self.pushButton_ClntSend, 14, 1, 1, 1)
         self.checkBox_ClntContinueSend = QtWidgets.QCheckBox(self.tab_2)
         self.checkBox_ClntContinueSend.setEnabled(False)
+        self.checkBox_ClntContinueSend.setMinimumSize(QtCore.QSize(90, 0))
         font = QtGui.QFont()
         font.setFamily("Microsoft YaHei")
         self.checkBox_ClntContinueSend.setFont(font)
@@ -1515,9 +1526,14 @@ class Ui_MainWindow(object):
         self.gridLayout_5.addWidget(self.label_5, 14, 3, 1, 1)
         self.checkBox_ClntContinueRecv = QtWidgets.QCheckBox(self.tab_2)
         self.checkBox_ClntContinueRecv.setEnabled(False)
+        self.checkBox_ClntContinueRecv.setMinimumSize(QtCore.QSize(90, 0))
         font = QtGui.QFont()
         font.setFamily("Microsoft YaHei")
         self.checkBox_ClntContinueRecv.setFont(font)
+        self.checkBox_ClntContinueRecv.setStyleSheet("\n"
+"\n"
+"\n"
+"")
         self.checkBox_ClntContinueRecv.setObjectName("checkBox_ClntContinueRecv")
         self.gridLayout_5.addWidget(self.checkBox_ClntContinueRecv, 23, 2, 1, 1)
         self.label_42 = QtWidgets.QLabel(self.tab_2)
@@ -1743,8 +1759,8 @@ class Ui_MainWindow(object):
         self.textEdit_result_record.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'Microsoft YaHei\'; font-size:8pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'MS Shell Dlg 2\';\"><br /></p></body></html>"))
+"</style></head><body style=\" font-family:\'Microsoft YaHei\'; font-size:12pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'MS Shell Dlg 2\'; font-size:8pt;\"><br /></p></body></html>"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("MainWindow", "四元数转换"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_4), _translate("MainWindow", "网络检查工具"))
         self.label_9.setText(_translate("MainWindow", "发送"))

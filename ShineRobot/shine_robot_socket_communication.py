@@ -19,6 +19,8 @@ class SocketWidgetStruct:
         self.send_fun = None
         self.receive_fun = None
         self.log_fun = None
+        # self.send_continue = None
+        # self.send_interval = None
 
         self.lineEdit_IP = None
         self.lineEdit_Port = None
@@ -68,125 +70,115 @@ class SocketWidgetStruct:
 
 
 class SocketCommunicate:
+    def __init__(self):
+        self.b_continue_send = False
+        self.str_send_interval = '0'
+
     def socket_send_bytes(self, s_send: Union[bytes, str]) -> None:
         pass
 
     def socket_receive_bytes(self) -> Union[bytes, None]:
         pass
 
-    # @staticmethod
-    def socket_send(self, widgets_status: SocketWidgetStruct) -> None:
+    def socket_send(self, _send_str: str) -> None:  # , _b_continue_send: bool, _send_interval: str
         """
         Base send widgets status quote send string function,use name tuple as input args,suit for both server and client
         """
-        _send_fun = self.socket_send_bytes
-        _int_checked = widgets_status.checkBox_Send_Int.isChecked()
-        _int_seq = widgets_status.spinBox_Send_Int.text()
-        _int_text = widgets_status.lineEdit_Send_Int.text()
-        _float_checked = widgets_status.checkBox_Send_Float.isChecked()
-        _float_seq = widgets_status.spinBox_Send_Float.text()
-        _float_text = widgets_status.lineEdit_Send_Float.text()
-        _str_checked = widgets_status.checkBox_Send_Str.isChecked()
-        _str_seq = widgets_status.spinBox_Send_Str.text()
-        _str_text = widgets_status.lineEdit_Send_Str.text()
-        _full_type_str_text = widgets_status.lineEdit_SendFullType.text()
-        _full_type_format_str_text = widgets_status.lineEdit_SendFormatStr.text()
-        _send_str_Separator_text = widgets_status.lineEdit_StrSendSeparator.text()
-
         try:
             while True:
-                if widgets_status.checkBox_SendStringMode.isChecked():
-                    # send string
-                    if _int_checked + _float_checked + _str_checked == 1:
-                        if _int_checked:
-                            _send_fun(_int_text)
-                        elif _float_checked:
-                            _send_fun(_float_text)
-                        else:
-                            _send_fun(_str_text)
-
-                    elif _int_checked + _float_checked + _str_checked == 2:
-                        if not _int_checked:
-                            if int(_float_seq) > int(_str_seq):
-                                _send_fun(_float_text + _send_str_Separator_text + _str_text)
-                            else:
-                                _send_fun(_str_text + _send_str_Separator_text + _float_text)
-                        elif not _float_checked:
-                            if int(_int_seq) > int(_str_seq):
-                                _send_fun(_int_text + _send_str_Separator_text + _str_text)
-                            else:
-                                _send_fun(_str_text + _send_str_Separator_text + _int_text)
-                        else:
-                            if int(_int_seq) > int(_float_seq):
-                                _send_fun(_int_text + _send_str_Separator_text + _float_text)
-                            else:
-                                _send_fun(_float_text + _send_str_Separator_text + _int_text)
-
-                    elif _int_checked + _float_checked + _str_checked == 3:
-                        # 生成字列表，并对列表按键值做排序
-                        m_sequence_list = [[int(_int_seq), _int_text],
-                                           [int(_float_seq), _float_text],
-                                           [int(_str_seq), _str_text]]
-                        m_sequence_list.sort(key=lambda x: x[0], reverse=True)
-                        _send_fun(str(m_sequence_list[0][1]) + _send_str_Separator_text + str(m_sequence_list[1][1])
-                                  + _send_str_Separator_text + str(m_sequence_list[2][1]))
-                    else:
-                        _send_fun(_full_type_str_text)
-                else:
-                    # Send rawbytes
-                    if _int_checked + _float_checked + _str_checked == 1:
-                        if _int_checked:
-                            _send_fun(struct.pack("<h", int(_int_text)))
-                        elif _float_checked:
-                            _send_fun(struct.pack("<f", float(_float_text)))
-                        else:
-                            _send_fun(struct.pack("<f", str(_str_text)))
-
-                    elif _int_checked + _float_checked + _str_checked == 2:
-                        if not _int_checked:
-                            if int(_float_seq) > int(_str_seq):
-                                _send_fun(struct.pack("<f{}s".format(len(_str_text)), float(_float_text), _str_text.encode()))
-                            else:
-                                _send_fun(struct.pack("<{}sf".format(len(_str_text)), _str_text.encode(), float(_float_text)))
-                        elif not _float_checked:
-                            if int(_int_seq) > int(_str_seq):
-                                _send_fun(struct.pack("<h{}s".format(len(_str_text)), int(_int_text), _str_text.encode()))
-                            else:
-                                _send_fun(struct.pack("<{}sh".format(len(_str_text)), _str_text.encode(), int(_int_text)))
-                        else:
-                            if int(_int_seq) > int(_float_seq):
-                                _send_fun(struct.pack("<hf", int(_int_text), float(_float_text)))
-                            else:
-                                _send_fun(struct.pack("<fh", float(_float_text), int(_int_text)))
-
-                    elif _int_checked + _float_checked + _str_checked == 3:
-                        m_sequence_list = [
-                            [int(_int_seq), int(_int_text), "h"],
-                            [int(_float_seq), float(_float_text), "f"],
-                            [int(_str_seq), _str_text.encode(), "{}s".format(len(_str_text))]]
-
-                        m_sequence_list.sort(key=lambda x: x[0], reverse=True)
-                        _send_fun(struct.pack("<" + m_sequence_list[0][2] + m_sequence_list[1][2] + m_sequence_list[2][2],
-                                              m_sequence_list[0][1], m_sequence_list[1][1], m_sequence_list[2][1]))
-                    else:
-                        list_re = re.findall(r"(h|f|\d+s)", _full_type_format_str_text)
-                        list_value = _full_type_str_text.split(_send_str_Separator_text)
-                        list_byte = bytes()
-                        for int_index in range(len(list_re)):
-                            if list_re[int_index] == "h":
-                                list_byte += (struct.pack("<" + list_re[int_index], int(list_value[int_index])))
-                            elif list_re[int_index] == "f":
-                                list_byte += (struct.pack("<" + list_re[int_index], float(list_value[int_index])))
-                            elif "s" in list_re[int_index]:
-                                list_byte += (struct.pack("<" + list_re[int_index], list_value[int_index].encode()))
-                        _send_fun(list_byte)
-                time.sleep(float(widgets_status.lineEdit_SendInterval.text()))
-                if not widgets_status.checkBox_SendContinue.isChecked():
+                # if widgets_status.checkBox_SendStringMode.isChecked():
+                #     # send string
+                #     if _int_checked + _float_checked + _str_checked == 1:
+                #         if _int_checked:
+                #             _send_fun(_int_text)
+                #         elif _float_checked:
+                #             _send_fun(_float_text)
+                #         else:
+                #             _send_fun(_str_text)
+                #
+                #     elif _int_checked + _float_checked + _str_checked == 2:
+                #         if not _int_checked:
+                #             if int(_float_seq) > int(_str_seq):
+                #                 _send_fun(_float_text + _send_str_Separator_text + _str_text)
+                #             else:
+                #                 _send_fun(_str_text + _send_str_Separator_text + _float_text)
+                #         elif not _float_checked:
+                #             if int(_int_seq) > int(_str_seq):
+                #                 _send_fun(_int_text + _send_str_Separator_text + _str_text)
+                #             else:
+                #                 _send_fun(_str_text + _send_str_Separator_text + _int_text)
+                #         else:
+                #             if int(_int_seq) > int(_float_seq):
+                #                 _send_fun(_int_text + _send_str_Separator_text + _float_text)
+                #             else:
+                #                 _send_fun(_float_text + _send_str_Separator_text + _int_text)
+                #
+                #     elif _int_checked + _float_checked + _str_checked == 3:
+                #         # 生成字列表，并对列表按键值做排序
+                #         m_sequence_list = [[int(_int_seq), _int_text],
+                #                            [int(_float_seq), _float_text],
+                #                            [int(_str_seq), _str_text]]
+                #         m_sequence_list.sort(key=lambda x: x[0], reverse=True)
+                #         _send_fun(str(m_sequence_list[0][1]) + _send_str_Separator_text + str(m_sequence_list[1][1])
+                #                   + _send_str_Separator_text + str(m_sequence_list[2][1]))
+                #     else:
+                #         _send_fun(_full_type_str_text)
+                # else:
+                #     # Send rawbytes
+                #     if _int_checked + _float_checked + _str_checked == 1:
+                #         if _int_checked:
+                #             _send_fun(struct.pack("<h", int(_int_text)))
+                #         elif _float_checked:
+                #             _send_fun(struct.pack("<f", float(_float_text)))
+                #         else:
+                #             _send_fun(struct.pack("<f", str(_str_text)))
+                #
+                #     elif _int_checked + _float_checked + _str_checked == 2:
+                #         if not _int_checked:
+                #             if int(_float_seq) > int(_str_seq):
+                #                 _send_fun(struct.pack("<f{}s".format(len(_str_text)), float(_float_text), _str_text.encode()))
+                #             else:
+                #                 _send_fun(struct.pack("<{}sf".format(len(_str_text)), _str_text.encode(), float(_float_text)))
+                #         elif not _float_checked:
+                #             if int(_int_seq) > int(_str_seq):
+                #                 _send_fun(struct.pack("<h{}s".format(len(_str_text)), int(_int_text), _str_text.encode()))
+                #             else:
+                #                 _send_fun(struct.pack("<{}sh".format(len(_str_text)), _str_text.encode(), int(_int_text)))
+                #         else:
+                #             if int(_int_seq) > int(_float_seq):
+                #                 _send_fun(struct.pack("<hf", int(_int_text), float(_float_text)))
+                #             else:
+                #                 _send_fun(struct.pack("<fh", float(_float_text), int(_int_text)))
+                #
+                #     elif _int_checked + _float_checked + _str_checked == 3:
+                #         m_sequence_list = [
+                #             [int(_int_seq), int(_int_text), "h"],
+                #             [int(_float_seq), float(_float_text), "f"],
+                #             [int(_str_seq), _str_text.encode(), "{}s".format(len(_str_text))]]
+                #
+                #         m_sequence_list.sort(key=lambda x: x[0], reverse=True)
+                #         _send_fun(struct.pack("<" + m_sequence_list[0][2] + m_sequence_list[1][2] + m_sequence_list[2][2],
+                #                               m_sequence_list[0][1], m_sequence_list[1][1], m_sequence_list[2][1]))
+                #     else:
+                #         list_re = re.findall(r"(h|f|\d+s)", _full_type_format_str_text)
+                #         list_value = _full_type_str_text.split(_send_str_Separator_text)
+                #         list_byte = bytes()
+                #         for int_index in range(len(list_re)):
+                #             if list_re[int_index] == "h":
+                #                 list_byte += (struct.pack("<" + list_re[int_index], int(list_value[int_index])))
+                #             elif list_re[int_index] == "f":
+                #                 list_byte += (struct.pack("<" + list_re[int_index], float(list_value[int_index])))
+                #             elif "s" in list_re[int_index]:
+                #                 list_byte += (struct.pack("<" + list_re[int_index], list_value[int_index].encode()))
+                #         _send_fun(list_byte)
+                print("send continue: {}, send interval: {}".format(self.b_continue_send, self.str_send_interval))
+                self.socket_send_bytes(_send_str)
+                time.sleep(float(self.str_send_interval))
+                if not self.b_continue_send:
                     break
         except ConnectionAbortedError:
             return
 
-    # @staticmethod
     def socket_receive(self, widgets_status: SocketWidgetStruct) -> None:
         """
         Base send widgets status quote receive string function,use name tuple as input args,suit for both server and client

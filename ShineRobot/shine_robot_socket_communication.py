@@ -147,7 +147,7 @@ class SocketServer(QObject, SocketCommunicate):
             if self.socket_server_accept_client is not None:
 
                 if type(s_send) is bytes:
-                    print("send rawbytes")
+                    # print("send rawbytes")
                     self.socket_server_accept_client.send(s_send)
                 else:
                     self.signal_record_result.emit("socket server send data: " + s_send)
@@ -165,8 +165,8 @@ class SocketServer(QObject, SocketCommunicate):
             try:
                 self.socket_server_accept_client.settimeout(3)
                 m_receive = self.socket_server_accept_client.recv(1024)
-                self.signal_record_result.emit("Receive value type: {}".format(type(m_receive)))
-                self.signal_record_result.emit("Receive value: {}".format(m_receive))
+                # self.signal_record_result.emit("Receive value type: {}".format(type(m_receive)))
+                self.signal_record_result.emit("Socket server Receive value: {}".format(m_receive))
                 return m_receive
 
             except (ValueError, TypeError) as e:
@@ -271,8 +271,7 @@ class SocketClient(QObject, SocketCommunicate):
     def close_socket_client(self) -> None:
         """
         close socket client and signal emit to update ui
-        with decorate to declare slot function
-        :return:
+        :return: None
         """
         self.socket_client.close()
         self.signal_socket_client_connected.emit(False)
@@ -281,6 +280,7 @@ class SocketClient(QObject, SocketCommunicate):
     def socket_send_bytes(self, s_send: Union[bytes, str]) -> None:
         """
         send data to client
+        :param s_send: Union[bytes, str]
         :return: None
         """
         try:
@@ -302,7 +302,7 @@ class SocketClient(QObject, SocketCommunicate):
         try:
             self.socket_client.settimeout(3)
             m_receive = self.socket_client.recv(1024)
-            self.signal_record_result.emit("socket client Receive value type: {}".format(type(m_receive)))
+            # self.signal_record_result.emit("socket client Receive value type: {}".format(type(m_receive)))
             self.signal_record_result.emit("socket client Receive value: {}".format(m_receive))
             return m_receive
 
@@ -315,13 +315,13 @@ class SocketClient(QObject, SocketCommunicate):
 
     def socket_clear_cache(self) -> Union[bytes, None]:
         """
-        receive data from client
+        clear data which receive from client
         :return: None
         """
         try:
             self.socket_client.settimeout(1)
             m_receive = self.socket_client.recv(1024)
-            self.signal_record_result.emit("Socket client Receive value type: {}".format(type(m_receive)))
+            # self.signal_record_result.emit("Socket client Receive value type: {}".format(type(m_receive)))
             self.signal_record_result.emit("Socket client Receive value: {}".format(m_receive))
             self.signal_record_result.emit("Socket client clear {} length bytes".format(len(m_receive)))
             return m_receive

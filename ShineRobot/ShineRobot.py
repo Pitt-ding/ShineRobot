@@ -15,10 +15,14 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.setEnabled(True)
-        MainWindow.resize(1097, 887)
+        MainWindow.resize(1149, 903)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(":/main_window/robot_13597.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        MainWindow.setWindowIcon(icon)
         MainWindow.setWindowOpacity(0.9)
         MainWindow.setStyleSheet("background-color: rgb(255, 255, 255);")
         MainWindow.setLocale(QtCore.QLocale(QtCore.QLocale.Chinese, QtCore.QLocale.China))
+        MainWindow.setToolButtonStyle(QtCore.Qt.ToolButtonTextBesideIcon)
         self.centralwidget_ShineRobot = QtWidgets.QWidget(MainWindow)
         self.centralwidget_ShineRobot.setStyleSheet("QPushButton{\n"
 "border-width: 1px;\n"
@@ -656,6 +660,10 @@ class Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setFamily("Microsoft YaHei")
         self.pushButton_SerCreateConn.setFont(font)
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap(":/pushbutton/connect.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.pushButton_SerCreateConn.setIcon(icon1)
+        self.pushButton_SerCreateConn.setIconSize(QtCore.QSize(24, 24))
         self.pushButton_SerCreateConn.setObjectName("pushButton_SerCreateConn")
         self.gridLayout_3.addWidget(self.pushButton_SerCreateConn, 3, 1, 1, 2)
         self.checkBox_ServerSendRawbytes = QtWidgets.QCheckBox(self.tab_2)
@@ -937,6 +945,10 @@ class Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setFamily("Microsoft YaHei")
         self.pushButton_SerSend.setFont(font)
+        icon2 = QtGui.QIcon()
+        icon2.addPixmap(QtGui.QPixmap(":/pushbutton/send.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.pushButton_SerSend.setIcon(icon2)
+        self.pushButton_SerSend.setIconSize(QtCore.QSize(24, 24))
         self.pushButton_SerSend.setObjectName("pushButton_SerSend")
         self.gridLayout_3.addWidget(self.pushButton_SerSend, 14, 1, 1, 1)
         self.pushButton_SerRecv = QtWidgets.QPushButton(self.tab_2)
@@ -945,6 +957,10 @@ class Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setFamily("Microsoft YaHei")
         self.pushButton_SerRecv.setFont(font)
+        icon3 = QtGui.QIcon()
+        icon3.addPixmap(QtGui.QPixmap(":/pushbutton/receive.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.pushButton_SerRecv.setIcon(icon3)
+        self.pushButton_SerRecv.setIconSize(QtCore.QSize(24, 24))
         self.pushButton_SerRecv.setObjectName("pushButton_SerRecv")
         self.gridLayout_3.addWidget(self.pushButton_SerRecv, 23, 1, 1, 1)
         self.checkBox_SerContinueSend = QtWidgets.QCheckBox(self.tab_2)
@@ -1013,11 +1029,14 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.pushButton_SerCloseConn.sizePolicy().hasHeightForWidth())
         self.pushButton_SerCloseConn.setSizePolicy(sizePolicy)
-        self.pushButton_SerCloseConn.setMinimumSize(QtCore.QSize(80, 40))
+        self.pushButton_SerCloseConn.setMinimumSize(QtCore.QSize(120, 40))
         self.pushButton_SerCloseConn.setMaximumSize(QtCore.QSize(16777215, 16777215))
         font = QtGui.QFont()
         font.setFamily("Microsoft YaHei")
         self.pushButton_SerCloseConn.setFont(font)
+        icon4 = QtGui.QIcon()
+        icon4.addPixmap(QtGui.QPixmap(":/pushbutton/disconnect.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.pushButton_SerCloseConn.setIcon(icon4)
         self.pushButton_SerCloseConn.setObjectName("pushButton_SerCloseConn")
         self.horizontalLayout_14.addWidget(self.pushButton_SerCloseConn)
         self.gridLayout_3.addLayout(self.horizontalLayout_14, 3, 6, 1, 1)
@@ -1082,10 +1101,13 @@ class Ui_MainWindow(object):
         self.horizontalLayout_16.addItem(spacerItem14)
         self.pushButton_SerClearCache = QtWidgets.QPushButton(self.tab_2)
         self.pushButton_SerClearCache.setEnabled(False)
-        self.pushButton_SerClearCache.setMinimumSize(QtCore.QSize(100, 40))
+        self.pushButton_SerClearCache.setMinimumSize(QtCore.QSize(120, 40))
         font = QtGui.QFont()
         font.setFamily("Microsoft YaHei")
         self.pushButton_SerClearCache.setFont(font)
+        icon5 = QtGui.QIcon()
+        icon5.addPixmap(QtGui.QPixmap(":/pushbutton/Clear.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.pushButton_SerClearCache.setIcon(icon5)
         self.pushButton_SerClearCache.setObjectName("pushButton_SerClearCache")
         self.horizontalLayout_16.addWidget(self.pushButton_SerClearCache)
         self.gridLayout_3.addLayout(self.horizontalLayout_16, 23, 6, 1, 1)
@@ -1309,6 +1331,8 @@ class Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setFamily("Microsoft YaHei")
         self.pushButton_ClntCreatConn.setFont(font)
+        self.pushButton_ClntCreatConn.setIcon(icon1)
+        self.pushButton_ClntCreatConn.setIconSize(QtCore.QSize(24, 24))
         self.pushButton_ClntCreatConn.setObjectName("pushButton_ClntCreatConn")
         self.gridLayout_5.addWidget(self.pushButton_ClntCreatConn, 3, 1, 1, 2)
         self.line_14 = QtWidgets.QFrame(self.tab_2)
@@ -1474,6 +1498,8 @@ class Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setFamily("Microsoft YaHei")
         self.pushButton_ClntRecv.setFont(font)
+        self.pushButton_ClntRecv.setIcon(icon3)
+        self.pushButton_ClntRecv.setIconSize(QtCore.QSize(24, 24))
         self.pushButton_ClntRecv.setObjectName("pushButton_ClntRecv")
         self.gridLayout_5.addWidget(self.pushButton_ClntRecv, 23, 1, 1, 1)
         self.pushButton_ClntSend = QtWidgets.QPushButton(self.tab_2)
@@ -1482,6 +1508,8 @@ class Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setFamily("Microsoft YaHei")
         self.pushButton_ClntSend.setFont(font)
+        self.pushButton_ClntSend.setIcon(icon2)
+        self.pushButton_ClntSend.setIconSize(QtCore.QSize(24, 24))
         self.pushButton_ClntSend.setObjectName("pushButton_ClntSend")
         self.gridLayout_5.addWidget(self.pushButton_ClntSend, 14, 1, 1, 1)
         self.checkBox_ClntContinueSend = QtWidgets.QCheckBox(self.tab_2)
@@ -1530,10 +1558,7 @@ class Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setFamily("Microsoft YaHei")
         self.checkBox_ClntContinueRecv.setFont(font)
-        self.checkBox_ClntContinueRecv.setStyleSheet("\n"
-"\n"
-"\n"
-"")
+        self.checkBox_ClntContinueRecv.setStyleSheet("")
         self.checkBox_ClntContinueRecv.setObjectName("checkBox_ClntContinueRecv")
         self.gridLayout_5.addWidget(self.checkBox_ClntContinueRecv, 23, 2, 1, 1)
         self.label_42 = QtWidgets.QLabel(self.tab_2)
@@ -1549,11 +1574,12 @@ class Ui_MainWindow(object):
         self.horizontalLayout_15.addItem(spacerItem15)
         self.pushButton_ClntCloseConn = QtWidgets.QPushButton(self.tab_2)
         self.pushButton_ClntCloseConn.setEnabled(False)
-        self.pushButton_ClntCloseConn.setMinimumSize(QtCore.QSize(80, 40))
+        self.pushButton_ClntCloseConn.setMinimumSize(QtCore.QSize(120, 40))
         self.pushButton_ClntCloseConn.setMaximumSize(QtCore.QSize(16777215, 16777215))
         font = QtGui.QFont()
         font.setFamily("Microsoft YaHei")
         self.pushButton_ClntCloseConn.setFont(font)
+        self.pushButton_ClntCloseConn.setIcon(icon4)
         self.pushButton_ClntCloseConn.setObjectName("pushButton_ClntCloseConn")
         self.horizontalLayout_15.addWidget(self.pushButton_ClntCloseConn)
         self.gridLayout_5.addLayout(self.horizontalLayout_15, 3, 6, 1, 1)
@@ -1616,10 +1642,11 @@ class Ui_MainWindow(object):
         self.horizontalLayout_17.addItem(spacerItem16)
         self.pushButton_ClntClearCache = QtWidgets.QPushButton(self.tab_2)
         self.pushButton_ClntClearCache.setEnabled(False)
-        self.pushButton_ClntClearCache.setMinimumSize(QtCore.QSize(100, 40))
+        self.pushButton_ClntClearCache.setMinimumSize(QtCore.QSize(120, 40))
         font = QtGui.QFont()
         font.setFamily("Microsoft YaHei")
         self.pushButton_ClntClearCache.setFont(font)
+        self.pushButton_ClntClearCache.setIcon(icon5)
         self.pushButton_ClntClearCache.setObjectName("pushButton_ClntClearCache")
         self.horizontalLayout_17.addWidget(self.pushButton_ClntClearCache)
         self.gridLayout_5.addLayout(self.horizontalLayout_17, 23, 6, 1, 1)
@@ -1650,6 +1677,11 @@ class Ui_MainWindow(object):
         self.tabWidget.addTab(self.tab_6, "")
         self.tab_5 = QtWidgets.QWidget()
         self.tab_5.setObjectName("tab_5")
+        self.gridLayout_7 = QtWidgets.QGridLayout(self.tab_5)
+        self.gridLayout_7.setObjectName("gridLayout_7")
+        self.textEdit = QtWidgets.QTextEdit(self.tab_5)
+        self.textEdit.setObjectName("textEdit")
+        self.gridLayout_7.addWidget(self.textEdit, 0, 0, 1, 1)
         self.tabWidget.addTab(self.tab_5, "")
         self.verticalLayout.addWidget(self.tabWidget)
         MainWindow.setCentralWidget(self.centralwidget_ShineRobot)
@@ -1870,4 +1902,162 @@ class Ui_MainWindow(object):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("MainWindow", "Socket通讯"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), _translate("MainWindow", "WebService"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_6), _translate("MainWindow", "OPCUA"))
+        self.textEdit.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:12pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">  ! ===================================================================================================================================================================</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">    !</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">    ! Func          : rSocket_ServerComm</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">    ! Function      : Socket server Communication demo</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">    ! Description   :  </p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">    ! Return        :</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">    ! Parameters    :</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">    ! Author        : YuanQiang.Ding</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">    ! Date          : 2022-11-11</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">    ! </p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">    ! ===================================================================================================================================================================</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">    PROC rSocket_ServerComm()</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        CONST string sServerIP:=&quot;127.0.0.1&quot;;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        CONST num nServerPort:=1026;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        VAR num nCommunicateType:=10;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        VAR string sSocket_Receive;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        VAR rawbytes rbSocket_Send;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        VAR rawbytes rbSocket_Receive;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        VAR num nSocketReceive_int;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        VAR num nSocketReceive_float;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        VAR string sSocketReceive_str;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        VAR socketdev sdServer_Socket;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        VAR socketdev sdClinet_Socket;</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        TEST nCommunicateType</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        CASE 10:</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            !Send string type </p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            !****Append process logic here</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            WHILE TRUE DO</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                SocketSend sdClinet_Socket,\\Str:=&quot;ABB Robot: Message Sended&quot;;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                WaitTime 1;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            ENDWHILE</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        CASE 11:</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            WHILE TRUE DO</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                SocketReceive sdClinet_Socket,\\Str:=sSocket_Receive\\Time:=WAIT_MAX;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                TPWrite &quot;Receive clinet string: &quot;+sSocket_Receive;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                sSocket_Receive:=&quot;&quot;;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            ENDWHILE</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        CASE 20:</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            WHILE TRUE DO</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                !Send rawbytes type here </p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                ClearRawBytes rbSocket_Send;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                !---Assign the type sequence and number here---</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                PackRawBytes temp_integer,rbSocket_Send,1\\IntX:=INT;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                PackRawBytes temp_float,rbSocket_Send,(RawBytesLen(rbSocket_Send)+1)\\Float4;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                PackRawBytes temp_string,rbSocket_Send,(RawBytesLen(rbSocket_Send)+1)\\ASCII;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                !****Append process logic here</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                SocketSend sdClinet_Socket,\\RawData:=rbSocket_Send;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                WaitTime 1;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            ENDWHILE</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        CASE 21:</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            WHILE TRUE DO</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                SocketReceive sdClinet_Socket,\\RawData:=rbSocket_Receive\\Time:=WAIT_MAX;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                UnpackRawBytes rbSocket_Receive,1,nSocketReceive_int\\IntX:=INT;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                UnpackRawBytes rbSocket_Receive,3,nSocketReceive_float\\Float4;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                UnpackRawBytes rbSocket_Receive,7,nSocketReceive_float\\ASCII:=5;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                TPWrite &quot;Received int value: &quot;\\Num:=nSocketReceive_int;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                TPWrite &quot;Received float value: &quot;\\Num:=nSocketReceive_float;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            ENDWHILE</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        DEFAULT:</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            TPWrite &quot;Wrong process no.&quot;;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        ENDTEST</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">    ERROR</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        !initial the socket connection </p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        IF ERRNO=ERR_SOCK_TIMEOUT THEN</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            RETRY;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        ELSEIF ERRNO=ERR_SOCK_CLOSED</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            or ERRNO=ERR_SOCK_NET_UNREACH</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            OR ERRNO=ERR_SOCK_NOT_CONN</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            OR ERRNO=ERR_SOCK_UNSPEC THEN</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            SocketClose sdServer_Socket;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            SocketClose sdClinet_Socket;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            SocketCreate sdServer_Socket;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            SocketBind sdServer_Socket,sServerIP,nServerPort;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            SocketListen sdServer_Socket;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            SocketAccept sdServer_Socket,sdClinet_Socket\\Time:=WAIT_MAX;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            RETRY;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        ELSE</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            RAISE ;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        ENDIF</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">    ENDPROC</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">    ! ===================================================================================================================================================================</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">    !</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">    ! Func          : rSocket_ClientComm</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">    ! Function      : Socket client Communication demo, change nSocker_SendDataType value to switch send string or rawbytes</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">    ! Description   : you need to define the type sequence for rawbytes firstly,the receiver need to decode the data as your type sequence </p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">    ! Return        :</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">    ! Parameters    :</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">    ! Author        : YuanQiang.Ding</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">    ! Date          : 2022-11-11a</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">    ! </p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">    ! ===================================================================================================================================================================</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">    PROC rSocket_ClientComm()</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        CONST num nSocket_SendDataType:=1;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        CONST string sServerIP:=&quot;127.0.0.1&quot;;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        CONST num nServerPort:=1025;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        VAR socketdev sdClinet_Socket;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        VAR rawbytes rbSocket_Send;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        VAR rawbytes rbSocket_Receive;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        VAR num nSocketReceive_int;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        VAR num nSocketReceive_float;</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        VAR string sSocket_Receive;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        !VAR bool bKeep_listening:=TRUE;</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        SocketCreate sdClinet_Socket;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        SocketConnect sdClinet_Socket,sServerIP,nServerPort\\Time:=WAIT_MAX;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        IF nSocket_SendDataType=0 THEN</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            !Send string type </p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            !****Append process logic here</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            SocketSend sdClinet_Socket,\\Str:=&quot;ABB Robot: Message Sended&quot;;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            SocketReceive sdClinet_Socket,\\Str:=sSocket_Receive;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            TPWrite &quot;Receive clinet string: &quot;+sSocket_Receive;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            sSocket_Receive:=&quot;&quot;;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        ELSE</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            !Send rawbytes type here </p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            ClearRawBytes rbSocket_Send;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            !---Assign the type sequence and number here---</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            PackRawBytes temp_integer,rbSocket_Send,1\\IntX:=INT;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            PackRawBytes temp_float,rbSocket_Send,(RawBytesLen(rbSocket_Send)+1)\\Float4;</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            !****Append process logic here</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            SocketSend sdClinet_Socket,\\RawData:=rbSocket_Send;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            SocketReceive sdClinet_Socket,\\RawData:=rbSocket_Receive;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            UnpackRawBytes rbSocket_Receive,1,nSocketReceive_int\\IntX:=INT;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            UnpackRawBytes rbSocket_Receive,3,nSocketReceive_float\\Float4;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            TPWrite &quot;Received int value: &quot;\\Num:=nSocketReceive_int;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            TPWrite &quot;Received float value: &quot;\\Num:=nSocketReceive_float;</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        ENDIF</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        SocketClose sdClinet_Socket;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">    ERROR</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        !initial the socket connection</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        IF ERRNO=ERR_SOCK_CLOSED</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            or ERRNO=ERR_SOCK_NET_UNREACH</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            OR ERRNO=ERR_SOCK_NOT_CONN</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            OR ERRNO=ERR_SOCK_UNSPEC</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            THEN</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            SocketClose sdClinet_Socket;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            SocketCreate sdClinet_Socket;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            SocketConnect sdClinet_Socket,sServerIP,nServerPort\\Time:=WAIT_MAX;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            RETRY;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        ELSE</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            RAISE ;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        ENDIF</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        !RETRY;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">    UNDO</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        SocketClose sdClinet_Socket;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">    ENDPROC</p></body></html>"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_5), _translate("MainWindow", "ABB编程样例"))
+import shine_robot_rc

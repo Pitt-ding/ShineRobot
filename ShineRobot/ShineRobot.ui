@@ -9,12 +9,16 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1109</width>
+    <width>1149</width>
     <height>903</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>ShineRobot 1.0.0</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="picture/shine_robot.qrc">
+    <normaloff>:/main_window/robot_13597.png</normaloff>:/main_window/robot_13597.png</iconset>
   </property>
   <property name="windowOpacity">
    <double>0.900000000000000</double>
@@ -24,6 +28,9 @@
   </property>
   <property name="locale">
    <locale language="Chinese" country="China"/>
+  </property>
+  <property name="toolButtonStyle">
+   <enum>Qt::ToolButtonTextBesideIcon</enum>
   </property>
   <widget class="QWidget" name="centralwidget_ShineRobot">
    <property name="styleSheet">
@@ -1459,6 +1466,16 @@ p, li { white-space: pre-wrap; }
             <property name="text">
              <string>建立通讯</string>
             </property>
+            <property name="icon">
+             <iconset resource="picture/shine_robot.qrc">
+              <normaloff>:/pushbutton/connect.png</normaloff>:/pushbutton/connect.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>24</width>
+              <height>24</height>
+             </size>
+            </property>
            </widget>
           </item>
           <item row="5" column="6">
@@ -2019,6 +2036,16 @@ p, li { white-space: pre-wrap; }
             <property name="text">
              <string>发送</string>
             </property>
+            <property name="icon">
+             <iconset resource="picture/shine_robot.qrc">
+              <normaloff>:/pushbutton/send.png</normaloff>:/pushbutton/send.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>24</width>
+              <height>24</height>
+             </size>
+            </property>
            </widget>
           </item>
           <item row="23" column="1">
@@ -2039,6 +2066,16 @@ p, li { white-space: pre-wrap; }
             </property>
             <property name="text">
              <string>接收</string>
+            </property>
+            <property name="icon">
+             <iconset resource="picture/shine_robot.qrc">
+              <normaloff>:/pushbutton/receive.png</normaloff>:/pushbutton/receive.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>24</width>
+              <height>24</height>
+             </size>
             </property>
            </widget>
           </item>
@@ -2198,7 +2235,7 @@ p, li { white-space: pre-wrap; }
               </property>
               <property name="minimumSize">
                <size>
-                <width>80</width>
+                <width>120</width>
                 <height>40</height>
                </size>
               </property>
@@ -2215,6 +2252,10 @@ p, li { white-space: pre-wrap; }
               </property>
               <property name="text">
                <string>关闭通讯</string>
+              </property>
+              <property name="icon">
+               <iconset resource="picture/shine_robot.qrc">
+                <normaloff>:/pushbutton/disconnect.png</normaloff>:/pushbutton/disconnect.png</iconset>
               </property>
              </widget>
             </item>
@@ -2356,7 +2397,7 @@ p, li { white-space: pre-wrap; }
               </property>
               <property name="minimumSize">
                <size>
-                <width>100</width>
+                <width>120</width>
                 <height>40</height>
                </size>
               </property>
@@ -2367,6 +2408,10 @@ p, li { white-space: pre-wrap; }
               </property>
               <property name="text">
                <string>清除缓存</string>
+              </property>
+              <property name="icon">
+               <iconset resource="picture/shine_robot.qrc">
+                <normaloff>:/pushbutton/Clear.png</normaloff>:/pushbutton/Clear.png</iconset>
               </property>
              </widget>
             </item>
@@ -2808,6 +2853,16 @@ p, li { white-space: pre-wrap; }
             <property name="text">
              <string>建立通讯</string>
             </property>
+            <property name="icon">
+             <iconset resource="picture/shine_robot.qrc">
+              <normaloff>:/pushbutton/connect.png</normaloff>:/pushbutton/connect.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>24</width>
+              <height>24</height>
+             </size>
+            </property>
            </widget>
           </item>
           <item row="6" column="2" colspan="5">
@@ -3127,6 +3182,16 @@ p, li { white-space: pre-wrap; }
             <property name="text">
              <string>接收</string>
             </property>
+            <property name="icon">
+             <iconset resource="picture/shine_robot.qrc">
+              <normaloff>:/pushbutton/receive.png</normaloff>:/pushbutton/receive.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>24</width>
+              <height>24</height>
+             </size>
+            </property>
            </widget>
           </item>
           <item row="14" column="1">
@@ -3147,6 +3212,16 @@ p, li { white-space: pre-wrap; }
             </property>
             <property name="text">
              <string>发送</string>
+            </property>
+            <property name="icon">
+             <iconset resource="picture/shine_robot.qrc">
+              <normaloff>:/pushbutton/send.png</normaloff>:/pushbutton/send.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>24</width>
+              <height>24</height>
+             </size>
             </property>
            </widget>
           </item>
@@ -3254,10 +3329,7 @@ p, li { white-space: pre-wrap; }
              </font>
             </property>
             <property name="styleSheet">
-             <string notr="true">
-
-
-</string>
+             <string notr="true"/>
             </property>
             <property name="text">
              <string>连续接收</string>
@@ -3306,7 +3378,7 @@ p, li { white-space: pre-wrap; }
               </property>
               <property name="minimumSize">
                <size>
-                <width>80</width>
+                <width>120</width>
                 <height>40</height>
                </size>
               </property>
@@ -3323,6 +3395,10 @@ p, li { white-space: pre-wrap; }
               </property>
               <property name="text">
                <string>关闭通讯</string>
+              </property>
+              <property name="icon">
+               <iconset resource="picture/shine_robot.qrc">
+                <normaloff>:/pushbutton/disconnect.png</normaloff>:/pushbutton/disconnect.png</iconset>
               </property>
              </widget>
             </item>
@@ -3458,7 +3534,7 @@ p, li { white-space: pre-wrap; }
               </property>
               <property name="minimumSize">
                <size>
-                <width>100</width>
+                <width>120</width>
                 <height>40</height>
                </size>
               </property>
@@ -3469,6 +3545,10 @@ p, li { white-space: pre-wrap; }
               </property>
               <property name="text">
                <string>清除缓存</string>
+              </property>
+              <property name="icon">
+               <iconset resource="picture/shine_robot.qrc">
+                <normaloff>:/pushbutton/Clear.png</normaloff>:/pushbutton/Clear.png</iconset>
               </property>
              </widget>
             </item>
@@ -3771,6 +3851,8 @@ p, li { white-space: pre-wrap; }
   <tabstop>pushButton_quaternion_copy</tabstop>
   <tabstop>lineEdit_quaternion_q3</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="picture/shine_robot.qrc"/>
+ </resources>
  <connections/>
 </ui>

@@ -1,0 +1,12 @@
+<RCC>
+  <qresource prefix="main_window">
+    <file>robot_13597.png</file>
+  </qresource>
+  <qresource prefix="pushbutton">
+    <file>Clear.png</file>
+    <file>disconnect.png</file>
+    <file>connect.png</file>
+    <file>send.png</file>
+    <file>receive.png</file>
+  </qresource>
+</RCC>

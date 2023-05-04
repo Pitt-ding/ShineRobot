@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1149</width>
-    <height>903</height>
+    <width>1025</width>
+    <height>889</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,10 +21,13 @@
     <normaloff>:/main_window/robot_13597.png</normaloff>:/main_window/robot_13597.png</iconset>
   </property>
   <property name="windowOpacity">
-   <double>0.900000000000000</double>
+   <double>1.000000000000000</double>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: rgb(255, 255, 255);</string>
+   <string notr="true">/*background-color: rgb(255, 255, 255);*/
+QMainWindow {
+	border-image: url(:/background/BackGround.jpg);
+}</string>
   </property>
   <property name="locale">
    <locale language="Chinese" country="China"/>
@@ -76,8 +79,23 @@ QCheckBox::indicator {
 	height: 15px;
 }</string>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout">
-    <item>
+   <layout class="QGridLayout" name="gridLayout_8">
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
+    <property name="spacing">
+     <number>2</number>
+    </property>
+    <item row="0" column="0">
      <widget class="QTabWidget" name="tabWidget">
       <property name="font">
        <font>
@@ -86,7 +104,7 @@ QCheckBox::indicator {
       </property>
       <property name="styleSheet">
        <string notr="true">QTabWidget::tab-bar {
-    left : 5px
+    left : 0px
 } 
 
 /* Style the tab using the tab sub-control. Note that
@@ -100,7 +118,7 @@ QTabBar::tab {
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
     min-width: 24ex;
-	min-height:6ex;
+	min-height:10ex;
     margin-top:6px;
 }
 
@@ -120,6 +138,7 @@ QTabBar::tab:selected {
 
 QTabWidget::pane
 {
+background-color: rgb(255, 255, 255, 0.8);
 border-top: 2px solid #C2C7CB;
 position: absolute;
 top: -2px;
@@ -145,16 +164,31 @@ top: -2px;
         <string>四元数转换</string>
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_3">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
         <item>
          <layout class="QGridLayout" name="gridLayout_4">
           <property name="leftMargin">
-           <number>10</number>
+           <number>6</number>
           </property>
           <property name="rightMargin">
-           <number>10</number>
+           <number>6</number>
           </property>
           <property name="horizontalSpacing">
-           <number>20</number>
+           <number>0</number>
+          </property>
+          <property name="verticalSpacing">
+           <number>2</number>
           </property>
           <item row="1" column="3">
            <layout class="QGridLayout" name="gridLayout_2">
@@ -1137,13 +1171,7 @@ top: -2px;
                </font>
               </property>
               <property name="styleSheet">
-               <string notr="true">QPushButton{
-
-border-radius: 4px;
-border-color:rgb(200, 200, 200);
-background-color: rgb(119, 190, 255); 
-}
-QPushButton:hover{background-color:rgb(85, 170, 255) }</string>
+               <string notr="true"/>
               </property>
               <property name="text">
                <string>欧拉角转四元数</string>
@@ -1211,6 +1239,15 @@ QPushButton:hover{background-color:rgb(85, 170, 255) }</string>
               <family>Microsoft YaHei</family>
              </font>
             </property>
+            <property name="styleSheet">
+             <string notr="true">QLabel{
+margin-right: 6px;
+margin-left: 6px;
+margin-bottom:6px;
+padding: 0px;
+border-width: 0px;
+}</string>
+            </property>
             <property name="text">
              <string>历史记录</string>
             </property>
@@ -1229,6 +1266,25 @@ QPushButton:hover{background-color:rgb(85, 170, 255) }</string>
             <property name="contextMenuPolicy">
              <enum>Qt::CustomContextMenu</enum>
             </property>
+            <property name="styleSheet">
+             <string notr="true">QTextEdit{
+
+background-color: rgb(255, 255, 255, 0.5);
+margin-top: 0px;
+margin-right: 6px;
+margin-left: 6px;
+margin-bottom:6px;
+padding: 0px;
+border-width: 0px;
+/*
+background-color: rgb(0, 255, 127, 1);
+border-color: rgb(0, 170, 127, 0.8);
+border-style: solid;
+border-width: 25px;*/
+
+
+}</string>
+            </property>
             <property name="readOnly">
              <bool>true</bool>
             </property>
@@ -1236,7 +1292,7 @@ QPushButton:hover{background-color:rgb(85, 170, 255) }</string>
              <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Microsoft YaHei'; font-size:12pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Microsoft YaHei'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'MS Shell Dlg 2'; font-size:8pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
            </widget>
@@ -1258,8 +1314,26 @@ p, li { white-space: pre-wrap; }
         <string>Socket通讯</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_6">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <property name="spacing">
+         <number>2</number>
+        </property>
         <item row="0" column="0">
          <layout class="QGridLayout" name="gridLayout_3">
+          <property name="leftMargin">
+           <number>6</number>
+          </property>
           <item row="5" column="1">
            <widget class="QLabel" name="label_9">
             <property name="font">
@@ -2433,736 +2507,9 @@ p, li { white-space: pre-wrap; }
         </item>
         <item row="0" column="2">
          <layout class="QGridLayout" name="gridLayout_5">
-          <item row="24" column="1">
-           <widget class="QLabel" name="label_24">
-            <property name="font">
-             <font>
-              <family>Microsoft YaHei</family>
-             </font>
-            </property>
-            <property name="text">
-             <string>全类型接收数值</string>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="6">
-           <widget class="QCheckBox" name="checkBox_ClientSendRawbytes">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="font">
-             <font>
-              <family>Microsoft YaHei</family>
-             </font>
-            </property>
-            <property name="text">
-             <string>Rawbytes</string>
-            </property>
-           </widget>
-          </item>
-          <item row="20" column="1">
-           <widget class="QCheckBox" name="checkBox_ClntRecvFloat">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="font">
-             <font>
-              <family>Microsoft YaHei</family>
-             </font>
-            </property>
-            <property name="text">
-             <string>浮点数类型</string>
-            </property>
-           </widget>
-          </item>
-          <item row="12" column="1">
-           <widget class="QLabel" name="label_23">
-            <property name="font">
-             <font>
-              <family>Microsoft YaHei</family>
-             </font>
-            </property>
-            <property name="text">
-             <string>Rawbytes发送格式字符</string>
-            </property>
-           </widget>
-          </item>
-          <item row="8" column="2">
-           <widget class="QSpinBox" name="spinBox_ClntSendInt_Seq">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="font">
-             <font>
-              <family>Microsoft YaHei</family>
-             </font>
-            </property>
-           </widget>
-          </item>
-          <item row="10" column="2">
-           <widget class="QSpinBox" name="spinBox_ClntSendStr_Seq">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="font">
-             <font>
-              <family>Microsoft YaHei</family>
-             </font>
-            </property>
-           </widget>
-          </item>
-          <item row="16" column="2">
-           <widget class="QCheckBox" name="checkBox_ClientReceiveString">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="font">
-             <font>
-              <family>Microsoft YaHei</family>
-             </font>
-            </property>
-            <property name="text">
-             <string>String</string>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="21" column="2">
-           <widget class="QSpinBox" name="spinBox_ClntRecvStr_Seq">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="font">
-             <font>
-              <family>Microsoft YaHei</family>
-             </font>
-            </property>
-           </widget>
-          </item>
-          <item row="19" column="2">
-           <widget class="QSpinBox" name="spinBox_ClntRecvInt_Seq">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="font">
-             <font>
-              <family>Microsoft YaHei</family>
-             </font>
-            </property>
-           </widget>
-          </item>
-          <item row="15" column="1" colspan="6">
-           <widget class="Line" name="line_8">
-            <property name="font">
-             <font>
-              <family>Microsoft YaHei</family>
-             </font>
-            </property>
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-           </widget>
-          </item>
-          <item row="16" column="3">
-           <widget class="QLabel" name="label_ClientReceiveSeparator">
-            <property name="font">
-             <font>
-              <family>Microsoft YaHei</family>
-             </font>
-            </property>
-            <property name="text">
-             <string>间隔符</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="5">
-           <widget class="Line" name="line_12">
-            <property name="font">
-             <font>
-              <family>Microsoft YaHei</family>
-             </font>
-            </property>
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="0" colspan="2">
-           <widget class="QLabel" name="label_26">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>40</height>
-             </size>
-            </property>
-            <property name="font">
-             <font>
-              <family>Microsoft YaHei</family>
-              <pointsize>14</pointsize>
-             </font>
-            </property>
-            <property name="text">
-             <string>客户端</string>
-            </property>
-           </widget>
-          </item>
-          <item row="22" column="1">
-           <widget class="QLabel" name="label_30">
-            <property name="font">
-             <font>
-              <family>Microsoft YaHei</family>
-             </font>
-            </property>
-            <property name="text">
-             <string>Rawbytes接收格式字符</string>
-            </property>
-           </widget>
-          </item>
-          <item row="16" column="5">
-           <widget class="Line" name="line_13">
-            <property name="font">
-             <font>
-              <family>Microsoft YaHei</family>
-             </font>
-            </property>
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="4">
-           <widget class="QLineEdit" name="lineEdit_ClientSendSeparator">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>40</width>
-              <height>16777215</height>
-             </size>
-            </property>
-            <property name="font">
-             <font>
-              <family>Microsoft YaHei</family>
-             </font>
-            </property>
-            <property name="text">
-             <string>,</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <widget class="QLabel" name="label_19">
-            <property name="font">
-             <font>
-              <family>Microsoft YaHei</family>
-             </font>
-            </property>
-            <property name="text">
-             <string>IP地址</string>
-            </property>
-           </widget>
-          </item>
-          <item row="12" column="2" colspan="5">
-           <widget class="QLineEdit" name="lineEdit_ClntSendFormatStr">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="font">
-             <font>
-              <family>Microsoft YaHei</family>
-             </font>
-            </property>
-            <property name="toolTip">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&amp;lt;h: 1个整数&lt;/p&gt;&lt;p&gt;&amp;lt;f: 1个浮点数&lt;/p&gt;&lt;p&gt;&amp;lt;5s: 5个字符&lt;/p&gt;&lt;p&gt;&amp;lt;hf5s: 从前到后依次1个整数1个浮点数5个字符 &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-            </property>
-            <property name="text">
-             <string>&lt;hf5s</string>
-            </property>
-           </widget>
-          </item>
-          <item row="9" column="2">
-           <widget class="QSpinBox" name="spinBox_ClntSendFloat_Seq">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="font">
-             <font>
-              <family>Microsoft YaHei</family>
-             </font>
-            </property>
-           </widget>
-          </item>
-          <item row="18" column="2">
-           <widget class="QLabel" name="label_29">
-            <property name="font">
-             <font>
-              <family>Microsoft YaHei</family>
-             </font>
-            </property>
-            <property name="text">
-             <string>接收顺序</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item row="16" column="6">
-           <widget class="QCheckBox" name="checkBox_ClientReceiveRawbytes">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="font">
-             <font>
-              <family>Microsoft YaHei</family>
-             </font>
-            </property>
-            <property name="text">
-             <string>Rawbytes</string>
-            </property>
-           </widget>
-          </item>
-          <item row="10" column="1">
-           <widget class="QCheckBox" name="checkBox_ClntSendStr">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="font">
-             <font>
-              <family>Microsoft YaHei</family>
-             </font>
-            </property>
-            <property name="text">
-             <string>字符串</string>
-            </property>
-           </widget>
-          </item>
-          <item row="8" column="1">
-           <widget class="QCheckBox" name="checkBox_ClntSendInt">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="font">
-             <font>
-              <family>Microsoft YaHei</family>
-             </font>
-            </property>
-            <property name="text">
-             <string>整数类型</string>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="2">
-           <widget class="QCheckBox" name="checkBox_ClientSendString">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="font">
-             <font>
-              <family>Microsoft YaHei</family>
-             </font>
-            </property>
-            <property name="text">
-             <string>String</string>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="24" column="2" colspan="5">
-           <widget class="QLineEdit" name="lineEdit_ClntRecvFullType">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="font">
-             <font>
-              <family>Microsoft YaHei</family>
-             </font>
-            </property>
-            <property name="readOnly">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="0" colspan="2">
-           <widget class="QLabel" name="label_25">
-            <property name="font">
-             <font>
-              <family>Microsoft YaHei</family>
-              <pointsize>10</pointsize>
-             </font>
-            </property>
-            <property name="text">
-             <string>发送</string>
-            </property>
-           </widget>
-          </item>
-          <item row="11" column="1">
-           <widget class="QLabel" name="label_17">
-            <property name="font">
-             <font>
-              <family>Microsoft YaHei</family>
-             </font>
-            </property>
-            <property name="text">
-             <string>全类型发送数值</string>
-            </property>
-           </widget>
-          </item>
-          <item row="21" column="1">
-           <widget class="QCheckBox" name="checkBox_ClntRecvStr">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="font">
-             <font>
-              <family>Microsoft YaHei</family>
-             </font>
-            </property>
-            <property name="text">
-             <string>字符串</string>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="1" colspan="2">
-           <widget class="QPushButton" name="pushButton_ClntCreatConn">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>50</height>
-             </size>
-            </property>
-            <property name="font">
-             <font>
-              <family>Microsoft YaHei</family>
-             </font>
-            </property>
-            <property name="text">
-             <string>建立通讯</string>
-            </property>
-            <property name="icon">
-             <iconset resource="picture/shine_robot.qrc">
-              <normaloff>:/pushbutton/connect.png</normaloff>:/pushbutton/connect.png</iconset>
-            </property>
-            <property name="iconSize">
-             <size>
-              <width>24</width>
-              <height>24</height>
-             </size>
-            </property>
-           </widget>
-          </item>
-          <item row="6" column="2" colspan="5">
-           <widget class="Line" name="line_14">
-            <property name="font">
-             <font>
-              <family>Microsoft YaHei</family>
-             </font>
-            </property>
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-           </widget>
-          </item>
-          <item row="19" column="1">
-           <widget class="QCheckBox" name="checkBox_ClntRecvInt">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="font">
-             <font>
-              <family>Microsoft YaHei</family>
-             </font>
-            </property>
-            <property name="text">
-             <string>整数类型</string>
-            </property>
-           </widget>
-          </item>
-          <item row="11" column="2" colspan="5">
-           <widget class="QLineEdit" name="lineEdit_ClntSendFullType">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="font">
-             <font>
-              <family>Microsoft YaHei</family>
-             </font>
-            </property>
-           </widget>
-          </item>
-          <item row="9" column="1">
-           <widget class="QCheckBox" name="checkBox_ClntSendFloat">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="font">
-             <font>
-              <family>Microsoft YaHei</family>
-             </font>
-            </property>
-            <property name="text">
-             <string>浮点数类型</string>
-            </property>
-           </widget>
-          </item>
-          <item row="7" column="2">
-           <widget class="QLabel" name="label_33">
-            <property name="font">
-             <font>
-              <family>Microsoft YaHei</family>
-             </font>
-            </property>
-            <property name="text">
-             <string>发送顺序</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item row="16" column="1">
-           <widget class="QLabel" name="label_20">
-            <property name="font">
-             <font>
-              <family>Microsoft YaHei</family>
-              <pointsize>10</pointsize>
-             </font>
-            </property>
-            <property name="text">
-             <string>接收</string>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="1" colspan="6">
-           <widget class="Line" name="line_7">
-            <property name="font">
-             <font>
-              <family>Microsoft YaHei</family>
-             </font>
-            </property>
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-           </widget>
-          </item>
-          <item row="20" column="2">
-           <widget class="QSpinBox" name="spinBox_ClntRecvFloat_Seq">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="font">
-             <font>
-              <family>Microsoft YaHei</family>
-             </font>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="4">
-           <widget class="QLabel" name="label_21">
-            <property name="font">
-             <font>
-              <family>Microsoft YaHei</family>
-             </font>
-            </property>
-            <property name="text">
-             <string>端口号</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="6">
-           <widget class="QLineEdit" name="lineEdit_ClntPort">
-            <property name="font">
-             <font>
-              <family>Microsoft YaHei</family>
-             </font>
-            </property>
-            <property name="text">
-             <string>1026</string>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="3">
-           <widget class="QLabel" name="label_ClientSendSeparator">
-            <property name="font">
-             <font>
-              <family>Microsoft YaHei</family>
-             </font>
-            </property>
-            <property name="text">
-             <string>间隔符</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item row="16" column="4">
-           <widget class="QLineEdit" name="lineEdit_ClientReceiveSeparator">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>40</width>
-              <height>16777215</height>
-             </size>
-            </property>
-            <property name="font">
-             <font>
-              <family>Microsoft YaHei</family>
-             </font>
-            </property>
-            <property name="text">
-             <string>,</string>
-            </property>
-           </widget>
-          </item>
-          <item row="17" column="2" colspan="5">
-           <widget class="Line" name="line_16">
-            <property name="font">
-             <font>
-              <family>Microsoft YaHei</family>
-             </font>
-            </property>
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-           </widget>
-          </item>
-          <item row="7" column="3" colspan="4">
-           <widget class="QLabel" name="label_34">
-            <property name="font">
-             <font>
-              <family>Microsoft YaHei</family>
-             </font>
-            </property>
-            <property name="text">
-             <string>发送内容</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item row="8" column="3">
-           <widget class="QLabel" name="label_38">
-            <property name="font">
-             <font>
-              <family>Microsoft YaHei</family>
-             </font>
-            </property>
-            <property name="text">
-             <string>发送数值</string>
-            </property>
-           </widget>
-          </item>
-          <item row="9" column="3">
-           <widget class="QLabel" name="label_39">
-            <property name="font">
-             <font>
-              <family>Microsoft YaHei</family>
-             </font>
-            </property>
-            <property name="text">
-             <string>发送数值</string>
-            </property>
-           </widget>
-          </item>
-          <item row="10" column="3">
-           <widget class="QLabel" name="label_40">
-            <property name="font">
-             <font>
-              <family>Microsoft YaHei</family>
-             </font>
-            </property>
-            <property name="text">
-             <string>发送数值</string>
-            </property>
-           </widget>
-          </item>
-          <item row="8" column="4" colspan="3">
-           <widget class="QLineEdit" name="lineEdit_ClntSendInt_Value">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="font">
-             <font>
-              <family>Microsoft YaHei</family>
-             </font>
-            </property>
-           </widget>
-          </item>
-          <item row="9" column="4" colspan="3">
-           <widget class="QLineEdit" name="lineEdit_ClntSendFloat_Value">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="font">
-             <font>
-              <family>Microsoft YaHei</family>
-             </font>
-            </property>
-           </widget>
-          </item>
-          <item row="10" column="4" colspan="3">
-           <widget class="QLineEdit" name="lineEdit_ClntSendStr_Value">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="font">
-             <font>
-              <family>Microsoft YaHei</family>
-             </font>
-            </property>
-           </widget>
-          </item>
-          <item row="18" column="3" colspan="4">
-           <widget class="QLabel" name="label_41">
-            <property name="font">
-             <font>
-              <family>Microsoft YaHei</family>
-             </font>
-            </property>
-            <property name="text">
-             <string>接收内容</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="2" colspan="2">
-           <widget class="QLineEdit" name="lineEdit_ClntIP">
-            <property name="font">
-             <font>
-              <family>Microsoft YaHei</family>
-             </font>
-            </property>
-            <property name="text">
-             <string>127.0.0.1</string>
-            </property>
-           </widget>
-          </item>
+          <property name="rightMargin">
+           <number>6</number>
+          </property>
           <item row="23" column="1">
            <widget class="QPushButton" name="pushButton_ClntRecv">
             <property name="enabled">
@@ -3194,11 +2541,8 @@ p, li { white-space: pre-wrap; }
             </property>
            </widget>
           </item>
-          <item row="14" column="1">
-           <widget class="QPushButton" name="pushButton_ClntSend">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
+          <item row="0" column="0" colspan="2">
+           <widget class="QLabel" name="label_26">
             <property name="minimumSize">
              <size>
               <width>0</width>
@@ -3208,14 +2552,33 @@ p, li { white-space: pre-wrap; }
             <property name="font">
              <font>
               <family>Microsoft YaHei</family>
+              <pointsize>14</pointsize>
              </font>
             </property>
             <property name="text">
-             <string>发送</string>
+             <string>客户端</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1" colspan="2">
+           <widget class="QPushButton" name="pushButton_ClntCreatConn">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>50</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="text">
+             <string>建立通讯</string>
             </property>
             <property name="icon">
              <iconset resource="picture/shine_robot.qrc">
-              <normaloff>:/pushbutton/send.png</normaloff>:/pushbutton/send.png</iconset>
+              <normaloff>:/pushbutton/connect.png</normaloff>:/pushbutton/connect.png</iconset>
             </property>
             <property name="iconSize">
              <size>
@@ -3225,129 +2588,39 @@ p, li { white-space: pre-wrap; }
             </property>
            </widget>
           </item>
-          <item row="14" column="2">
-           <widget class="QCheckBox" name="checkBox_ClntContinueSend">
+          <item row="2" column="2" colspan="2">
+           <widget class="QLineEdit" name="lineEdit_ClntIP">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="text">
+             <string>127.0.0.1</string>
+            </property>
+           </widget>
+          </item>
+          <item row="20" column="2">
+           <widget class="QSpinBox" name="spinBox_ClntRecvFloat_Seq">
             <property name="enabled">
              <bool>false</bool>
             </property>
-            <property name="minimumSize">
-             <size>
-              <width>90</width>
-              <height>0</height>
-             </size>
-            </property>
             <property name="font">
              <font>
               <family>Microsoft YaHei</family>
              </font>
             </property>
-            <property name="text">
-             <string>连续发送</string>
-            </property>
            </widget>
           </item>
-          <item row="14" column="4">
-           <widget class="QLineEdit" name="lineEdit_ClntSendInterval">
+          <item row="10" column="4" colspan="3">
+           <widget class="QLineEdit" name="lineEdit_ClntSendStr_Value">
             <property name="enabled">
              <bool>false</bool>
             </property>
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>50</width>
-              <height>16777215</height>
-             </size>
-            </property>
             <property name="font">
              <font>
               <family>Microsoft YaHei</family>
              </font>
-            </property>
-            <property name="text">
-             <string>0.5</string>
-            </property>
-           </widget>
-          </item>
-          <item row="23" column="4">
-           <widget class="QLineEdit" name="lineEdit_ClntRecvInterval">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>50</width>
-              <height>16777215</height>
-             </size>
-            </property>
-            <property name="font">
-             <font>
-              <family>Microsoft YaHei</family>
-             </font>
-            </property>
-            <property name="text">
-             <string>0.5</string>
-            </property>
-           </widget>
-          </item>
-          <item row="14" column="3">
-           <widget class="QLabel" name="label_5">
-            <property name="font">
-             <font>
-              <family>Microsoft YaHei</family>
-             </font>
-            </property>
-            <property name="text">
-             <string>发送间隔</string>
-            </property>
-           </widget>
-          </item>
-          <item row="23" column="2">
-           <widget class="QCheckBox" name="checkBox_ClntContinueRecv">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>90</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="font">
-             <font>
-              <family>Microsoft YaHei</family>
-             </font>
-            </property>
-            <property name="styleSheet">
-             <string notr="true"/>
-            </property>
-            <property name="text">
-             <string>连续接收</string>
-            </property>
-           </widget>
-          </item>
-          <item row="23" column="3">
-           <widget class="QLabel" name="label_42">
-            <property name="font">
-             <font>
-              <family>Microsoft YaHei</family>
-             </font>
-            </property>
-            <property name="text">
-             <string>接收间隔</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignCenter</set>
             </property>
            </widget>
           </item>
@@ -3404,33 +2677,16 @@ p, li { white-space: pre-wrap; }
             </item>
            </layout>
           </item>
-          <item row="19" column="3" colspan="4">
-           <widget class="QLineEdit" name="lineEdit_ClntRecvInt_Value">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
+          <item row="5" column="0" colspan="2">
+           <widget class="QLabel" name="label_25">
             <property name="font">
              <font>
               <family>Microsoft YaHei</family>
+              <pointsize>10</pointsize>
              </font>
             </property>
-            <property name="readOnly">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="20" column="3" colspan="4">
-           <widget class="QLineEdit" name="lineEdit_ClntRecvFloat_Value">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="font">
-             <font>
-              <family>Microsoft YaHei</family>
-             </font>
-            </property>
-            <property name="readOnly">
-             <bool>true</bool>
+            <property name="text">
+             <string>发送</string>
             </property>
            </widget>
           </item>
@@ -3449,8 +2705,26 @@ p, li { white-space: pre-wrap; }
             </property>
            </widget>
           </item>
-          <item row="21" column="5" colspan="2">
-           <widget class="QLineEdit" name="lineEdit_ClntRecvStr_Value">
+          <item row="12" column="2" colspan="5">
+           <widget class="QLineEdit" name="lineEdit_ClntSendFormatStr">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="toolTip">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&amp;lt;h: 1个整数&lt;/p&gt;&lt;p&gt;&amp;lt;f: 1个浮点数&lt;/p&gt;&lt;p&gt;&amp;lt;5s: 5个字符&lt;/p&gt;&lt;p&gt;&amp;lt;hf5s: 从前到后依次1个整数1个浮点数5个字符 &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="text">
+             <string>&lt;hf5s</string>
+            </property>
+           </widget>
+          </item>
+          <item row="24" column="2" colspan="5">
+           <widget class="QLineEdit" name="lineEdit_ClntRecvFullType">
             <property name="enabled">
              <bool>false</bool>
             </property>
@@ -3461,6 +2735,33 @@ p, li { white-space: pre-wrap; }
             </property>
             <property name="readOnly">
              <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="16" column="4">
+           <widget class="QLineEdit" name="lineEdit_ClientReceiveSeparator">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>40</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="text">
+             <string>,</string>
             </property>
            </widget>
           </item>
@@ -3494,6 +2795,320 @@ p, li { white-space: pre-wrap; }
             </property>
            </widget>
           </item>
+          <item row="23" column="2">
+           <widget class="QCheckBox" name="checkBox_ClntContinueRecv">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>90</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+            <property name="text">
+             <string>连续接收</string>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="2">
+           <widget class="QLabel" name="label_33">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="text">
+             <string>发送顺序</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="16" column="3">
+           <widget class="QLabel" name="label_ClientReceiveSeparator">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="text">
+             <string>间隔符</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="19" column="3" colspan="4">
+           <widget class="QLineEdit" name="lineEdit_ClntRecvInt_Value">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="14" column="1">
+           <widget class="QPushButton" name="pushButton_ClntSend">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>40</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="text">
+             <string>发送</string>
+            </property>
+            <property name="icon">
+             <iconset resource="picture/shine_robot.qrc">
+              <normaloff>:/pushbutton/send.png</normaloff>:/pushbutton/send.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>24</width>
+              <height>24</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item row="8" column="2">
+           <widget class="QSpinBox" name="spinBox_ClntSendInt_Seq">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+           </widget>
+          </item>
+          <item row="21" column="5" colspan="2">
+           <widget class="QLineEdit" name="lineEdit_ClntRecvStr_Value">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="21" column="1">
+           <widget class="QCheckBox" name="checkBox_ClntRecvStr">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="text">
+             <string>字符串</string>
+            </property>
+           </widget>
+          </item>
+          <item row="16" column="5">
+           <widget class="Line" name="line_13">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="14" column="4">
+           <widget class="QLineEdit" name="lineEdit_ClntSendInterval">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>50</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="text">
+             <string>0.5</string>
+            </property>
+           </widget>
+          </item>
+          <item row="16" column="6">
+           <widget class="QCheckBox" name="checkBox_ClientReceiveRawbytes">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="text">
+             <string>Rawbytes</string>
+            </property>
+           </widget>
+          </item>
+          <item row="16" column="1">
+           <widget class="QLabel" name="label_20">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>接收</string>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="3" colspan="4">
+           <widget class="QLabel" name="label_34">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="text">
+             <string>发送内容</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="2" colspan="5">
+           <widget class="Line" name="line_14">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="4">
+           <widget class="QLabel" name="label_21">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="text">
+             <string>端口号</string>
+            </property>
+           </widget>
+          </item>
+          <item row="12" column="1">
+           <widget class="QLabel" name="label_23">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="text">
+             <string>Rawbytes发送格式字符</string>
+            </property>
+           </widget>
+          </item>
+          <item row="20" column="3" colspan="4">
+           <widget class="QLineEdit" name="lineEdit_ClntRecvFloat_Value">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="23" column="4">
+           <widget class="QLineEdit" name="lineEdit_ClntRecvInterval">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>50</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="text">
+             <string>0.5</string>
+            </property>
+           </widget>
+          </item>
+          <item row="24" column="1">
+           <widget class="QLabel" name="label_24">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="text">
+             <string>全类型接收数值</string>
+            </property>
+           </widget>
+          </item>
           <item row="22" column="2" colspan="5">
            <widget class="QLineEdit" name="lineEdit_ClntRecvFormatStr">
             <property name="enabled">
@@ -3509,6 +3124,57 @@ p, li { white-space: pre-wrap; }
             </property>
             <property name="text">
              <string>&lt;hf5s</string>
+            </property>
+           </widget>
+          </item>
+          <item row="15" column="1" colspan="6">
+           <widget class="Line" name="line_8">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="10" column="1">
+           <widget class="QCheckBox" name="checkBox_ClntSendStr">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="text">
+             <string>字符串</string>
+            </property>
+           </widget>
+          </item>
+          <item row="14" column="3">
+           <widget class="QLabel" name="label_5">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="text">
+             <string>发送间隔</string>
+            </property>
+           </widget>
+          </item>
+          <item row="21" column="2">
+           <widget class="QSpinBox" name="spinBox_ClntRecvStr_Seq">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
             </property>
            </widget>
           </item>
@@ -3554,6 +3220,417 @@ p, li { white-space: pre-wrap; }
             </item>
            </layout>
           </item>
+          <item row="8" column="1">
+           <widget class="QCheckBox" name="checkBox_ClntSendInt">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="text">
+             <string>整数类型</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="3">
+           <widget class="QLabel" name="label_ClientSendSeparator">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="text">
+             <string>间隔符</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="8" column="3">
+           <widget class="QLabel" name="label_38">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="text">
+             <string>发送数值</string>
+            </property>
+           </widget>
+          </item>
+          <item row="9" column="1">
+           <widget class="QCheckBox" name="checkBox_ClntSendFloat">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="text">
+             <string>浮点数类型</string>
+            </property>
+           </widget>
+          </item>
+          <item row="19" column="2">
+           <widget class="QSpinBox" name="spinBox_ClntRecvInt_Seq">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+           </widget>
+          </item>
+          <item row="11" column="2" colspan="5">
+           <widget class="QLineEdit" name="lineEdit_ClntSendFullType">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QLabel" name="label_19">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="text">
+             <string>IP地址</string>
+            </property>
+           </widget>
+          </item>
+          <item row="22" column="1">
+           <widget class="QLabel" name="label_30">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="text">
+             <string>Rawbytes接收格式字符</string>
+            </property>
+           </widget>
+          </item>
+          <item row="16" column="2">
+           <widget class="QCheckBox" name="checkBox_ClientReceiveString">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="text">
+             <string>String</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="6">
+           <widget class="QCheckBox" name="checkBox_ClientSendRawbytes">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="text">
+             <string>Rawbytes</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="2">
+           <widget class="QCheckBox" name="checkBox_ClientSendString">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="text">
+             <string>String</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="19" column="1">
+           <widget class="QCheckBox" name="checkBox_ClntRecvInt">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="text">
+             <string>整数类型</string>
+            </property>
+           </widget>
+          </item>
+          <item row="18" column="2">
+           <widget class="QLabel" name="label_29">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="text">
+             <string>接收顺序</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="9" column="3">
+           <widget class="QLabel" name="label_39">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="text">
+             <string>发送数值</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="4">
+           <widget class="QLineEdit" name="lineEdit_ClientSendSeparator">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>40</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="text">
+             <string>,</string>
+            </property>
+           </widget>
+          </item>
+          <item row="10" column="2">
+           <widget class="QSpinBox" name="spinBox_ClntSendStr_Seq">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+           </widget>
+          </item>
+          <item row="8" column="4" colspan="3">
+           <widget class="QLineEdit" name="lineEdit_ClntSendInt_Value">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="6">
+           <widget class="QLineEdit" name="lineEdit_ClntPort">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="text">
+             <string>1026</string>
+            </property>
+           </widget>
+          </item>
+          <item row="9" column="4" colspan="3">
+           <widget class="QLineEdit" name="lineEdit_ClntSendFloat_Value">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+           </widget>
+          </item>
+          <item row="9" column="2">
+           <widget class="QSpinBox" name="spinBox_ClntSendFloat_Seq">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+           </widget>
+          </item>
+          <item row="20" column="1">
+           <widget class="QCheckBox" name="checkBox_ClntRecvFloat">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="text">
+             <string>浮点数类型</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="5">
+           <widget class="Line" name="line_12">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1" colspan="6">
+           <widget class="Line" name="line_7">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="17" column="2" colspan="5">
+           <widget class="Line" name="line_16">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="23" column="3">
+           <widget class="QLabel" name="label_42">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="text">
+             <string>接收间隔</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="11" column="1">
+           <widget class="QLabel" name="label_17">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="text">
+             <string>全类型发送数值</string>
+            </property>
+           </widget>
+          </item>
+          <item row="10" column="3">
+           <widget class="QLabel" name="label_40">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="text">
+             <string>发送数值</string>
+            </property>
+           </widget>
+          </item>
+          <item row="18" column="3" colspan="4">
+           <widget class="QLabel" name="label_41">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="text">
+             <string>接收内容</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="14" column="2">
+           <widget class="QCheckBox" name="checkBox_ClntContinueSend">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>90</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+             </font>
+            </property>
+            <property name="text">
+             <string>连续发送</string>
+            </property>
+           </widget>
+          </item>
          </layout>
         </item>
         <item row="1" column="0" colspan="3">
@@ -3573,21 +3650,51 @@ p, li { white-space: pre-wrap; }
           <property name="font">
            <font>
             <family>Microsoft YaHei</family>
-            <pointsize>12</pointsize>
+            <pointsize>10</pointsize>
            </font>
           </property>
           <property name="contextMenuPolicy">
            <enum>Qt::DefaultContextMenu</enum>
           </property>
+          <property name="styleSheet">
+           <string notr="true">QTextEdit{
+
+background-color: rgb(255, 255, 255, 0.5);
+margin-top: 0px;
+margin-right: 6px;
+margin-left: 6px;
+margin-bottom:6px;
+padding: 0px;
+border-width: 0px;
+/*
+background-color: rgb(0, 255, 127, 1);
+border-color: rgb(0, 170, 127, 0.8);
+border-style: solid;
+border-width: 25px;*/
+
+
+}</string>
+          </property>
           <property name="readOnly">
            <bool>true</bool>
+          </property>
+          <property name="markdown">
+           <string>Socket communication...
+
+</string>
           </property>
           <property name="html">
            <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Microsoft YaHei'; font-size:12pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2'; font-size:10pt;&quot;&gt;Socket communication...&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Microsoft YaHei'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:8px; margin-bottom:8px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Socket communication...&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="acceptRichText">
+           <bool>false</bool>
+          </property>
+          <property name="placeholderText">
+           <string/>
           </property>
          </widget>
         </item>
@@ -3614,17 +3721,17 @@ p, li { white-space: pre-wrap; }
            <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:12pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;  ! ===================================================================================================================================================================&lt;/p&gt;
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'SimSun'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt; ! ===================================================================================================================================================================&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    !&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    ! Func          : rSocket_ServerComm&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    ! Function      : Socket server Communication demo&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    ! Description   :  &lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    ! Description   :&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    ! Return		:&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    ! Parameters	:&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    ! Author        : YuanQiang.Ding&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    ! Date          : 2022-11-11&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    ! &lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    !&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    ! ===================================================================================================================================================================&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    PROC rSocket_ServerComm()&lt;/p&gt;
@@ -3642,7 +3749,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        TEST nCommunicateType&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        CASE 10:&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            !Send string type &lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            !Send string type&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            !****Append process logic here&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            WHILE TRUE DO&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                SocketSend sdClinet_Socket,\Str:=&amp;quot;ABB Robot: Message Sended&amp;quot;;&lt;/p&gt;
@@ -3651,17 +3758,17 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        CASE 11:&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            WHILE TRUE DO&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                SocketReceive sdClinet_Socket,\Str:=sSocket_Receive\Time:=WAIT_MAX;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                TPWrite &amp;quot;Receive clinet string: &amp;quot;+sSocket_Receive;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                TPWrite &amp;quot;Server Receive clinet string: &amp;quot;+sSocket_Receive;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                sSocket_Receive:=&amp;quot;&amp;quot;;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            ENDWHILE&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        CASE 20:&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            WHILE TRUE DO&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                !Send rawbytes type here &lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                !Send rawbytes type here&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                ClearRawBytes rbSocket_Send;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                !---Assign the type sequence and number here---&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                PackRawBytes temp_integer,rbSocket_Send,1\IntX:=INT;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                PackRawBytes temp_float,rbSocket_Send,(RawBytesLen(rbSocket_Send)+1)\Float4;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                PackRawBytes temp_string,rbSocket_Send,(RawBytesLen(rbSocket_Send)+1)\ASCII;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                PackRawBytes temp_string,rbSocket_Send,(RawBytesLen(rbSocket_Send)+1)\ISOLatin1Encoding;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                !****Append process logic here&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                SocketSend sdClinet_Socket,\RawData:=rbSocket_Send;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                WaitTime 1;&lt;/p&gt;
@@ -3671,15 +3778,16 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                SocketReceive sdClinet_Socket,\RawData:=rbSocket_Receive\Time:=WAIT_MAX;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                UnpackRawBytes rbSocket_Receive,1,nSocketReceive_int\IntX:=INT;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                UnpackRawBytes rbSocket_Receive,3,nSocketReceive_float\Float4;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                UnpackRawBytes rbSocket_Receive,7,nSocketReceive_float\ASCII:=5;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                TPWrite &amp;quot;Received int value: &amp;quot;\Num:=nSocketReceive_int;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                TPWrite &amp;quot;Received float value: &amp;quot;\Num:=nSocketReceive_float;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                UnpackRawBytes rbSocket_Receive,7,sSocketReceive_str\ISOLatin1Encoding:=5;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                TPWrite &amp;quot;Server parse rawbytes int value: &amp;quot;\Num:=nSocketReceive_int;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                TPWrite &amp;quot;Server parse rawbytes float value: &amp;quot;\Num:=nSocketReceive_float;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                TPWrite &amp;quot;Server parse rawbytes string value: &amp;quot;+sSocketReceive_str;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            ENDWHILE&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        DEFAULT:&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            TPWrite &amp;quot;Wrong process no.&amp;quot;;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        ENDTEST&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    ERROR&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        !initial the socket connection &lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        !initial the socket connection&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        IF ERRNO=ERR_SOCK_TIMEOUT THEN&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            RETRY;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        ELSEIF ERRNO=ERR_SOCK_CLOSED&lt;/p&gt;
@@ -3696,22 +3804,25 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        ELSE&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            RAISE ;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        ENDIF&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    UNDO&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        SocketClose sdServer_Socket;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        SocketClose sdClinet_Socket;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    ENDPROC&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    ! ===================================================================================================================================================================&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    !&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    ! Func          : rSocket_ClientComm&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    ! Function      : Socket client Communication demo, change nSocker_SendDataType value to switch send string or rawbytes&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    ! Description   : you need to define the type sequence for rawbytes firstly,the receiver need to decode the data as your type sequence &lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    ! Description   : you need to define the type sequence for rawbytes firstly,the receiver need to decode the data as your type sequence&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    ! Return		:&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    ! Parameters	:&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    ! Author        : YuanQiang.Ding&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    ! Date          : 2022-11-11a&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    ! &lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    ! Date          : 2022-11-11&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    !&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    ! ===================================================================================================================================================================&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    PROC rSocket_ClientComm()&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        CONST num nSocket_SendDataType:=1;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        CONST num nCommunicateType:=21;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        CONST string sServerIP:=&amp;quot;127.0.0.1&amp;quot;;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        CONST num nServerPort:=1025;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        VAR socketdev sdClinet_Socket;&lt;/p&gt;
@@ -3719,40 +3830,51 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        VAR rawbytes rbSocket_Receive;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        VAR num nSocketReceive_int;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        VAR num nSocketReceive_float;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        VAR string sSocketReceive_str;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        VAR string sSocket_Receive;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        !VAR bool bKeep_listening:=TRUE;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        SocketCreate sdClinet_Socket;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        SocketConnect sdClinet_Socket,sServerIP,nServerPort\Time:=WAIT_MAX;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        IF nSocket_SendDataType=0 THEN&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            !Send string type &lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            !****Append process logic here&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            SocketSend sdClinet_Socket,\Str:=&amp;quot;ABB Robot: Message Sended&amp;quot;;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            SocketReceive sdClinet_Socket,\Str:=sSocket_Receive;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            TPWrite &amp;quot;Receive clinet string: &amp;quot;+sSocket_Receive;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            sSocket_Receive:=&amp;quot;&amp;quot;;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        ELSE&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            !Send rawbytes type here &lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            ClearRawBytes rbSocket_Send;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            !---Assign the type sequence and number here---&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            PackRawBytes temp_integer,rbSocket_Send,1\IntX:=INT;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            PackRawBytes temp_float,rbSocket_Send,(RawBytesLen(rbSocket_Send)+1)\Float4;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            !****Append process logic here&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            SocketSend sdClinet_Socket,\RawData:=rbSocket_Send;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            SocketReceive sdClinet_Socket,\RawData:=rbSocket_Receive;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            UnpackRawBytes rbSocket_Receive,1,nSocketReceive_int\IntX:=INT;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            UnpackRawBytes rbSocket_Receive,3,nSocketReceive_float\Float4;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            TPWrite &amp;quot;Received int value: &amp;quot;\Num:=nSocketReceive_int;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            TPWrite &amp;quot;Received float value: &amp;quot;\Num:=nSocketReceive_float;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        ENDIF&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        TEST nCommunicateType&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        CASE 10:&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            !Send string type&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            WHILE TRUE DO&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                !****Append process logic here&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                SocketSend sdClinet_Socket,\Str:=&amp;quot;ABB Robot: Message Sended&amp;quot;;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                WaitTime 1;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            ENDWHILE&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        CASE 11:&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            WHILE TRUE DO&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                SocketReceive sdClinet_Socket,\Str:=sSocket_Receive;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                TPWrite &amp;quot;Client Receive clinet string: &amp;quot;+sSocket_Receive;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                sSocket_Receive:=&amp;quot;&amp;quot;;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            ENDWHILE&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        CASE 20:&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            WHILE TRUE DO&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                !Send rawbytes type here&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                ClearRawBytes rbSocket_Send;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                !---Assign the type sequence and number here---&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                PackRawBytes temp_integer,rbSocket_Send,1\IntX:=INT;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                PackRawBytes temp_float,rbSocket_Send,(RawBytesLen(rbSocket_Send)+1)\Float4;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                PackRawBytes temp_string,rbSocket_Send,(RawBytesLen(rbSocket_Send)+1)\ISOLatin1Encoding;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                !****Append process logic here&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                SocketSend sdClinet_Socket,\RawData:=rbSocket_Send;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                WaitTime 1;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            ENDWHILE&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        CASE 21:&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            WHILE TRUE DO&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                SocketReceive sdClinet_Socket,\RawData:=rbSocket_Receive;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                UnpackRawBytes rbSocket_Receive,1,nSocketReceive_int\IntX:=INT;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                UnpackRawBytes rbSocket_Receive,3,nSocketReceive_float\Float4;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                UnpackRawBytes rbSocket_Receive,7,sSocketReceive_str\ISOLatin1Encoding:=5;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                TPWrite &amp;quot;Client parse rawbytes int value: &amp;quot;\Num:=nSocketReceive_int;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                TPWrite &amp;quot;Client parse rawbytes float value: &amp;quot;\Num:=nSocketReceive_float;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                TPWrite &amp;quot;Client parse rawbytes string value: &amp;quot;+sSocketReceive_str;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            ENDWHILE&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        ENDTEST&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        SocketClose sdClinet_Socket;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    ERROR&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        !initial the socket connection&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        IF ERRNO=ERR_SOCK_CLOSED&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            or ERRNO=ERR_SOCK_NET_UNREACH&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            OR ERRNO=ERR_SOCK_NET_UNREACH&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            OR ERRNO=ERR_SOCK_NOT_CONN&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            OR ERRNO=ERR_SOCK_UNSPEC&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            THEN&lt;/p&gt;
@@ -3763,8 +3885,6 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        ELSE&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;            RAISE ;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        ENDIF&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        !RETRY;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    UNDO&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;        SocketClose sdClinet_Socket;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    ENDPROC&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -3779,10 +3899,13 @@ p, li { white-space: pre-wrap; }
   </widget>
  </widget>
  <tabstops>
-  <tabstop>tabWidget</tabstop>
   <tabstop>lineEdit_SevIP</tabstop>
   <tabstop>lineEdit_SerPort</tabstop>
   <tabstop>pushButton_SerCreateConn</tabstop>
+  <tabstop>pushButton_SerCloseConn</tabstop>
+  <tabstop>checkBox_ServerSendString</tabstop>
+  <tabstop>lineEdit_ServerSendSeparator</tabstop>
+  <tabstop>checkBox_ServerSendRawbytes</tabstop>
   <tabstop>checkBox_SerSendInt</tabstop>
   <tabstop>spinBox_SerSendInt_Seq</tabstop>
   <tabstop>lineEdit_SerSendInt_Value</tabstop>
@@ -3794,7 +3917,12 @@ p, li { white-space: pre-wrap; }
   <tabstop>lineEdit_SerSendstr_Value</tabstop>
   <tabstop>lineEdit_SerSendFullType</tabstop>
   <tabstop>lineEdit_SerSendFormatStr</tabstop>
+  <tabstop>checkBox_SerContinueSend</tabstop>
+  <tabstop>lineEdit_SerSendInterval</tabstop>
   <tabstop>pushButton_SerSend</tabstop>
+  <tabstop>checkBox_ServerReceiveString</tabstop>
+  <tabstop>lineEdit_ServerReceiveSeparator</tabstop>
+  <tabstop>checkBox_ServerReceiveRawbytes</tabstop>
   <tabstop>checkBox_SerRecvInt</tabstop>
   <tabstop>spinBox_SerRecvInt_Seq</tabstop>
   <tabstop>lineEdit_SerRecvInt_Value</tabstop>
@@ -3803,13 +3931,21 @@ p, li { white-space: pre-wrap; }
   <tabstop>lineEdit_SerRecvFloat_Value</tabstop>
   <tabstop>checkBox_SerRecvStr</tabstop>
   <tabstop>spinBox_SerRecvStr_Seq</tabstop>
+  <tabstop>spinBox_SerRecvRawLength</tabstop>
   <tabstop>lineEdit_SerRecvStr_Value</tabstop>
   <tabstop>lineEdit_SerRecvFormatStr</tabstop>
+  <tabstop>checkBox_SerContinueRecv</tabstop>
+  <tabstop>lineEdit_SerRecvInterval</tabstop>
+  <tabstop>pushButton_SerClearCache</tabstop>
   <tabstop>pushButton_SerRecv</tabstop>
   <tabstop>lineEdit_SerRecvFullType</tabstop>
   <tabstop>lineEdit_ClntIP</tabstop>
   <tabstop>lineEdit_ClntPort</tabstop>
   <tabstop>pushButton_ClntCreatConn</tabstop>
+  <tabstop>pushButton_ClntCloseConn</tabstop>
+  <tabstop>checkBox_ClientSendString</tabstop>
+  <tabstop>lineEdit_ClientSendSeparator</tabstop>
+  <tabstop>checkBox_ClientSendRawbytes</tabstop>
   <tabstop>checkBox_ClntSendInt</tabstop>
   <tabstop>spinBox_ClntSendInt_Seq</tabstop>
   <tabstop>lineEdit_ClntSendInt_Value</tabstop>
@@ -3821,7 +3957,12 @@ p, li { white-space: pre-wrap; }
   <tabstop>lineEdit_ClntSendStr_Value</tabstop>
   <tabstop>lineEdit_ClntSendFullType</tabstop>
   <tabstop>lineEdit_ClntSendFormatStr</tabstop>
+  <tabstop>checkBox_ClntContinueSend</tabstop>
+  <tabstop>lineEdit_ClntSendInterval</tabstop>
   <tabstop>pushButton_ClntSend</tabstop>
+  <tabstop>checkBox_ClientReceiveString</tabstop>
+  <tabstop>lineEdit_ClientReceiveSeparator</tabstop>
+  <tabstop>checkBox_ClientReceiveRawbytes</tabstop>
   <tabstop>checkBox_ClntRecvInt</tabstop>
   <tabstop>spinBox_ClntRecvInt_Seq</tabstop>
   <tabstop>lineEdit_ClntRecvInt_Value</tabstop>
@@ -3830,26 +3971,32 @@ p, li { white-space: pre-wrap; }
   <tabstop>lineEdit_ClntRecvFloat_Value</tabstop>
   <tabstop>checkBox_ClntRecvStr</tabstop>
   <tabstop>spinBox_ClntRecvStr_Seq</tabstop>
+  <tabstop>spinBox_ClntRecvRawLength</tabstop>
   <tabstop>lineEdit_ClntRecvStr_Value</tabstop>
   <tabstop>lineEdit_ClntRecvFormatStr</tabstop>
+  <tabstop>checkBox_ClntContinueRecv</tabstop>
+  <tabstop>lineEdit_ClntRecvInterval</tabstop>
+  <tabstop>pushButton_ClntClearCache</tabstop>
   <tabstop>pushButton_ClntRecv</tabstop>
   <tabstop>lineEdit_ClntRecvFullType</tabstop>
   <tabstop>textEdit_Log</tabstop>
-  <tabstop>lineEdit_quaternion_q4</tabstop>
-  <tabstop>lineEdit_euler_roty</tabstop>
+  <tabstop>lineEdit_euler_rotx</tabstop>
   <tabstop>lineEdit_quaternion_result</tabstop>
+  <tabstop>lineEdit_quaternion_q3</tabstop>
+  <tabstop>pushButton_quaternion_copy</tabstop>
+  <tabstop>pushButton_quaternion_clearinput</tabstop>
+  <tabstop>lineEdit_quaternion_q1</tabstop>
+  <tabstop>pushButton_euler_quaternion</tabstop>
+  <tabstop>lineEdit_euler_rotz</tabstop>
+  <tabstop>pushButton_euler_clearinput</tabstop>
   <tabstop>pushButton_euler_copy</tabstop>
   <tabstop>lineEdit_euler_result</tabstop>
-  <tabstop>lineEdit_euler_rotx</tabstop>
-  <tabstop>pushButton_quaternion_clearinput</tabstop>
-  <tabstop>pushButton_euler_clearinput</tabstop>
-  <tabstop>pushButton_euler_quaternion</tabstop>
-  <tabstop>pushButton_quaternion_euler</tabstop>
+  <tabstop>lineEdit_quaternion_q4</tabstop>
+  <tabstop>textEdit_result_record</tabstop>
   <tabstop>lineEdit_quaternion_q2</tabstop>
-  <tabstop>lineEdit_euler_rotz</tabstop>
-  <tabstop>lineEdit_quaternion_q1</tabstop>
-  <tabstop>pushButton_quaternion_copy</tabstop>
-  <tabstop>lineEdit_quaternion_q3</tabstop>
+  <tabstop>lineEdit_euler_roty</tabstop>
+  <tabstop>pushButton_quaternion_euler</tabstop>
+  <tabstop>textEdit</tabstop>
  </tabstops>
  <resources>
   <include location="picture/shine_robot.qrc"/>

@@ -2,6 +2,9 @@
   <qresource prefix="main_window">
     <file>robot_13597.png</file>
   </qresource>
+  <qresource prefix="background">
+    <file>BackGround.jpg</file>
+  </qresource>
   <qresource prefix="pushbutton">
     <file>Clear.png</file>
     <file>disconnect.png</file>

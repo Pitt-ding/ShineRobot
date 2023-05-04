@@ -31,7 +31,7 @@ class SocketCommunicate:
     def socket_receive_bytes(self) -> Union[bytes, None]:
         pass
 
-    def socket_send(self, _send_str: str) -> None:
+    def socket_send(self, _send_bytes: bytes) -> None:
         """
         Base send widgets status quote send string function,use name tuple as input args,suit for both server and client
         """
@@ -39,7 +39,7 @@ class SocketCommunicate:
             while True:
                 self.signal_socket_sending.emit(True)
                 # print("send continue: {}, send interval: {}".format(self.b_continue_send, self.str_send_interval))
-                self.socket_send_bytes(_send_str)
+                self.socket_send_bytes(_send_bytes)
                 time.sleep(float(self.str_send_interval))
                 if not self.b_continue_send:
                     self.signal_socket_sending.emit(False)
@@ -82,7 +82,7 @@ class SocketServer(QObject, SocketCommunicate):
         self.socket_server_connect_ip, self.socket_server_connect_port = None, None
         self.socket_server = socket()
         self.b_socket_server_shutup = False
-        self.socket_server_accept_client = socket()
+        self.socket_server_accept_client = None
 
     def create_socket_server(self, _ip_port):
         """
@@ -112,7 +112,7 @@ class SocketServer(QObject, SocketCommunicate):
             self.signal_socket_server_accepted.emit(True)
 
         except OSError as e:
-            self.signal_record_result.emit("Socket server create connect: " + str(e))
+            self.signal_record_result.emit("Socket server create connect error: " + str(e))
             self.socket_server_accept_client.close()
             self.socket_server.close()
 
@@ -123,19 +123,23 @@ class SocketServer(QObject, SocketCommunicate):
         :return:
         """
         try:
-            self.socket_server_accept_client.close()
+            if self.socket_server_accept_client is not None:
+                self.socket_server_accept_client.close()
+                self.socket_server_accept_client = None
             # !!!Clear accepted client after closed, if not there would be error
             self.signal_record_result.emit("Socket server accepted client closed")
             self.socket_server.close()
 
-            self.signal_socket_server_accepted.emit(False)
             self.signal_record_result.emit("Socket server closed")
             self.signal_socket_server_closed.emit(True)
+            self.signal_socket_server_accepted.emit(False)
             self.signal_socket_sending.emit(False)
             self.signal_socket_receiving.emit(False)
         except OSError as e:
             self.signal_record_result.emit("Socket server close error: " + str(e))
-            self.socket_server_accept_client.close()
+            if self.socket_server_accept_client is not None:
+                self.socket_server_accept_client.close()
+                self.socket_server_accept_client = None
             self.socket_server.close()
 
     def socket_send_bytes(self, s_send: Union[bytes, str]) -> None:
@@ -147,12 +151,12 @@ class SocketServer(QObject, SocketCommunicate):
             if self.socket_server_accept_client is not None:
 
                 if type(s_send) is bytes:
-                    # print("send rawbytes")
                     self.socket_server_accept_client.send(s_send)
+                    self.signal_record_result.emit("socket server send bytes: {}".format(s_send))
                 else:
                     self.signal_record_result.emit("socket server send data: " + s_send)
                     self.socket_server_accept_client.send(s_send.encode())
-        except ConnectionAbortedError as e:
+        except (ConnectionAbortedError, ConnectionResetError) as e:
             self.signal_record_result.emit("Socket server send: " + str(e))
             raise ConnectionAbortedError
 

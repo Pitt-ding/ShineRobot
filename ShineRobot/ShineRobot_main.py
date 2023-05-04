@@ -11,7 +11,6 @@ import time
 import ctypes
 import re
 import struct
-
 from PyQt5 import QtCore
 from ShineRobot import Ui_MainWindow
 from PyQt5.QtWidgets import QApplication, QMainWindow, QMenu, QAction
@@ -80,9 +79,9 @@ class SocketWidgetStruct:
 class MyMainWindow(QMainWindow, Ui_MainWindow):
     # Signal should define in class not in instance
     signal_socket_server_not_accepted_close = pyqtSignal()
-    signal_server_send = pyqtSignal(str)
+    signal_server_send = pyqtSignal(bytes)
     # signal that send interval check valid in order to update send parameters
-    signal_client_send = pyqtSignal(str)
+    signal_client_send = pyqtSignal(bytes)
 
     # widget style sheet
     str_lineedit_style_invalid = "QLineEdit{background-color: rgb(253, 183, 184)}"
@@ -434,8 +433,9 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                 widgets_status.checkBox_SendContinue.setStyleSheet("QCheckBox{background-color: rgb(255, 255, 255)}")
         else:
             widgets_status.pushButton_Send.setText("发送")
-            widgets_status.pushButton_Send.setEnabled(True)
             widgets_status.checkBox_SendContinue.setStyleSheet("QCheckBox{background-color: rgb(255, 255, 255)}")
+            if widgets_status.checkBox_SendStringMode.isEnabled() or widgets_status.checkBox_SendRawbytesMode.isEnabled():
+                widgets_status.pushButton_Send.setEnabled(True)
 
     @staticmethod
     def ui_update_pushbutton_recv(_b_receiving: bool, widgets_status: SocketWidgetStruct) -> None:
@@ -449,10 +449,10 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                 widgets_status.checkBox_RecvContinue.setStyleSheet("QCheckBox{background-color: rgb(255, 255, 255)}")
         else:
             widgets_status.pushButton_Receive.setText("接收")
-            widgets_status.pushButton_ClearCache.setEnabled(True)
-            widgets_status.pushButton_Receive.setEnabled(True)
             widgets_status.checkBox_RecvContinue.setStyleSheet("QCheckBox{background-color: rgb(255, 255, 255)}")
-
+            if widgets_status.checkBox_SendStringMode.isEnabled() or widgets_status.checkBox_SendRawbytesMode.isEnabled():
+                widgets_status.pushButton_ClearCache.setEnabled(True)
+                widgets_status.pushButton_Receive.setEnabled(True)
     @staticmethod
     def socket_send(_signal_send: pyqtSignal, widgets_status: SocketWidgetStruct) -> None:
         """
@@ -473,35 +473,35 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         _full_type_str_text = widgets_status.lineEdit_SendFullType.text()
         _full_type_format_str_text = widgets_status.lineEdit_SendFormatStr.text()
         _send_str_Separator_text = widgets_status.lineEdit_StrSendSeparator.text()
-
+        _log_fun = widgets_status.log_fun
         try:
 
             if widgets_status.checkBox_SendStringMode.isChecked():
                 # send string
                 if _int_checked + _float_checked + _str_checked == 1:
                     if _int_checked:
-                        _send_fun(_int_text)
+                        _send_fun(_int_text.encode())
                     elif _float_checked:
-                        _send_fun(_float_text)
+                        _send_fun(_float_text.encode())
                     else:
-                        _send_fun(_str_text)
+                        _send_fun(_str_text.encode())
 
                 elif _int_checked + _float_checked + _str_checked == 2:
                     if not _int_checked:
                         if int(_float_seq) > int(_str_seq):
-                            _send_fun(_float_text + _send_str_Separator_text + _str_text)
+                            _send_fun((_float_text + _send_str_Separator_text + _str_text).encode())
                         else:
-                            _send_fun(_str_text + _send_str_Separator_text + _float_text)
+                            _send_fun((_str_text + _send_str_Separator_text + _float_text).encode())
                     elif not _float_checked:
                         if int(_int_seq) > int(_str_seq):
-                            _send_fun(_int_text + _send_str_Separator_text + _str_text)
+                            _send_fun((_int_text + _send_str_Separator_text + _str_text).encode())
                         else:
-                            _send_fun(_str_text + _send_str_Separator_text + _int_text)
+                            _send_fun((_str_text + _send_str_Separator_text + _int_text).encode())
                     else:
                         if int(_int_seq) > int(_float_seq):
-                            _send_fun(_int_text + _send_str_Separator_text + _float_text)
+                            _send_fun((_int_text + _send_str_Separator_text + _float_text).encode())
                         else:
-                            _send_fun(_float_text + _send_str_Separator_text + _int_text)
+                            _send_fun((_float_text + _send_str_Separator_text + _int_text).encode())
 
                 elif _int_checked + _float_checked + _str_checked == 3:
                     # 生成字列表，并对列表按键值做排序
@@ -509,10 +509,10 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                                        [int(_float_seq), _float_text],
                                        [int(_str_seq), _str_text]]
                     m_sequence_list.sort(key=lambda x: x[0], reverse=True)
-                    _send_fun(str(m_sequence_list[0][1]) + _send_str_Separator_text + str(m_sequence_list[1][1])
-                              + _send_str_Separator_text + str(m_sequence_list[2][1]))
+                    _send_fun((str(m_sequence_list[0][1]) + _send_str_Separator_text + str(m_sequence_list[1][1])
+                              + _send_str_Separator_text + str(m_sequence_list[2][1])).encode())
                 else:
-                    _send_fun(_full_type_str_text)
+                    _send_fun(_full_type_str_text.encode())
             else:
                 # Send rawbytes
                 if _int_checked + _float_checked + _str_checked == 1:
@@ -570,6 +570,9 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
         except ConnectionAbortedError:
             return
+        except struct.error as e:
+            _log_fun("Send error: " + str(e))
+
 
     @staticmethod
     def socket_receive(_recv_str: bytes, widgets_status: SocketWidgetStruct) -> None:
@@ -1182,46 +1185,52 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
     @staticmethod
     def ui_update_send_value_check(widgets_status: SocketWidgetStruct, _socket: SocketCommunicate):
 
-        b_lineedit_check_valid = False
+        b_lineedit_check_valid = 0
+        b_lineedit_check_valid_contrast = 0
         b_spinbox_check_valid = False
         b_lineedit_send_seperator_check_valid = False
         b_lineedit_send_interval_check_valid = False
 
         if widgets_status.checkBox_SendStringMode.isEnabled() or widgets_status.checkBox_SendRawbytesMode.isEnabled():
             if widgets_status.checkBox_Send_Int.isChecked():
+                b_lineedit_check_valid_contrast += 1
                 ins_re_match = re.match(r"^\d+$", widgets_status.lineEdit_Send_Int.text())
                 if ins_re_match is not None:
                     widgets_status.lineEdit_Send_Int.setStyleSheet(MyMainWindow.str_lineedit_style_enable)
-                    b_lineedit_check_valid = True
+                    b_lineedit_check_valid += 1
                 else:
                     widgets_status.lineEdit_Send_Int.setStyleSheet(MyMainWindow.str_lineedit_style_invalid)
-                    b_lineedit_check_valid = False
+                    # b_lineedit_check_valid = False
             if widgets_status.checkBox_Send_Float.isChecked():
+                b_lineedit_check_valid_contrast += 1
                 ins_re_match = re.match(r"^\d+\.\d+$", widgets_status.lineEdit_Send_Float.text())
                 if ins_re_match is not None:
                     widgets_status.lineEdit_Send_Float.setStyleSheet(MyMainWindow.str_lineedit_style_enable)
-                    b_lineedit_check_valid = True
+                    b_lineedit_check_valid += 1
                 else:
                     widgets_status.lineEdit_Send_Float.setStyleSheet(MyMainWindow.str_lineedit_style_invalid)
-                    b_lineedit_check_valid = False
+                    # b_lineedit_check_valid = False
 
             if widgets_status.checkBox_Send_Str.isChecked():
+                b_lineedit_check_valid_contrast += 1
                 ins_re_match = re.match(r"^\S+$", widgets_status.lineEdit_Send_Str.text())
                 if ins_re_match is not None:
                     widgets_status.lineEdit_Send_Str.setStyleSheet(MyMainWindow.str_lineedit_style_enable)
-                    b_lineedit_check_valid = True
+                    b_lineedit_check_valid += 1
                 else:
                     widgets_status.lineEdit_Send_Str.setStyleSheet(MyMainWindow.str_lineedit_style_invalid)
-                    b_lineedit_check_valid = False
+                    # b_lineedit_check_valid = False
                 # Server send sequence check
             if widgets_status.checkBox_Send_Int.isChecked() + widgets_status.checkBox_Send_Float.isChecked() + widgets_status.checkBox_Send_Str.isChecked() == 0:
                 if widgets_status.checkBox_SendStringMode.isChecked():
+                    b_lineedit_check_valid_contrast += 1
                     if widgets_status.lineEdit_SendFullType.text() != "":
-                        b_lineedit_check_valid = True
+                        b_lineedit_check_valid += 1
                         b_spinbox_check_valid = True
                 else:
+                    b_lineedit_check_valid_contrast += 1
                     if widgets_status.lineEdit_SendFullType.text() != "" and widgets_status.lineEdit_SendFormatStr.text() != "":
-                        b_lineedit_check_valid = True
+                        b_lineedit_check_valid += 1
                         b_spinbox_check_valid = True
 
             elif widgets_status.checkBox_Send_Int.isChecked() + widgets_status.checkBox_Send_Float.isChecked() + widgets_status.checkBox_Send_Str.isChecked() == 1:
@@ -1289,9 +1298,10 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                         widgets_status.spinBox_Send_Float.setStyleSheet(MyMainWindow.str_spinbox_style_invalid)
                         widgets_status.spinBox_Send_Str.setStyleSheet(MyMainWindow.str_spinbox_style_invalid)
                     else:
-                        b_spinbox_check_valid = True
+                        b_spinbox_check_valid =True
                         widgets_status.spinBox_Send_Float.setStyleSheet(MyMainWindow.str_spinbox_style_enable)
                         widgets_status.spinBox_Send_Str.setStyleSheet(MyMainWindow.str_spinbox_style_enable)
+
             if widgets_status.lineEdit_StrSendSeparator.isEnabled():
                 ins_re_match = re.match(r"[^A-Za-z\d.]", widgets_status.lineEdit_StrSendSeparator.text())
                 if ins_re_match is not None:
@@ -1300,6 +1310,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                 else:
                     widgets_status.lineEdit_StrSendSeparator.setStyleSheet(MyMainWindow.str_lineedit_style_invalid)
                     b_lineedit_send_seperator_check_valid = False
+
             else:
                 b_lineedit_send_seperator_check_valid = True
 
@@ -1307,21 +1318,21 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                 try:
                     float(widgets_status.lineEdit_SendInterval.text())
                     widgets_status.lineEdit_SendInterval.setStyleSheet(MyMainWindow.str_lineedit_style_enable)
-                    _socket.b_continue_send = widgets_status.checkBox_SendContinue.isChecked()
                     _socket.str_send_interval = widgets_status.lineEdit_SendInterval.text()
                     b_lineedit_send_interval_check_valid = True
                 except ValueError:
                     widgets_status.lineEdit_SendInterval.setStyleSheet(MyMainWindow.str_lineedit_style_invalid)
                     b_lineedit_send_interval_check_valid = False
-                    _socket.b_continue_send = False
                     _socket.str_send_interval = widgets_status.lineEdit_SendInterval.text()
             else:
                 b_lineedit_send_interval_check_valid = True
 
-        if b_spinbox_check_valid and b_lineedit_check_valid and b_lineedit_send_interval_check_valid and b_lineedit_send_seperator_check_valid:
+        if b_spinbox_check_valid and b_lineedit_check_valid == b_lineedit_check_valid_contrast and b_lineedit_send_interval_check_valid and b_lineedit_send_seperator_check_valid:
             widgets_status.pushButton_Send.setEnabled(True)
+            _socket.b_continue_send = widgets_status.checkBox_SendContinue.isChecked()
         else:
             widgets_status.pushButton_Send.setEnabled(False)
+            _socket.b_continue_send = False
 
     @staticmethod
     def ui_update_rec_value_check(widgets_status: SocketWidgetStruct, _socket: SocketCommunicate):
@@ -1442,6 +1453,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                     widgets_status.lineEdit_Receive_Int.setStyleSheet(MyMainWindow.str_lineedit_style_enable)
                 except ValueError:
                     widgets_status.lineEdit_Receive_Int.setStyleSheet(MyMainWindow.str_lineedit_style_invalid)
+                    _socket.b_continue_recv = False
 
             if widgets_status.lineEdit_Receive_Float.isEnabled() and widgets_status.lineEdit_Receive_Float.text() != "":
                 try:
@@ -1449,6 +1461,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                     widgets_status.lineEdit_Receive_Float.setStyleSheet(MyMainWindow.str_lineedit_style_enable)
                 except ValueError:
                     widgets_status.lineEdit_Receive_Float.setStyleSheet(MyMainWindow.str_lineedit_style_invalid)
+                    _socket.b_continue_recv = False
 
             if widgets_status.lineEdit_Receive_Str.isEnabled() and widgets_status.lineEdit_Receive_Str.text() != "":
                 try:
@@ -1456,6 +1469,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                     widgets_status.lineEdit_Receive_Str.setStyleSheet(MyMainWindow.str_lineedit_style_enable)
                 except ValueError:
                     widgets_status.lineEdit_Receive_Str.setStyleSheet(MyMainWindow.str_lineedit_style_invalid)
+                    _socket.b_continue_recv = False
 
             if b_spinbox_check_valid and b_lineedit_seperator_recv_check_valid and b_lineedit_recv_interval_check_valid:
                 widgets_status.pushButton_Receive.setEnabled(True)
@@ -1466,6 +1480,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         else:
             widgets_status.pushButton_Receive.setEnabled(False)
             widgets_status.pushButton_ClearCache.setEnabled(False)
+
 
     @staticmethod
     def ui_update_check_ip_port(widgets_status: SocketWidgetStruct):

@@ -24,6 +24,7 @@ class SocketCommunicate:
         self.str_send_interval = "0"
         self.b_continue_recv = False
         self.str_recv_interval = "0"
+        self.b_close_not_accepted_server = False
 
     def socket_send_bytes(self, s_send: Union[bytes, str]) -> None:
         pass
@@ -45,6 +46,7 @@ class SocketCommunicate:
                     self.signal_socket_sending.emit(False)
                     break
         except ConnectionAbortedError:
+            self.signal_socket_sending.emit(False)
             return
 
     def socket_receive(self) -> None:
@@ -65,7 +67,8 @@ class SocketCommunicate:
         # 检查调用Socket receive方法是否接收数据超时，如果是则发布信息并return
         except OSError as e:
             self.signal_record_result.emit(str(e))
-            self.signal_record_result.emit("Doesn't receive any data, please check")
+            self.signal_socket_receiving.emit(False)
+            # self.signal_record_result.emit("Doesn't receive any data, please check")
             return
 
 
@@ -84,7 +87,7 @@ class SocketServer(QObject, SocketCommunicate):
         self.b_socket_server_shutup = False
         self.socket_server_accept_client = None
 
-    def create_socket_server(self, _ip_port):
+    def create_socket_server(self, _ip_port: tuple) -> None:
         """
         create the socket server in thread
         :return: None
@@ -93,6 +96,7 @@ class SocketServer(QObject, SocketCommunicate):
             self.socket_server.__init__()
             # self.b_socket_server_shutup = False
             print("Socket server thread", QThread.currentThreadId())
+            self.b_close_not_accepted_server = False
             self.socket_server_connect_ip, self.socket_server_connect_port = _ip_port
             self.socket_server_connect_port = int(self.socket_server_connect_port)
 
@@ -108,8 +112,10 @@ class SocketServer(QObject, SocketCommunicate):
             # socket_server.settimeout(3)
             self.signal_record_result.emit("Socket server begin accept client connection...")
             self.socket_server_accept_client, socket_server_accept_any = self.socket_server.accept()
-            self.signal_record_result.emit("socket server accept client connection from {}".format(socket_server_accept_any))
-            self.signal_socket_server_accepted.emit(True)
+            if not self.b_close_not_accepted_server:
+                self.signal_socket_server_accepted.emit(True)
+                self.signal_record_result.emit(
+                    "socket server accept client connection from {}".format(socket_server_accept_any))
 
         except OSError as e:
             self.signal_record_result.emit("Socket server create connect error: " + str(e))
@@ -170,7 +176,7 @@ class SocketServer(QObject, SocketCommunicate):
                 self.socket_server_accept_client.settimeout(3)
                 m_receive = self.socket_server_accept_client.recv(1024)
                 # self.signal_record_result.emit("Receive value type: {}".format(type(m_receive)))
-                self.signal_record_result.emit("Socket server Receive value: {}".format(m_receive))
+                self.signal_record_result.emit("Socket server receive value: {}".format(m_receive))
                 return m_receive
 
             except (ValueError, TypeError) as e:
@@ -178,7 +184,7 @@ class SocketServer(QObject, SocketCommunicate):
                 return
             # 检查socket.recv()是否超时，如果超时则向调用方Raise osError错误
             except OSError:
-                raise OSError
+                raise OSError("Socket server doesn't receive any data, please check")
 
     def socket_clear_cache(self) -> None:
         """
@@ -208,14 +214,14 @@ class SocketServerCloseClient(QObject):
     signal_record_result = QtCore.pyqtSignal(str)
     signal_socket_server_client_closed = QtCore.pyqtSignal(bool)
 
-    def __init__(self, _ip_port: tuple) -> None:
+    def __init__(self, ) -> None:
         super().__init__()
         # init variable for socket communication
         self.socket_client = socket()
-        self._targetAddress = _ip_port
+        # self._targetAddress = _ip_port
         self.socket_server_client_connect_ip, self.socket_server_client_connect_port = None, None
 
-    def connect_to_server(self) -> None:
+    def connect_to_server(self, _ip_port: tuple) -> None:
         """
         create socket server client for close server connection
         :return: None
@@ -223,7 +229,7 @@ class SocketServerCloseClient(QObject):
         try:
             self.socket_client = socket()
             self.socket_client.settimeout(3)
-            self.socket_server_client_connect_ip, self.socket_server_client_connect_port = self._targetAddress
+            self.socket_server_client_connect_ip, self.socket_server_client_connect_port = _ip_port
             self.socket_server_client_connect_port = int(self.socket_server_client_connect_port)
 
             self.socket_client.connect((self.socket_server_client_connect_ip, self.socket_server_client_connect_port))
@@ -291,6 +297,7 @@ class SocketClient(QObject, SocketCommunicate):
             if type(s_send) is bytes:
                 print("socket client send rawbytes")
                 self.socket_client.send(s_send)
+                self.signal_record_result.emit("socket client send bytes: {}".format(s_send))
             else:
                 self.signal_record_result.emit("socket client send data: " + s_send)
                 self.socket_client.send(s_send.encode())
@@ -307,7 +314,7 @@ class SocketClient(QObject, SocketCommunicate):
             self.socket_client.settimeout(3)
             m_receive = self.socket_client.recv(1024)
             # self.signal_record_result.emit("socket client Receive value type: {}".format(type(m_receive)))
-            self.signal_record_result.emit("socket client Receive value: {}".format(m_receive))
+            self.signal_record_result.emit("socket client receive value: {}".format(m_receive))
             return m_receive
 
         except (ValueError, TypeError) as e:
@@ -315,7 +322,7 @@ class SocketClient(QObject, SocketCommunicate):
             return
         # 检查socket.recv()是否超时，如果超时则向调用方Raise osError错误
         except OSError:
-            raise OSError
+            raise OSError("Socket client doesn't receive any data, please check")
 
     def socket_clear_cache(self) -> Union[bytes, None]:
         """

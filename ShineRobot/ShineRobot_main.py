@@ -78,7 +78,9 @@ class SocketWidgetStruct:
 
 class MyMainWindow(QMainWindow, Ui_MainWindow):
     # Signal should define in class not in instance
-    signal_socket_server_not_accepted_close = pyqtSignal()
+    signal_socket_server_create_connection = pyqtSignal(tuple)
+    signal_socket_client_create_connection = pyqtSignal(tuple)
+    signal_socket_server_not_accepted_close = pyqtSignal(tuple)
     signal_server_send = pyqtSignal(bytes)
     # signal that send interval check valid in order to update send parameters
     signal_client_send = pyqtSignal(bytes)
@@ -86,23 +88,23 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
     # widget style sheet
     str_lineedit_style_invalid = "QLineEdit{background-color: rgb(253, 183, 184)}"
     str_lineedit_style_enable = "QLineEdit{background-color: rgb(255, 255, 255)}"
-    str_lineedit_style_disable = "QLineEdit{background-color: rgb(240, 240, 240)};"
+    str_lineedit_style_disable = "QLineEdit{background-color: rgb(200, 200, 200)};"
     str_spinbox_style_enable = "QSpinBox{background-color: rgb(255, 255, 255)}"
     str_spinbox_style_invalid = "QSpinBox{background-color: rgb(253, 183, 184)}"
-    str_spinbox_style_disable = "QSpinBox{background-color: rgb(240, 240, 240)}"
+    str_spinbox_style_disable = "QSpinBox{background-color: rgb(200, 200, 200)}"
 
     def __init__(self) -> None:
         super(MyMainWindow, self).__init__()
-        # super().__init__()
 
         self.setupUi(self)
         self.right_click_menu = QMenu()
         self.quaternion_euler_ins = QuaternionEuler()
         # socket server
+        # self.b_close_not_accepted_server = False
         self.socket_server = SocketServer()
 
         # socket server close client used to close blocking socket server
-        self.socket_server_client = SocketServerCloseClient((self.lineEdit_SevIP.text(), self.lineEdit_SerPort.text()))
+        self.socket_server_client = SocketServerCloseClient()
         # socket client
         self.socket_client = SocketClient()
         # socket communication thread
@@ -173,7 +175,6 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.server_widgets_status.lineEdit_RecvInterval = self.lineEdit_SerRecvInterval
         self.server_widgets_status.pushButton_ClearCache = self.pushButton_SerClearCache
 
-
         # client widgets
         self.client_widgets_status = SocketWidgetStruct()
         # self.client_widgets_status.send_fun = self.socket_client.socket_send_bytes
@@ -234,9 +235,10 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
         # socket server send and receive event
         self.signal_server_send.connect(self.socket_server.socket_send)
-        self.pushButton_SerCreateConn.clicked.connect(partial(self.socket_server.create_socket_server, (self.lineEdit_SevIP.text(), self.lineEdit_SerPort.text())), Qt.QueuedConnection)
+        self.signal_socket_server_create_connection.connect(self.socket_server.create_socket_server)
         self.pushButton_SerCreateConn.clicked.connect(lambda: self.pushButton_SerCloseConn.setEnabled(True))
         self.pushButton_SerCreateConn.clicked.connect(lambda: self.pushButton_SerCreateConn.setDisabled(True))
+        self.pushButton_SerCreateConn.clicked.connect(self.server_create_connect)
         self.pushButton_SerCloseConn.clicked.connect(self.close_socket_server)
         self.pushButton_SerSend.clicked.connect(partial(self.socket_send, self.signal_server_send,  self.server_widgets_status))
         self.pushButton_SerRecv.clicked.connect(self.socket_server.socket_receive)
@@ -247,15 +249,16 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.socket_server.signal_socket_server_closed.connect(self.pushButton_SerCreateConn.setEnabled)
         self.socket_server.signal_socket_server_closed.connect(self.pushButton_SerCloseConn.setDisabled)
         self.socket_server.signal_socket_receive_bytes.connect(partial(self.socket_receive, widgets_status=self.server_widgets_status))
-        self.socket_server.signal_socket_sending.connect(partial(self.ui_update_pushbutton_send, widgets_status=self.server_widgets_status))
-        self.socket_server.signal_socket_receiving.connect(partial(self.ui_update_pushbutton_recv, widgets_status=self.server_widgets_status))
+        self.socket_server.signal_socket_sending.connect(partial(self.ui_update_pushbutton_sending, widgets_status=self.server_widgets_status))
+        self.socket_server.signal_socket_receiving.connect(partial(self.ui_update_pushbutton_recving, widgets_status=self.server_widgets_status))
 
         self.socket_server_client.signal_record_result.connect(self.record_socket_communication_result)
         self.socket_server_client.signal_socket_server_client_closed.connect(self.socket_server.close_socket_server)
         self.signal_socket_server_not_accepted_close.connect(self.socket_server_client.connect_to_server)
 
         self.signal_client_send.connect(self.socket_client.socket_send)
-        self.pushButton_ClntCreatConn.clicked.connect(partial(self.socket_client.create_socket_client, (self.lineEdit_ClntIP.text(), int(self.lineEdit_ClntPort.text()))))
+        self.signal_socket_client_create_connection.connect(self.socket_client.create_socket_client)
+        self.pushButton_ClntCreatConn.clicked.connect(self.client_create_connect)
         self.pushButton_ClntCloseConn.clicked.connect(self.socket_client.close_socket_client)
         self.pushButton_ClntSend.clicked.connect(lambda: self.socket_send(self.signal_client_send, self.client_widgets_status))
         self.pushButton_ClntRecv.clicked.connect(self.socket_client.socket_receive)
@@ -264,8 +267,8 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.socket_client.signal_socket_client_connected.connect(partial(self.ui_update_socket_server_communicate_enable, widgets_status=self.client_widgets_status, _socket=self.socket_client))
         self.socket_client.signal_record_result.connect(self.record_socket_communication_result)
         self.socket_client.signal_socket_receive_bytes.connect(partial(self.socket_receive, widgets_status=self.client_widgets_status))
-        self.socket_client.signal_socket_sending.connect(partial(self.ui_update_pushbutton_send, widgets_status=self.client_widgets_status))
-        self.socket_client.signal_socket_receiving.connect(partial(self.ui_update_pushbutton_recv, widgets_status=self.client_widgets_status))
+        self.socket_client.signal_socket_sending.connect(partial(self.ui_update_pushbutton_sending, widgets_status=self.client_widgets_status))
+        self.socket_client.signal_socket_receiving.connect(partial(self.ui_update_pushbutton_recving, widgets_status=self.client_widgets_status))
 
         self.checkBox_ServerSendString.clicked.connect(lambda: self.ui_update_checkbox_send_string_checked(self.server_widgets_status, self.socket_server))
         self.checkBox_ServerSendRawbytes.clicked.connect(lambda: self.ui_update_checkbox_send_rawbytes_checked(self.server_widgets_status, self.socket_server))
@@ -351,6 +354,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
     # ------------------------------------------------------------------------------------------------------------------
     # -----------------------quaternion and euler convert function------------------------------------------------------
     # ------------------------------------------------------------------------------------------------------------------
+
     def init_quaternion(self):
         self.quaternion_euler_ins.lineedit_q1 = self.lineEdit_quaternion_q1
         self.quaternion_euler_ins.lineedit_q2 = self.lineEdit_quaternion_q2
@@ -394,6 +398,14 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
     # ------------------------------------------------------------------------------------------------------------------
     # ----------------------socket communication -----------------------------------------------------------------------
     # ------------------------------------------------------------------------------------------------------------------
+    def server_create_connect(self):
+        print("Server ip {}, Server port {}".format(self.lineEdit_SevIP.text(), self.lineEdit_SerPort.text()))
+        self.signal_socket_server_create_connection.emit((self.lineEdit_SevIP.text(), self.lineEdit_SerPort.text()))
+
+    def client_create_connect(self):
+        print("Server ip {}, Server port {}".format(self.lineEdit_ClntIP.text(), self.lineEdit_ClntPort.text()))
+        self.signal_socket_client_create_connection.emit((self.lineEdit_ClntIP.text(), self.lineEdit_ClntPort.text()))
+
     def close_socket_server(self):
         """
         close the socket server socket
@@ -401,7 +413,8 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         """
         try:
             if self.socket_server.socket_server_accept_client is None:
-                self.signal_socket_server_not_accepted_close.emit()
+                self.signal_socket_server_not_accepted_close.emit((self.lineEdit_SevIP.text(), self.lineEdit_SerPort.text()))
+                self.socket_server.b_close_not_accepted_server = True
             else:
                 self.socket_server.close_socket_server()
         except OSError as e:
@@ -422,37 +435,6 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
     # ------------------------------------------------------------------------------------------------------------------
     # -----------------------------------uiUpdate-----------------------------------------------------------------------
     # ------------------------------------------------------------------------------------------------------------------
-    @staticmethod
-    def ui_update_pushbutton_send(_b_sending: bool, widgets_status: SocketWidgetStruct) -> None:
-        if _b_sending:
-            widgets_status.pushButton_Send.setText("发送中...")
-            widgets_status.pushButton_Send.setEnabled(False)
-            if widgets_status.checkBox_SendContinue.isChecked():
-                widgets_status.checkBox_SendContinue.setStyleSheet("QCheckBox{background-color: rgb(119, 190, 255)}")
-            else:
-                widgets_status.checkBox_SendContinue.setStyleSheet("QCheckBox{background-color: rgb(255, 255, 255)}")
-        else:
-            widgets_status.pushButton_Send.setText("发送")
-            widgets_status.checkBox_SendContinue.setStyleSheet("QCheckBox{background-color: rgb(255, 255, 255)}")
-            if widgets_status.checkBox_SendStringMode.isEnabled() or widgets_status.checkBox_SendRawbytesMode.isEnabled():
-                widgets_status.pushButton_Send.setEnabled(True)
-
-    @staticmethod
-    def ui_update_pushbutton_recv(_b_receiving: bool, widgets_status: SocketWidgetStruct) -> None:
-        if _b_receiving:
-            widgets_status.pushButton_Receive.setText("接收中...")
-            widgets_status.pushButton_ClearCache.setEnabled(False)
-            widgets_status.pushButton_Receive.setEnabled(False)
-            if widgets_status.checkBox_RecvContinue.isChecked():
-                widgets_status.checkBox_RecvContinue.setStyleSheet("QCheckBox{background-color: rgb(119, 190, 255)}")
-            else:
-                widgets_status.checkBox_RecvContinue.setStyleSheet("QCheckBox{background-color: rgb(255, 255, 255)}")
-        else:
-            widgets_status.pushButton_Receive.setText("接收")
-            widgets_status.checkBox_RecvContinue.setStyleSheet("QCheckBox{background-color: rgb(255, 255, 255)}")
-            if widgets_status.checkBox_SendStringMode.isEnabled() or widgets_status.checkBox_SendRawbytesMode.isEnabled():
-                widgets_status.pushButton_ClearCache.setEnabled(True)
-                widgets_status.pushButton_Receive.setEnabled(True)
     @staticmethod
     def socket_send(_signal_send: pyqtSignal, widgets_status: SocketWidgetStruct) -> None:
         """
@@ -566,13 +548,12 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                         elif "s" in list_re[int_index]:
                             list_byte += (struct.pack("<" + list_re[int_index], list_value[int_index].encode()))
                     _send_fun(list_byte)
-            time.sleep(float(widgets_status.lineEdit_SendInterval.text()))
+            # time.sleep(float(widgets_status.lineEdit_SendInterval.text()))
 
         except ConnectionAbortedError:
             return
         except struct.error as e:
             _log_fun("Send error: " + str(e))
-
 
     @staticmethod
     def socket_receive(_recv_str: bytes, widgets_status: SocketWidgetStruct) -> None:
@@ -877,24 +858,63 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             return
 
     @staticmethod
+    def ui_update_pushbutton_sending(_b_sending: bool, widgets_status: SocketWidgetStruct) -> None:
+        if _b_sending:
+            widgets_status.pushButton_Send.setText("发送中...")
+            widgets_status.pushButton_Send.setEnabled(False)
+            widgets_status.pushButton_Receive.setEnabled(False)
+            widgets_status.pushButton_ClearCache.setEnabled(False)
+            if widgets_status.checkBox_SendContinue.isChecked():
+                widgets_status.checkBox_SendContinue.setStyleSheet("QCheckBox{background-color: rgb(119, 190, 255)}")
+            else:
+                widgets_status.checkBox_SendContinue.setStyleSheet("QCheckBox{background-color: rgb(255, 255, 255)}")
+        else:
+            widgets_status.pushButton_Send.setText("发送")
+            widgets_status.pushButton_Receive.setEnabled(True)
+            widgets_status.pushButton_ClearCache.setEnabled(True)
+            widgets_status.checkBox_SendContinue.setStyleSheet("QCheckBox{background-color: rgb(255, 255, 255)}")
+            if widgets_status.checkBox_SendStringMode.isEnabled() or widgets_status.checkBox_SendRawbytesMode.isEnabled():
+                widgets_status.pushButton_Send.setEnabled(True)
+
+    @staticmethod
+    def ui_update_pushbutton_recving(_b_receiving: bool, widgets_status: SocketWidgetStruct) -> None:
+        if _b_receiving:
+            widgets_status.pushButton_Receive.setText("接收中...")
+            widgets_status.pushButton_ClearCache.setEnabled(False)
+            widgets_status.pushButton_Receive.setEnabled(False)
+            widgets_status.pushButton_Send.setEnabled(False)
+            if widgets_status.checkBox_RecvContinue.isChecked():
+                widgets_status.checkBox_RecvContinue.setStyleSheet("QCheckBox{background-color: rgb(119, 190, 255)}")
+            else:
+                widgets_status.checkBox_RecvContinue.setStyleSheet("QCheckBox{background-color: rgb(255, 255, 255)}")
+        else:
+            widgets_status.pushButton_Send.setEnabled(True)
+            widgets_status.pushButton_Receive.setText("接收")
+            widgets_status.checkBox_RecvContinue.setStyleSheet("QCheckBox{background-color: rgb(255, 255, 255)}")
+            if widgets_status.checkBox_SendStringMode.isEnabled() or widgets_status.checkBox_SendRawbytesMode.isEnabled():
+                widgets_status.pushButton_ClearCache.setEnabled(True)
+                widgets_status.pushButton_Receive.setEnabled(True)
+
+    @staticmethod
     def ui_update_socket_server_communicate_enable(b_accepted: bool, widgets_status: SocketWidgetStruct, _socket: SocketCommunicate) -> None:
         """
         enable send and receive widgets after socket server accept connection
         :param b_accepted:
         :param widgets_status:
-        return None
+        :param _socket:
+        :return:
         """
-        if b_accepted:
+
+        if b_accepted and not _socket.b_close_not_accepted_server:
+            _socket.b_close_not_accepted_server = False
             # send widgets
             widgets_status.checkBox_SendStringMode.setEnabled(True)
             # widgets_status.lineEdit_StrSendSeparator.setEnabled(True)
             widgets_status.checkBox_SendRawbytesMode.setEnabled(True)
-
             widgets_status.checkBox_Send_Int.setEnabled(True)
             widgets_status.checkBox_Send_Str.setEnabled(True)
             widgets_status.checkBox_Send_Float.setEnabled(True)
             widgets_status.checkBox_SendContinue.setEnabled(True)
-
             widgets_status.lineEdit_SendFullType.setEnabled(True)
             widgets_status.lineEdit_SendFullType.setFocusPolicy(Qt.StrongFocus)
             widgets_status.lineEdit_SendFormatStr.setEnabled(True)
@@ -902,10 +922,8 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
             # receive widgets
             widgets_status.checkBox_ReceiveStrMode.setEnabled(True)
-            widgets_status.lineEdit_StrReceiveSeparator.setEnabled(True)
             widgets_status.checkBox_ReceiveRawbytesMode.setEnabled(True)
             widgets_status.checkBox_RecvContinue.setEnabled(True)
-
             widgets_status.checkBox_Receive_Int.setEnabled(True)
             widgets_status.checkBox_Receive_Str.setEnabled(True)
             widgets_status.checkBox_Receive_Float.setEnabled(True)
@@ -918,50 +936,33 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             # send widgets
             widgets_status.checkBox_SendStringMode.setChecked(True)
             widgets_status.checkBox_SendStringMode.setEnabled(False)
-            # widgets_status.lineEdit_StrSendSeparator.setEnabled(False)
             widgets_status.checkBox_SendRawbytesMode.setChecked(False)
             widgets_status.checkBox_SendRawbytesMode.setEnabled(False)
-
             widgets_status.checkBox_Send_Int.setChecked(False)
             widgets_status.checkBox_Send_Int.setEnabled(False)
-
             widgets_status.checkBox_Send_Float.setChecked(False)
             widgets_status.checkBox_Send_Float.setEnabled(False)
-
             widgets_status.checkBox_Send_Str.setChecked(False)
             widgets_status.checkBox_Send_Str.setEnabled(False)
-
             widgets_status.checkBox_SendContinue.setChecked(False)
             widgets_status.checkBox_SendContinue.setEnabled(False)
-
-            widgets_status.lineEdit_SendFullType.clear()
             widgets_status.lineEdit_SendFullType.setEnabled(False)
-            widgets_status.lineEdit_SendFormatStr.clear()
             widgets_status.lineEdit_SendFormatStr.setEnabled(False)
-
             # receive widgets
             widgets_status.checkBox_ReceiveStrMode.setChecked(True)
             widgets_status.checkBox_ReceiveStrMode.setEnabled(False)
             widgets_status.lineEdit_StrReceiveSeparator.setEnabled(False)
             widgets_status.checkBox_ReceiveRawbytesMode.setChecked(False)
             widgets_status.checkBox_ReceiveRawbytesMode.setEnabled(False)
-
             widgets_status.checkBox_Receive_Int.setChecked(False)
             widgets_status.checkBox_Receive_Int.setEnabled(False)
-
             widgets_status.checkBox_Receive_Float.setChecked(False)
             widgets_status.checkBox_Receive_Float.setEnabled(False)
-
             widgets_status.checkBox_Receive_Str.setChecked(False)
             widgets_status.checkBox_Receive_Str.setEnabled(False)
-
             widgets_status.checkBox_RecvContinue.setChecked(False)
             widgets_status.checkBox_RecvContinue.setEnabled(False)
-
-            widgets_status.lineEdit_ReceiveFormatStr.clear()
             widgets_status.lineEdit_ReceiveFormatStr.setEnabled(False)
-
-            widgets_status.lineEdit_ReceiveFullType.clear()
             widgets_status.lineEdit_ReceiveFullType.setFocusPolicy(Qt.NoFocus)
             widgets_status.lineEdit_ReceiveFullType.setEnabled(False)
 
@@ -971,8 +972,11 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
     def ui_update_checkbox_send_string_checked(widgets_status: SocketWidgetStruct, _socket: SocketCommunicate) -> None:
         """
 
+        :param widgets_status:
+        :param _socket:
         :return:
         """
+
         # server string checkbox checked
         if widgets_status.checkBox_SendStringMode.isChecked() and widgets_status.checkBox_SendStringMode.isEnabled():
             widgets_status.checkBox_SendRawbytesMode.setChecked(False)
@@ -1035,7 +1039,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         :return:
         """
         # send widgets logic
-        if widgets_status.checkBox_Send_Int.isChecked():
+        if widgets_status.checkBox_Send_Int.isChecked() and widgets_status.checkBox_Send_Int.isEnabled():
             widgets_status.spinBox_Send_Int.setEnabled(True)
             widgets_status.lineEdit_Send_Int.setEnabled(True)
         else:
@@ -1046,7 +1050,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             widgets_status.spinBox_Send_Int.setStyleSheet(MyMainWindow.str_spinbox_style_disable)
             widgets_status.lineEdit_Send_Int.setStyleSheet(MyMainWindow.str_lineedit_style_disable)
 
-        if widgets_status.checkBox_Send_Float.isChecked():
+        if widgets_status.checkBox_Send_Float.isChecked() and widgets_status.checkBox_Send_Float.isEnabled():
             widgets_status.spinBox_Send_Float.setEnabled(True)
             widgets_status.lineEdit_Send_Float.setEnabled(True)
         else:
@@ -1057,7 +1061,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             widgets_status.spinBox_Send_Float.setStyleSheet(MyMainWindow.str_spinbox_style_disable)
             widgets_status.lineEdit_Send_Float.setStyleSheet(MyMainWindow.str_lineedit_style_disable)
 
-        if widgets_status.checkBox_Send_Str.isChecked():
+        if widgets_status.checkBox_Send_Str.isChecked() and widgets_status.checkBox_Send_Str.isEnabled():
             widgets_status.spinBox_Send_Str.setEnabled(True)
             widgets_status.lineEdit_Send_Str.setEnabled(True)
         else:
@@ -1070,7 +1074,6 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
         if widgets_status.checkBox_SendContinue.isChecked() and widgets_status.checkBox_SendContinue.isEnabled():
             widgets_status.lineEdit_SendInterval.setEnabled(True)
-
         else:
             widgets_status.lineEdit_SendInterval.setText("0.5")
             widgets_status.lineEdit_SendInterval.setStyleSheet(MyMainWindow.str_lineedit_style_disable)
@@ -1095,7 +1098,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             widgets_status.lineEdit_SendFullType.setEnabled(False)
             widgets_status.lineEdit_SendFormatStr.setText("<hf5s")
             widgets_status.lineEdit_SendFormatStr.setEnabled(False)
-            if widgets_status.checkBox_SendStringMode.isChecked():
+            if widgets_status.checkBox_SendStringMode.isChecked() and widgets_status.checkBox_SendStringMode.isEnabled():
                 widgets_status.lineEdit_StrSendSeparator.setEnabled(True)
             else:
                 widgets_status.lineEdit_StrSendSeparator.setText(",")
@@ -1103,10 +1106,10 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                 widgets_status.lineEdit_StrSendSeparator.setEnabled(False)
 
         # receive checkbox logic
-        if widgets_status.checkBox_Receive_Int.isChecked():
+        if widgets_status.checkBox_Receive_Int.isChecked() and widgets_status.checkBox_Receive_Int.isEnabled():
             widgets_status.spinBox_Receive_Int.setEnabled(True)
             widgets_status.lineEdit_Receive_Int.setEnabled(True)
-            widgets_status.lineEdit_Receive_Int.setReadOnly(True)
+            widgets_status.lineEdit_Receive_Int.setStyleSheet(MyMainWindow.str_lineedit_style_enable)
         else:
             widgets_status.spinBox_Receive_Int.setValue(0)
             widgets_status.spinBox_Receive_Int.setEnabled(False)
@@ -1115,10 +1118,10 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             widgets_status.spinBox_Receive_Int.setStyleSheet(MyMainWindow.str_spinbox_style_disable)
             widgets_status.lineEdit_Receive_Int.setStyleSheet(MyMainWindow.str_lineedit_style_disable)
 
-        if widgets_status.checkBox_Receive_Float.isChecked():
+        if widgets_status.checkBox_Receive_Float.isChecked() and widgets_status.checkBox_Receive_Float.isEnabled():
             widgets_status.spinBox_Receive_Float.setEnabled(True)
             widgets_status.lineEdit_Receive_Float.setEnabled(True)
-            widgets_status.lineEdit_Receive_Float.setReadOnly(True)
+            widgets_status.lineEdit_Receive_Float.setStyleSheet(MyMainWindow.str_lineedit_style_enable)
         else:
             widgets_status.spinBox_Receive_Float.setValue(0)
             widgets_status.spinBox_Receive_Float.setEnabled(False)
@@ -1127,10 +1130,10 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             widgets_status.spinBox_Receive_Float.setStyleSheet(MyMainWindow.str_spinbox_style_disable)
             widgets_status.lineEdit_Receive_Float.setStyleSheet(MyMainWindow.str_lineedit_style_disable)
 
-        if widgets_status.checkBox_Receive_Str.isChecked():
+        if widgets_status.checkBox_Receive_Str.isChecked() and widgets_status.checkBox_Receive_Str.isEnabled():
             widgets_status.spinBox_Receive_Str.setEnabled(True)
             widgets_status.lineEdit_Receive_Str.setEnabled(True)
-            widgets_status.lineEdit_Receive_Str.setReadOnly(True)
+            widgets_status.lineEdit_Receive_Str.setStyleSheet(MyMainWindow.str_lineedit_style_enable)
             if widgets_status.checkBox_ReceiveStrMode.isEnabled() and widgets_status.checkBox_ReceiveStrMode.isChecked():
                 widgets_status.spinBox_ReceiveRawLength.setValue(5)
                 widgets_status.spinBox_ReceiveRawLength.setEnabled(False)
@@ -1157,6 +1160,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
         if widgets_status.checkBox_Receive_Int.isChecked() + widgets_status.checkBox_Receive_Float.isChecked() + widgets_status.checkBox_Receive_Str.isChecked() == 0 \
                 and widgets_status.checkBox_Receive_Int.isEnabled() + widgets_status.checkBox_Receive_Float.isEnabled() + widgets_status.checkBox_Receive_Str.isEnabled() > 0:
+            print(widgets_status.checkBox_Receive_Int.isEnabled() + widgets_status.checkBox_Receive_Float.isEnabled() + widgets_status.checkBox_Receive_Str.isEnabled())
             widgets_status.lineEdit_StrReceiveSeparator.setText(",")
             widgets_status.lineEdit_StrReceiveSeparator.setStyleSheet(MyMainWindow.str_lineedit_style_disable)
             widgets_status.lineEdit_StrReceiveSeparator.setEnabled(False)
@@ -1172,7 +1176,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             widgets_status.lineEdit_ReceiveFullType.clear()
             widgets_status.lineEdit_ReceiveFormatStr.setText("<hf5s")
             widgets_status.lineEdit_ReceiveFormatStr.setEnabled(False)
-            if widgets_status.checkBox_ReceiveStrMode.isChecked():
+            if widgets_status.checkBox_ReceiveStrMode.isChecked() and widgets_status.checkBox_ReceiveStrMode.isEnabled():
                 widgets_status.lineEdit_StrReceiveSeparator.setEnabled(True)
             else:
                 widgets_status.lineEdit_StrReceiveSeparator.setText(",")
@@ -1328,8 +1332,9 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                 b_lineedit_send_interval_check_valid = True
 
         if b_spinbox_check_valid and b_lineedit_check_valid == b_lineedit_check_valid_contrast and b_lineedit_send_interval_check_valid and b_lineedit_send_seperator_check_valid:
-            widgets_status.pushButton_Send.setEnabled(True)
             _socket.b_continue_send = widgets_status.checkBox_SendContinue.isChecked()
+            if not _socket.b_continue_send:
+                widgets_status.pushButton_Send.setEnabled(True)
         else:
             widgets_status.pushButton_Send.setEnabled(False)
             _socket.b_continue_send = False
@@ -1472,8 +1477,9 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                     _socket.b_continue_recv = False
 
             if b_spinbox_check_valid and b_lineedit_seperator_recv_check_valid and b_lineedit_recv_interval_check_valid:
-                widgets_status.pushButton_Receive.setEnabled(True)
-                widgets_status.pushButton_ClearCache.setEnabled(True)
+                if not _socket.b_continue_recv:
+                    widgets_status.pushButton_Receive.setEnabled(True)
+                    widgets_status.pushButton_ClearCache.setEnabled(True)
             else:
                 widgets_status.pushButton_Receive.setEnabled(False)
                 widgets_status.pushButton_ClearCache.setEnabled(False)
@@ -1500,7 +1506,6 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             widgets_status.pushButton_CreateConnection.setEnabled(False)
         else:
             widgets_status.pushButton_CreateConnection.setEnabled(True)
-
 
 if __name__ == '__main__':
     # format the application interface show as designer display

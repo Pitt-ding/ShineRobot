@@ -869,12 +869,18 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             else:
                 widgets_status.checkBox_SendContinue.setStyleSheet("QCheckBox{background-color: rgb(255, 255, 255)}")
         else:
-            widgets_status.pushButton_Send.setText("发送")
-            widgets_status.pushButton_Receive.setEnabled(True)
-            widgets_status.pushButton_ClearCache.setEnabled(True)
-            widgets_status.checkBox_SendContinue.setStyleSheet("QCheckBox{background-color: rgb(255, 255, 255)}")
             if widgets_status.checkBox_SendStringMode.isEnabled() or widgets_status.checkBox_SendRawbytesMode.isEnabled():
+                widgets_status.pushButton_Send.setText("发送")
+                widgets_status.pushButton_Receive.setEnabled(True)
+                widgets_status.pushButton_ClearCache.setEnabled(True)
+                widgets_status.checkBox_SendContinue.setStyleSheet("QCheckBox{background-color: rgb(255, 255, 255)}")
                 widgets_status.pushButton_Send.setEnabled(True)
+            else:
+                widgets_status.pushButton_Send.setText("发送")
+                widgets_status.pushButton_Receive.setEnabled(False)
+                widgets_status.pushButton_ClearCache.setEnabled(False)
+                widgets_status.checkBox_SendContinue.setStyleSheet("QCheckBox{background-color: rgb(255, 255, 255)}")
+                widgets_status.pushButton_Send.setEnabled(False)
 
     @staticmethod
     def ui_update_pushbutton_recving(_b_receiving: bool, widgets_status: SocketWidgetStruct) -> None:
@@ -888,12 +894,18 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             else:
                 widgets_status.checkBox_RecvContinue.setStyleSheet("QCheckBox{background-color: rgb(255, 255, 255)}")
         else:
-            widgets_status.pushButton_Send.setEnabled(True)
-            widgets_status.pushButton_Receive.setText("接收")
-            widgets_status.checkBox_RecvContinue.setStyleSheet("QCheckBox{background-color: rgb(255, 255, 255)}")
             if widgets_status.checkBox_SendStringMode.isEnabled() or widgets_status.checkBox_SendRawbytesMode.isEnabled():
+                widgets_status.pushButton_Send.setEnabled(True)
+                widgets_status.pushButton_Receive.setText("接收")
+                widgets_status.checkBox_RecvContinue.setStyleSheet("QCheckBox{background-color: rgb(255, 255, 255)}")
                 widgets_status.pushButton_ClearCache.setEnabled(True)
                 widgets_status.pushButton_Receive.setEnabled(True)
+            else:
+                widgets_status.pushButton_Send.setEnabled(False)
+                widgets_status.pushButton_Receive.setText("接收")
+                widgets_status.checkBox_RecvContinue.setStyleSheet("QCheckBox{background-color: rgb(255, 255, 255)}")
+                widgets_status.pushButton_ClearCache.setEnabled(False)
+                widgets_status.pushButton_Receive.setEnabled(False)
 
     @staticmethod
     def ui_update_socket_server_communicate_enable(b_accepted: bool, widgets_status: SocketWidgetStruct, _socket: SocketCommunicate) -> None:

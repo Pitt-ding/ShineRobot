@@ -7,27 +7,29 @@
 # @Description :
 
 import sys
+import ast
 import time
 import ctypes
 import re
 import struct
 from PyQt5 import QtCore
 from ShineRobot import Ui_MainWindow
-from PyQt5.QtWidgets import QApplication, QMainWindow, QMenu, QAction
-from PyQt5.Qt import QStandardItemModel, QCursor, Qt, QThread, pyqtSignal
+from PyQt5.QtWidgets import QApplication, QMainWindow, QMenu, QAction, QTreeWidgetItem
+from PyQt5.Qt import QStandardItemModel, QCursor, Qt, QThread, pyqtSignal, QObject
 from PyQt5.QtGui import QTextCursor
-from shine_robot_socket_communication import SocketServer, SocketServerCloseClient, SocketClient, SocketCommunicate
+from shine_robot_socket import SocketServer, SocketServerCloseClient, SocketClient, SocketCommunicate
 from functools import partial
 from Pyqt_Quaternion_Euler import QuaternionEuler
+import xml.etree.ElementTree as ET
+from ShineRobot_WebService import WebService, WebServiceGetPut
+from webbrowser import open
 
 
 class SocketWidgetStruct:
-    def __int__(self):
+    def __init__(self):
         self.send_fun = None
         self.receive_fun = None
         self.log_fun = None
-        # self.send_continue = None
-        # self.send_interval = None
 
         self.lineEdit_IP = None
         self.lineEdit_Port = None
@@ -84,6 +86,9 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
     signal_server_send = pyqtSignal(bytes)
     # signal that send interval check valid in order to update send parameters
     signal_client_send = pyqtSignal(bytes)
+    signal_webservice_get = pyqtSignal(str)
+    signal_webservice_post = pyqtSignal(str, str, str)
+    signal_webservice_subscribe = pyqtSignal(dict)
 
     # widget style sheet
     str_lineedit_style_invalid = "QLineEdit{background-color: rgb(253, 183, 184)}"
@@ -95,14 +100,137 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
     def __init__(self) -> None:
         super(MyMainWindow, self).__init__()
-
+        # append icon to taskbar in Windows system
+        ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("myappid")
         self.setupUi(self)
         self.right_click_menu = QMenu()
         self.quaternion_euler_ins = QuaternionEuler()
-        # socket server
-        # self.b_close_not_accepted_server = False
-        self.socket_server = SocketServer()
+        self.init_quaternion()
+        self.init_socket()
+        self.init_webservice()
 
+    # ------------------------------------------------------------------------------------------------------------------
+    # -----------------------WebService---------------------------------------------------------------------------------
+    # ------------------------------------------------------------------------------------------------------------------
+    def init_webservice(self):
+        self.web_service_qthread = QThread()
+        self.webservice_sub = WebService(_ip=self.lineEdit_Web_IP.text())
+        self.webservice_sub.moveToThread(self.web_service_qthread)
+        # print(self.textEdit_SUBSCRIBE_URL.toPlainText())
+        self.pushButton_SUBSCRIBE.clicked.connect(self.request_subscribe)
+        self.signal_webservice_subscribe.connect(self.webservice_sub.subscribe)
+        self.webservice_sub.signal_recvMessage.connect(self.textEdit_SUBSCRIBE.append)
+        self.webservice_sub.signal_result_record.connect(self.textEdit_WebService_log.append)
+        self.pushButton_SUBSCRIBE_Clear.clicked.connect(self.textEdit_SUBSCRIBE.clear)
+        self.web_service_qthread.start()
+
+        self.webservice_get_post_qthread = QThread()
+        self.webservice_get_post = WebServiceGetPut(_ip=self.lineEdit_Web_IP.text())
+        self.webservice_get_post.moveToThread(self.webservice_get_post_qthread)
+        self.webservice_get_post.signal_result_log.connect(self.textEdit_WebService_log.append)
+        self.webservice_get_post.signal_get_result.connect(self.textEdit_GET.setPlainText)
+        self.webservice_get_post.signal_post_result.connect(self.textEdit_POST.setPlainText)
+        self.webservice_get_post_qthread.start()
+        # UI Get widgets events
+        self.pushButton_GET.clicked.connect(self.request_get)
+        self.pushButton_Get_Clear.clicked.connect(self.textEdit_GET.clear)
+        self.signal_webservice_get.connect(self.webservice_get_post.get)
+        # UI Post widgets events
+        self.pushButton_POST.clicked.connect(self.request_post)
+        self.pushButton_POST_Clear.clicked.connect(self.textEdit_POST.clear)
+        self.signal_webservice_post.connect(self.webservice_get_post.post)
+        # refresh get robot signals
+        self.pushButton_WebServiceRefreshSignals.clicked.connect(self.webservice_get_post.get_signals)
+        self.webservice_get_post.signal_get_signal_result.connect(self.parse_xml_to_tree)
+        # open robot webservice develop center
+        self.pushButton_Reference.clicked.connect(partial(open, 'https://developercenter.robotstudio.com/api/rwsApi/index.html'))
+
+    def request_get(self):
+        self.signal_webservice_get.emit(self.lineEdit_GET.text())
+
+    def request_post(self):
+        self.signal_webservice_post.emit(self.lineEdit_POST.text(), self.lineEdit_Data_params.text(), self.lineEdit_POST_VALUE.text())
+
+    def request_subscribe(self):
+        self.signal_webservice_subscribe.emit(ast.literal_eval(self.textEdit_SUBSCRIBE_URL.toPlainText()))
+
+    def parse_xml_to_tree(self, _str: str) -> None:
+        NAMESPACE = '{http://www.w3.org/1999/xhtml}'
+        root = ET.fromstring(_str)
+        self.root = QTreeWidgetItem(self.treeWidget_WebserviceSignals)
+        self.root.setText(0, 'robot')
+        # print(type(evt))
+        for _index in root.findall(".//{0}li".format(NAMESPACE)):
+            signal_list = []
+            for _child in range(len(list(_index))):
+                if _index[_child].text is None:
+                    signal_list.append('None')
+                else:
+                    signal_list.append(_index[_child].text)
+            _root_child = QTreeWidgetItem(self.root)
+            _root_child.setText(0, signal_list[1])
+            _root_child.setText(1, signal_list[2])
+            _root_child.setText(2, signal_list[3])
+            _root_child.setText(3, signal_list[4])
+            _root_child.setText(4, signal_list[5])
+
+            # print('Name: {:20s}, type: {:5s},category: {:10s},lvalue: {:10s},lstate: {:20s}'.format(signal_list[1],
+            #                                                                                         signal_list[2],
+            #                                                                                         signal_list[3],
+            #                                                                                         signal_list[4],
+            #                                                                                         signal_list[5]))
+            #
+
+    # ------------------------------------------------------------------------------------------------------------------
+    # -----------------------quaternion and euler convert function------------------------------------------------------
+    # ------------------------------------------------------------------------------------------------------------------
+
+    def init_quaternion(self):
+        self.quaternion_euler_ins.lineedit_q1 = self.lineEdit_quaternion_q1
+        self.quaternion_euler_ins.lineedit_q2 = self.lineEdit_quaternion_q2
+        self.quaternion_euler_ins.lineedit_q3 = self.lineEdit_quaternion_q3
+        self.quaternion_euler_ins.lineedit_q4 = self.lineEdit_quaternion_q4
+        self.quaternion_euler_ins.lineedit_rotx = self.lineEdit_euler_rotx
+        self.quaternion_euler_ins.lineedit_roty = self.lineEdit_euler_roty
+        self.quaternion_euler_ins.lineedit_rotz = self.lineEdit_euler_rotz
+        self.quaternion_euler_ins.lineedit_quaternion_euler = self.lineEdit_quaternion_result
+        self.quaternion_euler_ins.lineedit_euler_quaternion = self.lineEdit_euler_result
+        self.quaternion_euler_ins.textedit_log = self.textEdit_convert_log
+        # self.quaternion_euler_ins.log_fun = self.record_convert_result
+
+    def qtextedit_custom_context_menu(self, pos):
+        """
+        customer the textedit right menu function, no delete,cut,paste function
+        :param pos: the cursor position
+        :return:none
+        """
+        _menu = QMenu(self)
+        # _action = _menu.addAction('Cut')
+        # _action.setShortcut('Ctrl+X')
+        # _action.triggered.connect(self.textEdit_result_record.cut)
+        # _action = _menu.addAction('Copy')
+        _action = QAction('Copy', self.textEdit_result_record)
+        _action.setShortcut('Ctrl+C')
+        _action.triggered.connect(self.textEdit_result_record.copy)
+        # _action = _menu.addAction('Paste')
+        # _action.setShortcut('Ctrl+V')
+        # _action.triggered.connect(self.textEdit_result_record.paste)
+        # _action = _menu.addAction('Delete')
+        # _action.triggered.connect(self.textEdit_result_record.clear)
+        # _action = _menu.addAction('SelectAll')
+        _action2 = QAction('SelectAll', self.textEdit_result_record)
+        _action2.setShortcut('Ctrl+A')
+        _action2.triggered.connect(self.textEdit_result_record.selectAll)
+        _menu.addAction(_action)
+        _menu.addAction(_action2)
+        _menu.popup(QCursor.pos())
+
+    # ------------------------------------------------------------------------------------------------------------------
+    # ----------------------socket communication -----------------------------------------------------------------------
+    # ------------------------------------------------------------------------------------------------------------------
+    def init_socket(self):
+        # socket server
+        self.socket_server = SocketServer()
         # socket server close client used to close blocking socket server
         self.socket_server_client = SocketServerCloseClient()
         # socket client
@@ -118,13 +246,9 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.Thread_socket_server.start()
         self.thread_close_socket_server.start()
         self.thread_socket_client.start()
-        # append icon to taskbar in Windows system
-        ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("myappid")
 
         # server widgets
         self.server_widgets_status = SocketWidgetStruct()
-        # self.server_widgets_status.send_fun = self.socket_server.socket_send_bytes
-        # self.server_widgets_status.receive_fun = self.socket_server.socket_receive_bytes
         self.server_widgets_status.lineEdit_IP = self.lineEdit_SevIP
         self.server_widgets_status.lineEdit_Port = self.lineEdit_SerPort
         self.server_widgets_status.pushButton_CreateConnection = self.pushButton_SerCreateConn
@@ -231,7 +355,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.pushButton_euler_clearinput.clicked.connect(self.quaternion_euler_ins.clear_euler_input)
         self.pushButton_quaternion_copy.clicked.connect(self.quaternion_euler_ins.copy_quaternion_result)
         self.pushButton_euler_copy.clicked.connect(self.quaternion_euler_ins.copy_euler_result)
-        self.textEdit_result_record.customContextMenuRequested.connect(self.qtextedit_custom_context_menu)
+        self.textEdit_socket_Log.customContextMenuRequested.connect(self.qtextedit_custom_context_menu)
 
         # socket server send and receive event
         self.signal_server_send.connect(self.socket_server.socket_send)
@@ -240,17 +364,23 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.pushButton_SerCreateConn.clicked.connect(lambda: self.pushButton_SerCreateConn.setDisabled(True))
         self.pushButton_SerCreateConn.clicked.connect(self.server_create_connect)
         self.pushButton_SerCloseConn.clicked.connect(self.close_socket_server)
-        self.pushButton_SerSend.clicked.connect(partial(self.socket_send, self.signal_server_send,  self.server_widgets_status))
+        self.pushButton_SerSend.clicked.connect(
+            partial(self.socket_send, self.signal_server_send, self.server_widgets_status))
         self.pushButton_SerRecv.clicked.connect(self.socket_server.socket_receive)
         self.pushButton_SerClearCache.clicked.connect(self.socket_server.socket_clear_cache)
 
-        self.socket_server.signal_socket_server_accepted.connect(partial(self.ui_update_socket_server_communicate_enable, widgets_status=self.server_widgets_status, _socket=self.socket_server))
+        self.socket_server.signal_socket_server_accepted.connect(
+            partial(self.ui_update_socket_server_communicate_enable, widgets_status=self.server_widgets_status,
+                    _socket=self.socket_server))
         self.socket_server.signal_record_result.connect(self.record_socket_communication_result)
         self.socket_server.signal_socket_server_closed.connect(self.pushButton_SerCreateConn.setEnabled)
         self.socket_server.signal_socket_server_closed.connect(self.pushButton_SerCloseConn.setDisabled)
-        self.socket_server.signal_socket_receive_bytes.connect(partial(self.socket_receive, widgets_status=self.server_widgets_status))
-        self.socket_server.signal_socket_sending.connect(partial(self.ui_update_pushbutton_sending, widgets_status=self.server_widgets_status))
-        self.socket_server.signal_socket_receiving.connect(partial(self.ui_update_pushbutton_recving, widgets_status=self.server_widgets_status))
+        self.socket_server.signal_socket_receive_bytes.connect(
+            partial(self.socket_receive, widgets_status=self.server_widgets_status))
+        self.socket_server.signal_socket_sending.connect(
+            partial(self.ui_update_pushbutton_sending, widgets_status=self.server_widgets_status))
+        self.socket_server.signal_socket_receiving.connect(
+            partial(self.ui_update_pushbutton_recving, widgets_status=self.server_widgets_status))
 
         self.socket_server_client.signal_record_result.connect(self.record_socket_communication_result)
         self.socket_server_client.signal_socket_server_client_closed.connect(self.socket_server.close_socket_server)
@@ -260,144 +390,165 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.signal_socket_client_create_connection.connect(self.socket_client.create_socket_client)
         self.pushButton_ClntCreatConn.clicked.connect(self.client_create_connect)
         self.pushButton_ClntCloseConn.clicked.connect(self.socket_client.close_socket_client)
-        self.pushButton_ClntSend.clicked.connect(lambda: self.socket_send(self.signal_client_send, self.client_widgets_status))
+        self.pushButton_ClntSend.clicked.connect(
+            lambda: self.socket_send(self.signal_client_send, self.client_widgets_status))
         self.pushButton_ClntRecv.clicked.connect(self.socket_client.socket_receive)
         self.pushButton_ClntClearCache.clicked.connect(self.socket_client.socket_clear_cache)
         self.socket_client.signal_socket_client_connected.connect(self.pushButton_ClntCloseConn.setEnabled)
-        self.socket_client.signal_socket_client_connected.connect(partial(self.ui_update_socket_server_communicate_enable, widgets_status=self.client_widgets_status, _socket=self.socket_client))
+        self.socket_client.signal_socket_client_connected.connect(
+            partial(self.ui_update_socket_server_communicate_enable, widgets_status=self.client_widgets_status,
+                    _socket=self.socket_client))
         self.socket_client.signal_record_result.connect(self.record_socket_communication_result)
-        self.socket_client.signal_socket_receive_bytes.connect(partial(self.socket_receive, widgets_status=self.client_widgets_status))
-        self.socket_client.signal_socket_sending.connect(partial(self.ui_update_pushbutton_sending, widgets_status=self.client_widgets_status))
-        self.socket_client.signal_socket_receiving.connect(partial(self.ui_update_pushbutton_recving, widgets_status=self.client_widgets_status))
+        self.socket_client.signal_socket_receive_bytes.connect(
+            partial(self.socket_receive, widgets_status=self.client_widgets_status))
+        self.socket_client.signal_socket_sending.connect(
+            partial(self.ui_update_pushbutton_sending, widgets_status=self.client_widgets_status))
+        self.socket_client.signal_socket_receiving.connect(
+            partial(self.ui_update_pushbutton_recving, widgets_status=self.client_widgets_status))
 
-        self.checkBox_ServerSendString.clicked.connect(lambda: self.ui_update_checkbox_send_string_checked(self.server_widgets_status, self.socket_server))
-        self.checkBox_ServerSendRawbytes.clicked.connect(lambda: self.ui_update_checkbox_send_rawbytes_checked(self.server_widgets_status, self.socket_server))
-        self.checkBox_ServerReceiveString.clicked.connect(lambda: self.ui_update_checkbox_send_string_checked(self.server_widgets_status, self.socket_server))
-        self.checkBox_ServerReceiveRawbytes.clicked.connect(lambda: self.ui_update_checkbox_send_rawbytes_checked(self.server_widgets_status, self.socket_server))
-        self.checkBox_ClientSendString.clicked.connect(lambda: self.ui_update_checkbox_send_string_checked(self.client_widgets_status, self.socket_client))
-        self.checkBox_ClientSendRawbytes.clicked.connect(lambda: self.ui_update_checkbox_send_rawbytes_checked(self.client_widgets_status, self.socket_client))
-        self.checkBox_ClientReceiveString.clicked.connect(lambda: self.ui_update_checkbox_send_string_checked(self.client_widgets_status, self.socket_client))
-        self.checkBox_ClientReceiveRawbytes.clicked.connect(lambda: self.ui_update_checkbox_send_rawbytes_checked(self.client_widgets_status, self.socket_client))
+        self.checkBox_ServerSendString.clicked.connect(
+            lambda: self.ui_update_checkbox_send_string_checked(self.server_widgets_status, self.socket_server))
+        self.checkBox_ServerSendRawbytes.clicked.connect(
+            lambda: self.ui_update_checkbox_send_rawbytes_checked(self.server_widgets_status, self.socket_server))
+        self.checkBox_ServerReceiveString.clicked.connect(
+            lambda: self.ui_update_checkbox_send_string_checked(self.server_widgets_status, self.socket_server))
+        self.checkBox_ServerReceiveRawbytes.clicked.connect(
+            lambda: self.ui_update_checkbox_send_rawbytes_checked(self.server_widgets_status, self.socket_server))
+        self.checkBox_ClientSendString.clicked.connect(
+            lambda: self.ui_update_checkbox_send_string_checked(self.client_widgets_status, self.socket_client))
+        self.checkBox_ClientSendRawbytes.clicked.connect(
+            lambda: self.ui_update_checkbox_send_rawbytes_checked(self.client_widgets_status, self.socket_client))
+        self.checkBox_ClientReceiveString.clicked.connect(
+            lambda: self.ui_update_checkbox_send_string_checked(self.client_widgets_status, self.socket_client))
+        self.checkBox_ClientReceiveRawbytes.clicked.connect(
+            lambda: self.ui_update_checkbox_send_rawbytes_checked(self.client_widgets_status, self.socket_client))
         # initial for checkbox sequence and values
-        self.checkBox_SerSendInt.clicked.connect(lambda: self.ui_update_checkbox_toggle_init(self.server_widgets_status, self.socket_server))
-        self.checkBox_SerSendFloat.clicked.connect(lambda: self.ui_update_checkbox_toggle_init(self.server_widgets_status, self.socket_server))
-        self.checkBox_SerSendStr.clicked.connect(lambda: self.ui_update_checkbox_toggle_init(self.server_widgets_status, self.socket_server))
-        self.checkBox_SerContinueSend.clicked.connect(lambda: self.ui_update_checkbox_toggle_init(self.server_widgets_status, self.socket_server))
-        self.checkBox_SerRecvInt.clicked.connect(lambda: self.ui_update_checkbox_toggle_init(self.server_widgets_status, self.socket_server))
-        self.checkBox_SerRecvFloat.clicked.connect(lambda: self.ui_update_checkbox_toggle_init(self.server_widgets_status, self.socket_server))
-        self.checkBox_SerRecvStr.clicked.connect(lambda: self.ui_update_checkbox_toggle_init(self.server_widgets_status, self.socket_server))
-        self.checkBox_SerContinueRecv.clicked.connect(lambda: self.ui_update_checkbox_toggle_init(self.server_widgets_status, self.socket_server))
+        self.checkBox_SerSendInt.clicked.connect(
+            lambda: self.ui_update_checkbox_toggle_init(self.server_widgets_status, self.socket_server))
+        self.checkBox_SerSendFloat.clicked.connect(
+            lambda: self.ui_update_checkbox_toggle_init(self.server_widgets_status, self.socket_server))
+        self.checkBox_SerSendStr.clicked.connect(
+            lambda: self.ui_update_checkbox_toggle_init(self.server_widgets_status, self.socket_server))
+        self.checkBox_SerContinueSend.clicked.connect(
+            lambda: self.ui_update_checkbox_toggle_init(self.server_widgets_status, self.socket_server))
+        self.checkBox_SerRecvInt.clicked.connect(
+            lambda: self.ui_update_checkbox_toggle_init(self.server_widgets_status, self.socket_server))
+        self.checkBox_SerRecvFloat.clicked.connect(
+            lambda: self.ui_update_checkbox_toggle_init(self.server_widgets_status, self.socket_server))
+        self.checkBox_SerRecvStr.clicked.connect(
+            lambda: self.ui_update_checkbox_toggle_init(self.server_widgets_status, self.socket_server))
+        self.checkBox_SerContinueRecv.clicked.connect(
+            lambda: self.ui_update_checkbox_toggle_init(self.server_widgets_status, self.socket_server))
 
-        self.checkBox_ClntSendInt.clicked.connect(lambda: self.ui_update_checkbox_toggle_init(self.client_widgets_status, self.socket_client))
-        self.checkBox_ClntSendFloat.clicked.connect(lambda: self.ui_update_checkbox_toggle_init(self.client_widgets_status, self.socket_client))
-        self.checkBox_ClntSendStr.clicked.connect(lambda: self.ui_update_checkbox_toggle_init(self.client_widgets_status, self.socket_client))
-        self.checkBox_ClntContinueSend.clicked.connect(lambda: self.ui_update_checkbox_toggle_init(self.client_widgets_status, self.socket_client))
-        self.checkBox_ClntRecvInt.clicked.connect(lambda: self.ui_update_checkbox_toggle_init(self.client_widgets_status, self.socket_client))
-        self.checkBox_ClntRecvFloat.clicked.connect(lambda: self.ui_update_checkbox_toggle_init(self.client_widgets_status, self.socket_client))
-        self.checkBox_ClntRecvStr.clicked.connect(lambda: self.ui_update_checkbox_toggle_init(self.client_widgets_status, self.socket_client))
-        self.checkBox_ClntContinueRecv.clicked.connect(lambda: self.ui_update_checkbox_toggle_init(self.client_widgets_status, self.socket_client))
+        self.checkBox_ClntSendInt.clicked.connect(
+            lambda: self.ui_update_checkbox_toggle_init(self.client_widgets_status, self.socket_client))
+        self.checkBox_ClntSendFloat.clicked.connect(
+            lambda: self.ui_update_checkbox_toggle_init(self.client_widgets_status, self.socket_client))
+        self.checkBox_ClntSendStr.clicked.connect(
+            lambda: self.ui_update_checkbox_toggle_init(self.client_widgets_status, self.socket_client))
+        self.checkBox_ClntContinueSend.clicked.connect(
+            lambda: self.ui_update_checkbox_toggle_init(self.client_widgets_status, self.socket_client))
+        self.checkBox_ClntRecvInt.clicked.connect(
+            lambda: self.ui_update_checkbox_toggle_init(self.client_widgets_status, self.socket_client))
+        self.checkBox_ClntRecvFloat.clicked.connect(
+            lambda: self.ui_update_checkbox_toggle_init(self.client_widgets_status, self.socket_client))
+        self.checkBox_ClntRecvStr.clicked.connect(
+            lambda: self.ui_update_checkbox_toggle_init(self.client_widgets_status, self.socket_client))
+        self.checkBox_ClntContinueRecv.clicked.connect(
+            lambda: self.ui_update_checkbox_toggle_init(self.client_widgets_status, self.socket_client))
 
         # check line edit widgets values
-        self.lineEdit_SerSendInt_Value.textChanged.connect(lambda: self.ui_update_send_value_check(self.server_widgets_status, self.socket_server))
-        self.lineEdit_SerSendFloat_Value.textChanged.connect(lambda: self.ui_update_send_value_check(self.server_widgets_status, self.socket_server))
-        self.lineEdit_SerSendstr_Value.textChanged.connect(lambda: self.ui_update_send_value_check(self.server_widgets_status, self.socket_server))
-        self.lineEdit_ServerSendSeparator.textChanged.connect(lambda: self.ui_update_send_value_check(self.server_widgets_status, self.socket_server))
-        self.lineEdit_ServerReceiveSeparator.textChanged.connect(lambda: self.ui_update_send_value_check(self.server_widgets_status, self.socket_server))
-        self.lineEdit_SerRecvInt_Value.textChanged.connect(lambda: self.ui_update_send_value_check(self.server_widgets_status, self.socket_server))
-        self.lineEdit_SerRecvFloat_Value.textChanged.connect(lambda: self.ui_update_send_value_check(self.server_widgets_status, self.socket_server))
-        self.lineEdit_SerRecvStr_Value.textChanged.connect(lambda: self.ui_update_send_value_check(self.server_widgets_status, self.socket_server))
-        self.lineEdit_ServerReceiveSeparator.textChanged.connect(lambda: self.ui_update_send_value_check(self.server_widgets_status, self.socket_server))
+        self.lineEdit_SerSendInt_Value.textChanged.connect(
+            lambda: self.ui_update_send_value_check(self.server_widgets_status, self.socket_server))
+        self.lineEdit_SerSendFloat_Value.textChanged.connect(
+            lambda: self.ui_update_send_value_check(self.server_widgets_status, self.socket_server))
+        self.lineEdit_SerSendstr_Value.textChanged.connect(
+            lambda: self.ui_update_send_value_check(self.server_widgets_status, self.socket_server))
+        self.lineEdit_ServerSendSeparator.textChanged.connect(
+            lambda: self.ui_update_send_value_check(self.server_widgets_status, self.socket_server))
+        self.lineEdit_ServerReceiveSeparator.textChanged.connect(
+            lambda: self.ui_update_send_value_check(self.server_widgets_status, self.socket_server))
+        self.lineEdit_SerRecvInt_Value.textChanged.connect(
+            lambda: self.ui_update_send_value_check(self.server_widgets_status, self.socket_server))
+        self.lineEdit_SerRecvFloat_Value.textChanged.connect(
+            lambda: self.ui_update_send_value_check(self.server_widgets_status, self.socket_server))
+        self.lineEdit_SerRecvStr_Value.textChanged.connect(
+            lambda: self.ui_update_send_value_check(self.server_widgets_status, self.socket_server))
+        self.lineEdit_ServerReceiveSeparator.textChanged.connect(
+            lambda: self.ui_update_send_value_check(self.server_widgets_status, self.socket_server))
 
         self.lineEdit_SevIP.textChanged.connect(lambda: self.ui_update_check_ip_port(self.server_widgets_status))
         self.lineEdit_SerPort.textChanged.connect(lambda: self.ui_update_check_ip_port(self.server_widgets_status))
 
-        self.lineEdit_ClntSendInt_Value.textChanged.connect(lambda: self.ui_update_send_value_check(self.client_widgets_status, self.socket_client))
-        self.lineEdit_ClntSendFloat_Value.textChanged.connect(lambda: self.ui_update_send_value_check(self.client_widgets_status, self.socket_client))
-        self.lineEdit_ClntSendStr_Value.textChanged.connect(lambda: self.ui_update_send_value_check(self.client_widgets_status, self.socket_client))
-        self.lineEdit_ClientSendSeparator.textChanged.connect(lambda: self.ui_update_send_value_check(self.client_widgets_status, self.socket_client))
-        self.lineEdit_ClientReceiveSeparator.textChanged.connect(lambda: self.ui_update_send_value_check(self.client_widgets_status, self.socket_client))
-        self.lineEdit_ClntRecvInt_Value.textChanged.connect(lambda: self.ui_update_send_value_check(self.client_widgets_status, self.socket_client))
-        self.lineEdit_ClntRecvFloat_Value.textChanged.connect(lambda: self.ui_update_send_value_check(self.client_widgets_status, self.socket_client))
-        self.lineEdit_ClntRecvStr_Value.textChanged.connect(lambda: self.ui_update_send_value_check(self.client_widgets_status, self.socket_client))
+        self.lineEdit_ClntSendInt_Value.textChanged.connect(
+            lambda: self.ui_update_send_value_check(self.client_widgets_status, self.socket_client))
+        self.lineEdit_ClntSendFloat_Value.textChanged.connect(
+            lambda: self.ui_update_send_value_check(self.client_widgets_status, self.socket_client))
+        self.lineEdit_ClntSendStr_Value.textChanged.connect(
+            lambda: self.ui_update_send_value_check(self.client_widgets_status, self.socket_client))
+        self.lineEdit_ClientSendSeparator.textChanged.connect(
+            lambda: self.ui_update_send_value_check(self.client_widgets_status, self.socket_client))
+        self.lineEdit_ClientReceiveSeparator.textChanged.connect(
+            lambda: self.ui_update_send_value_check(self.client_widgets_status, self.socket_client))
+        self.lineEdit_ClntRecvInt_Value.textChanged.connect(
+            lambda: self.ui_update_send_value_check(self.client_widgets_status, self.socket_client))
+        self.lineEdit_ClntRecvFloat_Value.textChanged.connect(
+            lambda: self.ui_update_send_value_check(self.client_widgets_status, self.socket_client))
+        self.lineEdit_ClntRecvStr_Value.textChanged.connect(
+            lambda: self.ui_update_send_value_check(self.client_widgets_status, self.socket_client))
 
         self.lineEdit_ClntIP.textChanged.connect(lambda: self.ui_update_check_ip_port(self.client_widgets_status))
         self.lineEdit_ClntPort.textChanged.connect(lambda: self.ui_update_check_ip_port(self.client_widgets_status))
         # check spin box widgets sequences
-        self.spinBox_SerSendInt_Seq.textChanged.connect(lambda: self.ui_update_send_value_check(self.server_widgets_status, self.socket_server))
-        self.spinBox_SerSendFloat_Seq.textChanged.connect(lambda: self.ui_update_send_value_check(self.server_widgets_status, self.socket_server))
-        self.spinBox_SerSendStr_Seq.textChanged.connect(lambda: self.ui_update_send_value_check(self.server_widgets_status, self.socket_server))
-        self.spinBox_SerRecvInt_Seq.textChanged.connect(lambda: self.ui_update_rec_value_check(self.server_widgets_status, self.socket_server))
-        self.spinBox_SerRecvFloat_Seq.textChanged.connect(lambda: self.ui_update_rec_value_check(self.server_widgets_status, self.socket_server))
-        self.spinBox_SerRecvStr_Seq.textChanged.connect(lambda: self.ui_update_rec_value_check(self.server_widgets_status, self.socket_server))
+        self.spinBox_SerSendInt_Seq.textChanged.connect(
+            lambda: self.ui_update_send_value_check(self.server_widgets_status, self.socket_server))
+        self.spinBox_SerSendFloat_Seq.textChanged.connect(
+            lambda: self.ui_update_send_value_check(self.server_widgets_status, self.socket_server))
+        self.spinBox_SerSendStr_Seq.textChanged.connect(
+            lambda: self.ui_update_send_value_check(self.server_widgets_status, self.socket_server))
+        self.spinBox_SerRecvInt_Seq.textChanged.connect(
+            lambda: self.ui_update_rec_value_check(self.server_widgets_status, self.socket_server))
+        self.spinBox_SerRecvFloat_Seq.textChanged.connect(
+            lambda: self.ui_update_rec_value_check(self.server_widgets_status, self.socket_server))
+        self.spinBox_SerRecvStr_Seq.textChanged.connect(
+            lambda: self.ui_update_rec_value_check(self.server_widgets_status, self.socket_server))
 
-        self.spinBox_ClntSendInt_Seq.textChanged.connect(lambda: self.ui_update_send_value_check(self.client_widgets_status, self.socket_client))
-        self.spinBox_ClntSendFloat_Seq.textChanged.connect(lambda: self.ui_update_send_value_check(self.client_widgets_status, self.socket_client))
-        self.spinBox_ClntSendStr_Seq.textChanged.connect(lambda: self.ui_update_send_value_check(self.client_widgets_status, self.socket_client))
-        self.spinBox_ClntRecvInt_Seq.textChanged.connect(lambda: self.ui_update_rec_value_check(self.client_widgets_status, self.socket_client))
-        self.spinBox_ClntRecvFloat_Seq.textChanged.connect(lambda: self.ui_update_rec_value_check(self.client_widgets_status, self.socket_client))
-        self.spinBox_ClntRecvStr_Seq.textChanged.connect(lambda: self.ui_update_rec_value_check(self.client_widgets_status, self.socket_client))
+        self.spinBox_ClntSendInt_Seq.textChanged.connect(
+            lambda: self.ui_update_send_value_check(self.client_widgets_status, self.socket_client))
+        self.spinBox_ClntSendFloat_Seq.textChanged.connect(
+            lambda: self.ui_update_send_value_check(self.client_widgets_status, self.socket_client))
+        self.spinBox_ClntSendStr_Seq.textChanged.connect(
+            lambda: self.ui_update_send_value_check(self.client_widgets_status, self.socket_client))
+        self.spinBox_ClntRecvInt_Seq.textChanged.connect(
+            lambda: self.ui_update_rec_value_check(self.client_widgets_status, self.socket_client))
+        self.spinBox_ClntRecvFloat_Seq.textChanged.connect(
+            lambda: self.ui_update_rec_value_check(self.client_widgets_status, self.socket_client))
+        self.spinBox_ClntRecvStr_Seq.textChanged.connect(
+            lambda: self.ui_update_rec_value_check(self.client_widgets_status, self.socket_client))
 
         # socket server send and receive full type mode, auto uncheck the single mode check box
-        self.lineEdit_SerSendFullType.textChanged.connect(lambda: self.ui_update_server_full_type_mode(self.server_widgets_status, self.socket_server))
-        self.lineEdit_SerSendFormatStr.textChanged.connect(lambda: self.ui_update_server_full_type_mode(self.server_widgets_status, self.socket_server))
-        self.lineEdit_SerRecvFormatStr.textChanged.connect(lambda: self.ui_update_server_full_type_mode(self.server_widgets_status, self.socket_server))
-        self.lineEdit_SerSendInterval.textChanged.connect(lambda: self.ui_update_send_value_check(self.server_widgets_status, self.socket_server))
-        self.lineEdit_SerRecvInterval.textChanged.connect(lambda: self.ui_update_rec_value_check(self.server_widgets_status, self.socket_server))
+        self.lineEdit_SerSendFullType.textChanged.connect(
+            lambda: self.ui_update_server_full_type_mode(self.server_widgets_status, self.socket_server))
+        self.lineEdit_SerSendFormatStr.textChanged.connect(
+            lambda: self.ui_update_server_full_type_mode(self.server_widgets_status, self.socket_server))
+        self.lineEdit_SerRecvFormatStr.textChanged.connect(
+            lambda: self.ui_update_server_full_type_mode(self.server_widgets_status, self.socket_server))
+        self.lineEdit_SerSendInterval.textChanged.connect(
+            lambda: self.ui_update_send_value_check(self.server_widgets_status, self.socket_server))
+        self.lineEdit_SerRecvInterval.textChanged.connect(
+            lambda: self.ui_update_rec_value_check(self.server_widgets_status, self.socket_server))
 
-        self.lineEdit_ClntSendFullType.textChanged.connect(lambda: self.ui_update_server_full_type_mode(self.client_widgets_status, self.socket_client))
-        self.lineEdit_ClntSendFormatStr.textChanged.connect(lambda: self.ui_update_server_full_type_mode(self.client_widgets_status, self.socket_client))
-        self.lineEdit_ClntRecvFormatStr.textChanged.connect(lambda: self.ui_update_server_full_type_mode(self.client_widgets_status, self.socket_client))
-        self.lineEdit_ClntSendInterval.textChanged.connect(lambda: self.ui_update_send_value_check(self.client_widgets_status, self.socket_client))
-        self.lineEdit_ClntRecvInterval.textChanged.connect(lambda: self.ui_update_rec_value_check(self.client_widgets_status, self.socket_client))
-        self.init_quaternion()
+        self.lineEdit_ClntSendFullType.textChanged.connect(
+            lambda: self.ui_update_server_full_type_mode(self.client_widgets_status, self.socket_client))
+        self.lineEdit_ClntSendFormatStr.textChanged.connect(
+            lambda: self.ui_update_server_full_type_mode(self.client_widgets_status, self.socket_client))
+        self.lineEdit_ClntRecvFormatStr.textChanged.connect(
+            lambda: self.ui_update_server_full_type_mode(self.client_widgets_status, self.socket_client))
+        self.lineEdit_ClntSendInterval.textChanged.connect(
+            lambda: self.ui_update_send_value_check(self.client_widgets_status, self.socket_client))
+        self.lineEdit_ClntRecvInterval.textChanged.connect(
+            lambda: self.ui_update_rec_value_check(self.client_widgets_status, self.socket_client))
 
-    # ------------------------------------------------------------------------------------------------------------------
-    # -----------------------quaternion and euler convert function------------------------------------------------------
-    # ------------------------------------------------------------------------------------------------------------------
-
-    def init_quaternion(self):
-        self.quaternion_euler_ins.lineedit_q1 = self.lineEdit_quaternion_q1
-        self.quaternion_euler_ins.lineedit_q2 = self.lineEdit_quaternion_q2
-        self.quaternion_euler_ins.lineedit_q3 = self.lineEdit_quaternion_q3
-        self.quaternion_euler_ins.lineedit_q4 = self.lineEdit_quaternion_q4
-        self.quaternion_euler_ins.lineedit_rotx = self.lineEdit_euler_rotx
-        self.quaternion_euler_ins.lineedit_roty = self.lineEdit_euler_roty
-        self.quaternion_euler_ins.lineedit_rotz = self.lineEdit_euler_rotz
-        self.quaternion_euler_ins.lineedit_quaternion_euler = self.lineEdit_quaternion_result
-        self.quaternion_euler_ins.lineedit_euler_quaternion = self.lineEdit_euler_result
-        self.quaternion_euler_ins.textedit_log = self.textEdit_result_record
-        # self.quaternion_euler_ins.log_fun = self.record_convert_result
-
-    def qtextedit_custom_context_menu(self, pos):
-        """
-        customer the textedit right menu function, no delete,cut,paste function
-        :param pos: the cursor position
-        :return:none
-        """
-        _menu = QMenu(self)
-        # _action = _menu.addAction('Cut')
-        # _action.setShortcut('Ctrl+X')
-        # _action.triggered.connect(self.textEdit_result_record.cut)
-        # _action = _menu.addAction('Copy')
-        _action = QAction('Copy', self.textEdit_result_record)
-        _action.setShortcut('Ctrl+C')
-        _action.triggered.connect(self.textEdit_result_record.copy)
-        # _action = _menu.addAction('Paste')
-        # _action.setShortcut('Ctrl+V')
-        # _action.triggered.connect(self.textEdit_result_record.paste)
-        # _action = _menu.addAction('Delete')
-        # _action.triggered.connect(self.textEdit_result_record.clear)
-        # _action = _menu.addAction('SelectAll')
-        _action2 = QAction('SelectAll', self.textEdit_result_record)
-        _action2.setShortcut('Ctrl+A')
-        _action2.triggered.connect(self.textEdit_result_record.selectAll)
-        _menu.addAction(_action)
-        _menu.addAction(_action2)
-        _menu.popup(QCursor.pos())
-
-    # ------------------------------------------------------------------------------------------------------------------
-    # ----------------------socket communication -----------------------------------------------------------------------
-    # ------------------------------------------------------------------------------------------------------------------
     def server_create_connect(self):
         print("Server ip {}, Server port {}".format(self.lineEdit_SevIP.text(), self.lineEdit_SerPort.text()))
         self.signal_socket_server_create_connection.emit((self.lineEdit_SevIP.text(), self.lineEdit_SerPort.text()))
@@ -413,7 +564,8 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         """
         try:
             if self.socket_server.socket_server_accept_client is None:
-                self.signal_socket_server_not_accepted_close.emit((self.lineEdit_SevIP.text(), self.lineEdit_SerPort.text()))
+                self.signal_socket_server_not_accepted_close.emit(
+                    (self.lineEdit_SevIP.text(), self.lineEdit_SerPort.text()))
                 self.socket_server.b_close_not_accepted_server = True
             else:
                 self.socket_server.close_socket_server()
@@ -492,7 +644,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                                        [int(_str_seq), _str_text]]
                     m_sequence_list.sort(key=lambda x: x[0], reverse=True)
                     _send_fun((str(m_sequence_list[0][1]) + _send_str_Separator_text + str(m_sequence_list[1][1])
-                              + _send_str_Separator_text + str(m_sequence_list[2][1])).encode())
+                               + _send_str_Separator_text + str(m_sequence_list[2][1])).encode())
                 else:
                     _send_fun(_full_type_str_text.encode())
             else:
@@ -908,7 +1060,8 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                 widgets_status.pushButton_Receive.setEnabled(False)
 
     @staticmethod
-    def ui_update_socket_server_communicate_enable(b_accepted: bool, widgets_status: SocketWidgetStruct, _socket: SocketCommunicate) -> None:
+    def ui_update_socket_server_communicate_enable(b_accepted: bool, widgets_status: SocketWidgetStruct,
+                                                   _socket: SocketCommunicate) -> None:
         """
         enable send and receive widgets after socket server accept connection
         :param b_accepted:
@@ -1172,7 +1325,8 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
         if widgets_status.checkBox_Receive_Int.isChecked() + widgets_status.checkBox_Receive_Float.isChecked() + widgets_status.checkBox_Receive_Str.isChecked() == 0 \
                 and widgets_status.checkBox_Receive_Int.isEnabled() + widgets_status.checkBox_Receive_Float.isEnabled() + widgets_status.checkBox_Receive_Str.isEnabled() > 0:
-            print(widgets_status.checkBox_Receive_Int.isEnabled() + widgets_status.checkBox_Receive_Float.isEnabled() + widgets_status.checkBox_Receive_Str.isEnabled())
+            print(
+                widgets_status.checkBox_Receive_Int.isEnabled() + widgets_status.checkBox_Receive_Float.isEnabled() + widgets_status.checkBox_Receive_Str.isEnabled())
             widgets_status.lineEdit_StrReceiveSeparator.setText(",")
             widgets_status.lineEdit_StrReceiveSeparator.setStyleSheet(MyMainWindow.str_lineedit_style_disable)
             widgets_status.lineEdit_StrReceiveSeparator.setEnabled(False)
@@ -1314,7 +1468,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                         widgets_status.spinBox_Send_Float.setStyleSheet(MyMainWindow.str_spinbox_style_invalid)
                         widgets_status.spinBox_Send_Str.setStyleSheet(MyMainWindow.str_spinbox_style_invalid)
                     else:
-                        b_spinbox_check_valid =True
+                        b_spinbox_check_valid = True
                         widgets_status.spinBox_Send_Float.setStyleSheet(MyMainWindow.str_spinbox_style_enable)
                         widgets_status.spinBox_Send_Str.setStyleSheet(MyMainWindow.str_spinbox_style_enable)
 
@@ -1357,8 +1511,8 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
         """
         b_spinbox_check_valid = False
-        b_lineedit_seperator_recv_check_valid = False
-        b_lineedit_recv_interval_check_valid = False
+        # b_lineedit_seperator_recv_check_valid = False
+        # b_lineedit_recv_interval_check_valid = False
 
         if widgets_status.checkBox_ReceiveStrMode.isEnabled() or widgets_status.checkBox_ReceiveRawbytesMode.isEnabled():
             if widgets_status.checkBox_Receive_Int.isChecked() + widgets_status.checkBox_Receive_Float.isChecked() + widgets_status.checkBox_Receive_Str.isChecked() == 0:
@@ -1499,10 +1653,10 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             widgets_status.pushButton_Receive.setEnabled(False)
             widgets_status.pushButton_ClearCache.setEnabled(False)
 
-
     @staticmethod
     def ui_update_check_ip_port(widgets_status: SocketWidgetStruct):
-        match_result_ip = re.match(r"((2(5[0-5]|[0-4]\d))|[0-1]?\d{1,2})(\.((2(5[0-5]|[0-4]\d))|[0-1]?\d{1,2})){3}", widgets_status.lineEdit_IP.text())
+        match_result_ip = re.match(r"((2(5[0-5]|[0-4]\d))|[0-1]?\d{1,2})(\.((2(5[0-5]|[0-4]\d))|[0-1]?\d{1,2})){3}",
+                                   widgets_status.lineEdit_IP.text())
         match_result_port = re.match(r"^\d+$", widgets_status.lineEdit_Port.text())
         if match_result_ip is None:
             widgets_status.lineEdit_IP.setStyleSheet(MyMainWindow.str_lineedit_style_invalid)
@@ -1518,6 +1672,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             widgets_status.pushButton_CreateConnection.setEnabled(False)
         else:
             widgets_status.pushButton_CreateConnection.setEnabled(True)
+
 
 if __name__ == '__main__':
     # format the application interface show as designer display

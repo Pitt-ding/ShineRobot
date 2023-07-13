@@ -15,7 +15,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.setEnabled(True)
-        MainWindow.resize(1195, 951)
+        MainWindow.resize(1031, 781)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(":/main_window/robot_13597.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)
@@ -27,6 +27,9 @@ class Ui_MainWindow(object):
         MainWindow.setLocale(QtCore.QLocale(QtCore.QLocale.Chinese, QtCore.QLocale.China))
         MainWindow.setToolButtonStyle(QtCore.Qt.ToolButtonTextBesideIcon)
         self.centralwidget_ShineRobot = QtWidgets.QWidget(MainWindow)
+        font = QtGui.QFont()
+        font.setFamily("Microsoft YaHei")
+        self.centralwidget_ShineRobot.setFont(font)
         self.centralwidget_ShineRobot.setStyleSheet("QPushButton{\n"
 "border-width: 1px;\n"
 "border-style: solid;\n"
@@ -38,7 +41,7 @@ class Ui_MainWindow(object):
 "QPushButton:hover{background-color:rgb(85, 170, 255) }\n"
 "QPushButton:pressed{background-color:rgb(101, 163, 217) }\n"
 "\n"
-"QLineEdit{\n"
+"QLineEdit,QComboBox{\n"
 "border-radius: 4px;\n"
 "border-width:2px;\n"
 "border-color: rgb(165, 165, 165);\n"
@@ -46,6 +49,18 @@ class Ui_MainWindow(object):
 "margin-left:2px;\n"
 "margin-right:2px;\n"
 "}\n"
+"QComboBox::drop-down {\n"
+"     /*subcontrol-origin: padding;\n"
+"    /*subcontrol-position: top right;*/\n"
+"    /*width: 15px;*/\n"
+"\n"
+"    border-left-width: 1px;\n"
+"    border-left-color: darkgray;\n"
+"    border-left-style: solid; /* just a single line */\n"
+"    border-top-right-radius: 4px;  /*same radius as the QComboBox */\n"
+"    border-bottom-right-radius: 4px;\n"
+"}\n"
+"\n"
 "QLineEdit:disabled{\n"
 "    background-color: rgb(200, 200, 200);\n"
 "}\n"
@@ -57,6 +72,7 @@ class Ui_MainWindow(object):
 "QSpinBox:disabled{\n"
 "    background-color: rgb(200, 200, 200);\n"
 "}\n"
+"\n"
 "QSpinBox:enabled{\n"
 "    background-color: rgb(255, 255, 255);\n"
 "}\n"
@@ -545,13 +561,13 @@ class Ui_MainWindow(object):
 "}")
         self.label_result_record.setObjectName("label_result_record")
         self.verticalLayout_2.addWidget(self.label_result_record)
-        self.textEdit_result_record = QtWidgets.QTextEdit(self.tab)
+        self.textEdit_convert_log = QtWidgets.QTextEdit(self.tab)
         font = QtGui.QFont()
         font.setFamily("Microsoft YaHei")
-        self.textEdit_result_record.setFont(font)
-        self.textEdit_result_record.setFocusPolicy(QtCore.Qt.StrongFocus)
-        self.textEdit_result_record.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
-        self.textEdit_result_record.setStyleSheet("QTextEdit{\n"
+        self.textEdit_convert_log.setFont(font)
+        self.textEdit_convert_log.setFocusPolicy(QtCore.Qt.StrongFocus)
+        self.textEdit_convert_log.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+        self.textEdit_convert_log.setStyleSheet("QTextEdit{\n"
 "\n"
 "background-color: rgb(255, 255, 255, 0.5);\n"
 "margin-top: 0px;\n"
@@ -568,14 +584,11 @@ class Ui_MainWindow(object):
 "\n"
 "\n"
 "}")
-        self.textEdit_result_record.setReadOnly(True)
-        self.textEdit_result_record.setObjectName("textEdit_result_record")
-        self.verticalLayout_2.addWidget(self.textEdit_result_record)
+        self.textEdit_convert_log.setReadOnly(True)
+        self.textEdit_convert_log.setObjectName("textEdit_convert_log")
+        self.verticalLayout_2.addWidget(self.textEdit_convert_log)
         self.verticalLayout_3.addLayout(self.verticalLayout_2)
         self.tabWidget.addTab(self.tab, "")
-        self.tab_4 = QtWidgets.QWidget()
-        self.tab_4.setObjectName("tab_4")
-        self.tabWidget.addTab(self.tab_4, "")
         self.tab_2 = QtWidgets.QWidget()
         self.tab_2.setStyleSheet("")
         self.tab_2.setObjectName("tab_2")
@@ -1689,13 +1702,13 @@ class Ui_MainWindow(object):
         self.line_3.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.line_3.setObjectName("line_3")
         self.gridLayout_6.addWidget(self.line_3, 1, 0, 1, 3)
-        self.textEdit_Log = QtWidgets.QTextEdit(self.tab_2)
+        self.textEdit_socket_Log = QtWidgets.QTextEdit(self.tab_2)
         font = QtGui.QFont()
         font.setFamily("Microsoft YaHei")
         font.setPointSize(10)
-        self.textEdit_Log.setFont(font)
-        self.textEdit_Log.setContextMenuPolicy(QtCore.Qt.DefaultContextMenu)
-        self.textEdit_Log.setStyleSheet("QTextEdit{\n"
+        self.textEdit_socket_Log.setFont(font)
+        self.textEdit_socket_Log.setContextMenuPolicy(QtCore.Qt.DefaultContextMenu)
+        self.textEdit_socket_Log.setStyleSheet("QTextEdit{\n"
 "\n"
 "background-color: rgb(255, 255, 255, 0.5);\n"
 "margin-top: 0px;\n"
@@ -1712,18 +1725,325 @@ class Ui_MainWindow(object):
 "\n"
 "\n"
 "}")
-        self.textEdit_Log.setReadOnly(True)
-        self.textEdit_Log.setAcceptRichText(False)
-        self.textEdit_Log.setPlaceholderText("")
-        self.textEdit_Log.setObjectName("textEdit_Log")
-        self.gridLayout_6.addWidget(self.textEdit_Log, 2, 0, 1, 3)
+        self.textEdit_socket_Log.setReadOnly(True)
+        self.textEdit_socket_Log.setMarkdown("")
+        self.textEdit_socket_Log.setAcceptRichText(False)
+        self.textEdit_socket_Log.setObjectName("textEdit_socket_Log")
+        self.gridLayout_6.addWidget(self.textEdit_socket_Log, 2, 0, 1, 3)
         self.tabWidget.addTab(self.tab_2, "")
         self.tab_3 = QtWidgets.QWidget()
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.tab_3.sizePolicy().hasHeightForWidth())
+        self.tab_3.setSizePolicy(sizePolicy)
         self.tab_3.setObjectName("tab_3")
+        self.gridLayout_10 = QtWidgets.QGridLayout(self.tab_3)
+        self.gridLayout_10.setContentsMargins(2, 2, 2, 2)
+        self.gridLayout_10.setSpacing(2)
+        self.gridLayout_10.setObjectName("gridLayout_10")
+        self.gridLayout_9 = QtWidgets.QGridLayout()
+        self.gridLayout_9.setSpacing(2)
+        self.gridLayout_9.setObjectName("gridLayout_9")
+        self.lineEdit_POST = QtWidgets.QLineEdit(self.tab_3)
+        font = QtGui.QFont()
+        font.setFamily("Microsoft YaHei")
+        self.lineEdit_POST.setFont(font)
+        self.lineEdit_POST.setObjectName("lineEdit_POST")
+        self.gridLayout_9.addWidget(self.lineEdit_POST, 4, 2, 1, 6)
+        self.pushButton_Get_Clear = QtWidgets.QPushButton(self.tab_3)
+        self.pushButton_Get_Clear.setMinimumSize(QtCore.QSize(80, 30))
+        font = QtGui.QFont()
+        font.setFamily("Microsoft YaHei")
+        self.pushButton_Get_Clear.setFont(font)
+        self.pushButton_Get_Clear.setObjectName("pushButton_Get_Clear")
+        self.gridLayout_9.addWidget(self.pushButton_Get_Clear, 2, 8, 1, 1)
+        self.textEdit_SUBSCRIBE = QtWidgets.QTextEdit(self.tab_3)
+        self.textEdit_SUBSCRIBE.setMaximumSize(QtCore.QSize(16777215, 60))
+        font = QtGui.QFont()
+        font.setFamily("Microsoft YaHei")
+        self.textEdit_SUBSCRIBE.setFont(font)
+        self.textEdit_SUBSCRIBE.setReadOnly(True)
+        self.textEdit_SUBSCRIBE.setObjectName("textEdit_SUBSCRIBE")
+        self.gridLayout_9.addWidget(self.textEdit_SUBSCRIBE, 8, 0, 1, 9)
+        self.label_49 = QtWidgets.QLabel(self.tab_3)
+        self.label_49.setMaximumSize(QtCore.QSize(180, 16777215))
+        font = QtGui.QFont()
+        font.setFamily("Microsoft YaHei")
+        self.label_49.setFont(font)
+        self.label_49.setObjectName("label_49")
+        self.gridLayout_9.addWidget(self.label_49, 5, 1, 1, 1)
+        self.lineEdit_Web_Port = QtWidgets.QLineEdit(self.tab_3)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.lineEdit_Web_Port.sizePolicy().hasHeightForWidth())
+        self.lineEdit_Web_Port.setSizePolicy(sizePolicy)
+        self.lineEdit_Web_Port.setMinimumSize(QtCore.QSize(150, 0))
+        self.lineEdit_Web_Port.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        font = QtGui.QFont()
+        font.setFamily("Microsoft YaHei")
+        self.lineEdit_Web_Port.setFont(font)
+        self.lineEdit_Web_Port.setStyleSheet("background-color: rgb(200, 200, 200);")
+        self.lineEdit_Web_Port.setReadOnly(True)
+        self.lineEdit_Web_Port.setObjectName("lineEdit_Web_Port")
+        self.gridLayout_9.addWidget(self.lineEdit_Web_Port, 0, 5, 1, 2)
+        spacerItem17 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.gridLayout_9.addItem(spacerItem17, 0, 0, 1, 2)
+        self.lineEdit_WebPassword = QtWidgets.QLineEdit(self.tab_3)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.lineEdit_WebPassword.sizePolicy().hasHeightForWidth())
+        self.lineEdit_WebPassword.setSizePolicy(sizePolicy)
+        self.lineEdit_WebPassword.setMinimumSize(QtCore.QSize(150, 0))
+        self.lineEdit_WebPassword.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        font = QtGui.QFont()
+        font.setFamily("Microsoft YaHei")
+        self.lineEdit_WebPassword.setFont(font)
+        self.lineEdit_WebPassword.setObjectName("lineEdit_WebPassword")
+        self.gridLayout_9.addWidget(self.lineEdit_WebPassword, 1, 5, 1, 2)
+        self.pushButton_POST = QtWidgets.QPushButton(self.tab_3)
+        self.pushButton_POST.setMinimumSize(QtCore.QSize(80, 30))
+        font = QtGui.QFont()
+        font.setFamily("Microsoft YaHei")
+        self.pushButton_POST.setFont(font)
+        self.pushButton_POST.setObjectName("pushButton_POST")
+        self.gridLayout_9.addWidget(self.pushButton_POST, 4, 0, 1, 1)
+        self.textEdit_WebService_log = QtWidgets.QTextEdit(self.tab_3)
+        self.textEdit_WebService_log.setMinimumSize(QtCore.QSize(0, 100))
+        self.textEdit_WebService_log.setMaximumSize(QtCore.QSize(16777215, 150))
+        font = QtGui.QFont()
+        font.setFamily("Microsoft YaHei")
+        font.setPointSize(7)
+        self.textEdit_WebService_log.setFont(font)
+        self.textEdit_WebService_log.setObjectName("textEdit_WebService_log")
+        self.gridLayout_9.addWidget(self.textEdit_WebService_log, 10, 0, 1, 12)
+        self.lineEdit_Data_params = QtWidgets.QLineEdit(self.tab_3)
+        self.lineEdit_Data_params.setMinimumSize(QtCore.QSize(0, 0))
+        self.lineEdit_Data_params.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        font = QtGui.QFont()
+        font.setFamily("Microsoft YaHei")
+        self.lineEdit_Data_params.setFont(font)
+        self.lineEdit_Data_params.setObjectName("lineEdit_Data_params")
+        self.gridLayout_9.addWidget(self.lineEdit_Data_params, 5, 2, 1, 2)
+        spacerItem18 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.gridLayout_9.addItem(spacerItem18, 1, 0, 1, 2)
+        self.label_48 = QtWidgets.QLabel(self.tab_3)
+        font = QtGui.QFont()
+        font.setFamily("Microsoft YaHei")
+        self.label_48.setFont(font)
+        self.label_48.setObjectName("label_48")
+        self.gridLayout_9.addWidget(self.label_48, 5, 4, 1, 1)
+        self.pushButton_GET = QtWidgets.QPushButton(self.tab_3)
+        self.pushButton_GET.setMinimumSize(QtCore.QSize(80, 30))
+        font = QtGui.QFont()
+        font.setFamily("Microsoft YaHei")
+        self.pushButton_GET.setFont(font)
+        self.pushButton_GET.setObjectName("pushButton_GET")
+        self.gridLayout_9.addWidget(self.pushButton_GET, 2, 0, 1, 1)
+        self.label_46 = QtWidgets.QLabel(self.tab_3)
+        font = QtGui.QFont()
+        font.setFamily("Microsoft YaHei")
+        self.label_46.setFont(font)
+        self.label_46.setObjectName("label_46")
+        self.gridLayout_9.addWidget(self.label_46, 4, 1, 1, 1)
+        self.lineEdit_WebUserName = QtWidgets.QLineEdit(self.tab_3)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.lineEdit_WebUserName.sizePolicy().hasHeightForWidth())
+        self.lineEdit_WebUserName.setSizePolicy(sizePolicy)
+        self.lineEdit_WebUserName.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        font = QtGui.QFont()
+        font.setFamily("Microsoft YaHei")
+        self.lineEdit_WebUserName.setFont(font)
+        self.lineEdit_WebUserName.setObjectName("lineEdit_WebUserName")
+        self.gridLayout_9.addWidget(self.lineEdit_WebUserName, 1, 3, 1, 1)
+        self.label_13 = QtWidgets.QLabel(self.tab_3)
+        self.label_13.setMinimumSize(QtCore.QSize(50, 0))
+        font = QtGui.QFont()
+        font.setFamily("Microsoft YaHei")
+        self.label_13.setFont(font)
+        self.label_13.setObjectName("label_13")
+        self.gridLayout_9.addWidget(self.label_13, 0, 4, 1, 1)
+        self.label_16 = QtWidgets.QLabel(self.tab_3)
+        self.label_16.setMinimumSize(QtCore.QSize(50, 0))
+        font = QtGui.QFont()
+        font.setFamily("Microsoft YaHei")
+        self.label_16.setFont(font)
+        self.label_16.setObjectName("label_16")
+        self.gridLayout_9.addWidget(self.label_16, 1, 4, 1, 1)
+        spacerItem19 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.gridLayout_9.addItem(spacerItem19, 0, 7, 1, 5)
+        self.label_45 = QtWidgets.QLabel(self.tab_3)
+        font = QtGui.QFont()
+        font.setFamily("Microsoft YaHei")
+        self.label_45.setFont(font)
+        self.label_45.setObjectName("label_45")
+        self.gridLayout_9.addWidget(self.label_45, 2, 1, 1, 1)
+        self.label_14 = QtWidgets.QLabel(self.tab_3)
+        self.label_14.setMinimumSize(QtCore.QSize(50, 0))
+        font = QtGui.QFont()
+        font.setFamily("Microsoft YaHei")
+        self.label_14.setFont(font)
+        self.label_14.setObjectName("label_14")
+        self.gridLayout_9.addWidget(self.label_14, 1, 2, 1, 1)
+        self.treeWidget_WebserviceSignals = QtWidgets.QTreeWidget(self.tab_3)
+        self.treeWidget_WebserviceSignals.setMinimumSize(QtCore.QSize(350, 0))
+        font = QtGui.QFont()
+        font.setFamily("Microsoft YaHei")
+        self.treeWidget_WebserviceSignals.setFont(font)
+        self.treeWidget_WebserviceSignals.setLineWidth(1)
+        self.treeWidget_WebserviceSignals.setObjectName("treeWidget_WebserviceSignals")
+        self.treeWidget_WebserviceSignals.header().setDefaultSectionSize(60)
+        self.treeWidget_WebserviceSignals.header().setHighlightSections(True)
+        self.treeWidget_WebserviceSignals.header().setMinimumSectionSize(15)
+        self.gridLayout_9.addWidget(self.treeWidget_WebserviceSignals, 3, 10, 6, 2)
+        self.textEdit_POST = QtWidgets.QTextEdit(self.tab_3)
+        self.textEdit_POST.setMaximumSize(QtCore.QSize(16777215, 60))
+        font = QtGui.QFont()
+        font.setFamily("Microsoft YaHei")
+        self.textEdit_POST.setFont(font)
+        self.textEdit_POST.setReadOnly(True)
+        self.textEdit_POST.setObjectName("textEdit_POST")
+        self.gridLayout_9.addWidget(self.textEdit_POST, 6, 0, 1, 9)
+        self.label_18 = QtWidgets.QLabel(self.tab_3)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.label_18.sizePolicy().hasHeightForWidth())
+        self.label_18.setSizePolicy(sizePolicy)
+        font = QtGui.QFont()
+        font.setFamily("Microsoft YaHei")
+        self.label_18.setFont(font)
+        self.label_18.setObjectName("label_18")
+        self.gridLayout_9.addWidget(self.label_18, 2, 10, 1, 1)
+        self.lineEdit_Web_IP = QtWidgets.QLineEdit(self.tab_3)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.lineEdit_Web_IP.sizePolicy().hasHeightForWidth())
+        self.lineEdit_Web_IP.setSizePolicy(sizePolicy)
+        self.lineEdit_Web_IP.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        font = QtGui.QFont()
+        font.setFamily("Microsoft YaHei")
+        self.lineEdit_Web_IP.setFont(font)
+        self.lineEdit_Web_IP.setObjectName("lineEdit_Web_IP")
+        self.gridLayout_9.addWidget(self.lineEdit_Web_IP, 0, 3, 1, 1)
+        spacerItem20 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.gridLayout_9.addItem(spacerItem20, 1, 8, 1, 3)
+        self.textEdit_SUBSCRIBE_URL = QtWidgets.QTextEdit(self.tab_3)
+        font = QtGui.QFont()
+        font.setFamily("Microsoft YaHei")
+        self.textEdit_SUBSCRIBE_URL.setFont(font)
+        self.textEdit_SUBSCRIBE_URL.setStyleSheet("QTextEdit{\n"
+"border-radius: 4px;\n"
+"border-width:2px;\n"
+"border-color: rgb(165, 165, 165);\n"
+"border-style: solid;\n"
+"margin-left:2px;\n"
+"margin-right:2px;\n"
+"}")
+        self.textEdit_SUBSCRIBE_URL.setObjectName("textEdit_SUBSCRIBE_URL")
+        self.gridLayout_9.addWidget(self.textEdit_SUBSCRIBE_URL, 7, 2, 1, 6)
+        self.pushButton_SUBSCRIBE_Clear = QtWidgets.QPushButton(self.tab_3)
+        self.pushButton_SUBSCRIBE_Clear.setMinimumSize(QtCore.QSize(80, 30))
+        font = QtGui.QFont()
+        font.setFamily("Microsoft YaHei")
+        self.pushButton_SUBSCRIBE_Clear.setFont(font)
+        self.pushButton_SUBSCRIBE_Clear.setObjectName("pushButton_SUBSCRIBE_Clear")
+        self.gridLayout_9.addWidget(self.pushButton_SUBSCRIBE_Clear, 7, 8, 1, 1)
+        self.label_47 = QtWidgets.QLabel(self.tab_3)
+        font = QtGui.QFont()
+        font.setFamily("Microsoft YaHei")
+        self.label_47.setFont(font)
+        self.label_47.setObjectName("label_47")
+        self.gridLayout_9.addWidget(self.label_47, 7, 1, 1, 1)
+        self.label_12 = QtWidgets.QLabel(self.tab_3)
+        self.label_12.setMinimumSize(QtCore.QSize(50, 0))
+        font = QtGui.QFont()
+        font.setFamily("Microsoft YaHei")
+        self.label_12.setFont(font)
+        self.label_12.setObjectName("label_12")
+        self.gridLayout_9.addWidget(self.label_12, 0, 2, 1, 1)
+        self.pushButton_POST_Clear = QtWidgets.QPushButton(self.tab_3)
+        self.pushButton_POST_Clear.setMinimumSize(QtCore.QSize(80, 30))
+        font = QtGui.QFont()
+        font.setFamily("Microsoft YaHei")
+        self.pushButton_POST_Clear.setFont(font)
+        self.pushButton_POST_Clear.setObjectName("pushButton_POST_Clear")
+        self.gridLayout_9.addWidget(self.pushButton_POST_Clear, 5, 8, 1, 1)
+        self.pushButton_SUBSCRIBE = QtWidgets.QPushButton(self.tab_3)
+        self.pushButton_SUBSCRIBE.setMinimumSize(QtCore.QSize(80, 30))
+        font = QtGui.QFont()
+        font.setFamily("Microsoft YaHei")
+        self.pushButton_SUBSCRIBE.setFont(font)
+        self.pushButton_SUBSCRIBE.setObjectName("pushButton_SUBSCRIBE")
+        self.gridLayout_9.addWidget(self.pushButton_SUBSCRIBE, 7, 0, 1, 1)
+        self.pushButton_WebServiceRefreshSignals = QtWidgets.QPushButton(self.tab_3)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.pushButton_WebServiceRefreshSignals.sizePolicy().hasHeightForWidth())
+        self.pushButton_WebServiceRefreshSignals.setSizePolicy(sizePolicy)
+        self.pushButton_WebServiceRefreshSignals.setMinimumSize(QtCore.QSize(80, 30))
+        font = QtGui.QFont()
+        font.setFamily("Microsoft YaHei")
+        self.pushButton_WebServiceRefreshSignals.setFont(font)
+        self.pushButton_WebServiceRefreshSignals.setObjectName("pushButton_WebServiceRefreshSignals")
+        self.gridLayout_9.addWidget(self.pushButton_WebServiceRefreshSignals, 2, 11, 1, 1)
+        self.pushButton_Reference = QtWidgets.QPushButton(self.tab_3)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.pushButton_Reference.sizePolicy().hasHeightForWidth())
+        self.pushButton_Reference.setSizePolicy(sizePolicy)
+        self.pushButton_Reference.setMinimumSize(QtCore.QSize(80, 30))
+        font = QtGui.QFont()
+        font.setFamily("Microsoft YaHei")
+        self.pushButton_Reference.setFont(font)
+        self.pushButton_Reference.setObjectName("pushButton_Reference")
+        self.gridLayout_9.addWidget(self.pushButton_Reference, 1, 11, 1, 1)
+        self.textEdit_GET = QtWidgets.QTextEdit(self.tab_3)
+        font = QtGui.QFont()
+        font.setFamily("Microsoft YaHei")
+        self.textEdit_GET.setFont(font)
+        self.textEdit_GET.setReadOnly(True)
+        self.textEdit_GET.setObjectName("textEdit_GET")
+        self.gridLayout_9.addWidget(self.textEdit_GET, 3, 0, 1, 9)
+        self.label_22 = QtWidgets.QLabel(self.tab_3)
+        font = QtGui.QFont()
+        font.setFamily("Microsoft YaHei")
+        self.label_22.setFont(font)
+        self.label_22.setObjectName("label_22")
+        self.gridLayout_9.addWidget(self.label_22, 9, 0, 1, 1)
+        self.line_17 = QtWidgets.QFrame(self.tab_3)
+        self.line_17.setFrameShape(QtWidgets.QFrame.VLine)
+        self.line_17.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.line_17.setObjectName("line_17")
+        self.gridLayout_9.addWidget(self.line_17, 2, 9, 7, 1)
+        self.lineEdit_POST_VALUE = QtWidgets.QLineEdit(self.tab_3)
+        self.lineEdit_POST_VALUE.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        font = QtGui.QFont()
+        font.setFamily("Microsoft YaHei")
+        self.lineEdit_POST_VALUE.setFont(font)
+        self.lineEdit_POST_VALUE.setObjectName("lineEdit_POST_VALUE")
+        self.gridLayout_9.addWidget(self.lineEdit_POST_VALUE, 5, 5, 1, 1)
+        self.lineEdit_GET = QtWidgets.QLineEdit(self.tab_3)
+        font = QtGui.QFont()
+        font.setFamily("Microsoft YaHei")
+        self.lineEdit_GET.setFont(font)
+        self.lineEdit_GET.setObjectName("lineEdit_GET")
+        self.gridLayout_9.addWidget(self.lineEdit_GET, 2, 2, 1, 4)
+        self.gridLayout_10.addLayout(self.gridLayout_9, 1, 0, 1, 1)
         self.tabWidget.addTab(self.tab_3, "")
         self.tab_6 = QtWidgets.QWidget()
         self.tab_6.setObjectName("tab_6")
         self.tabWidget.addTab(self.tab_6, "")
+        self.tab_4 = QtWidgets.QWidget()
+        self.tab_4.setObjectName("tab_4")
+        self.tabWidget.addTab(self.tab_4, "")
         self.tab_5 = QtWidgets.QWidget()
         self.tab_5.setObjectName("tab_5")
         self.gridLayout_7 = QtWidgets.QGridLayout(self.tab_5)
@@ -1817,8 +2137,8 @@ class Ui_MainWindow(object):
         MainWindow.setTabOrder(self.lineEdit_ClntRecvInterval, self.pushButton_ClntClearCache)
         MainWindow.setTabOrder(self.pushButton_ClntClearCache, self.pushButton_ClntRecv)
         MainWindow.setTabOrder(self.pushButton_ClntRecv, self.lineEdit_ClntRecvFullType)
-        MainWindow.setTabOrder(self.lineEdit_ClntRecvFullType, self.textEdit_Log)
-        MainWindow.setTabOrder(self.textEdit_Log, self.lineEdit_euler_rotx)
+        MainWindow.setTabOrder(self.lineEdit_ClntRecvFullType, self.textEdit_socket_Log)
+        MainWindow.setTabOrder(self.textEdit_socket_Log, self.lineEdit_euler_rotx)
         MainWindow.setTabOrder(self.lineEdit_euler_rotx, self.lineEdit_quaternion_result)
         MainWindow.setTabOrder(self.lineEdit_quaternion_result, self.lineEdit_quaternion_q3)
         MainWindow.setTabOrder(self.lineEdit_quaternion_q3, self.pushButton_quaternion_copy)
@@ -1830,8 +2150,8 @@ class Ui_MainWindow(object):
         MainWindow.setTabOrder(self.pushButton_euler_clearinput, self.pushButton_euler_copy)
         MainWindow.setTabOrder(self.pushButton_euler_copy, self.lineEdit_euler_result)
         MainWindow.setTabOrder(self.lineEdit_euler_result, self.lineEdit_quaternion_q4)
-        MainWindow.setTabOrder(self.lineEdit_quaternion_q4, self.textEdit_result_record)
-        MainWindow.setTabOrder(self.textEdit_result_record, self.lineEdit_quaternion_q2)
+        MainWindow.setTabOrder(self.lineEdit_quaternion_q4, self.textEdit_convert_log)
+        MainWindow.setTabOrder(self.textEdit_convert_log, self.lineEdit_quaternion_q2)
         MainWindow.setTabOrder(self.lineEdit_quaternion_q2, self.lineEdit_euler_roty)
         MainWindow.setTabOrder(self.lineEdit_euler_roty, self.pushButton_quaternion_euler)
         MainWindow.setTabOrder(self.pushButton_quaternion_euler, self.textEdit)
@@ -1864,13 +2184,12 @@ class Ui_MainWindow(object):
         self.pushButton_euler_quaternion.setText(_translate("MainWindow", "欧拉角转四元数"))
         self.pushButton_euler_clearinput.setText(_translate("MainWindow", "清除"))
         self.label_result_record.setText(_translate("MainWindow", "历史记录"))
-        self.textEdit_result_record.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+        self.textEdit_convert_log.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'Microsoft YaHei\'; font-size:10.8pt; font-weight:400; font-style:normal;\">\n"
+"</style></head><body style=\" font-family:\'Microsoft YaHei\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'MS Shell Dlg 2\'; font-size:8pt;\"><br /></p></body></html>"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("MainWindow", "四元数转换"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_4), _translate("MainWindow", "网络检查工具"))
         self.label_9.setText(_translate("MainWindow", "发送"))
         self.checkBox_ServerReceiveRawbytes.setText(_translate("MainWindow", "Rawbytes"))
         self.checkBox_SerRecvFloat.setText(_translate("MainWindow", "浮点数类型"))
@@ -1970,186 +2289,249 @@ class Ui_MainWindow(object):
         self.label_40.setText(_translate("MainWindow", "发送数值"))
         self.label_41.setText(_translate("MainWindow", "接收内容"))
         self.checkBox_ClntContinueSend.setText(_translate("MainWindow", "连续发送"))
-        self.textEdit_Log.setMarkdown(_translate("MainWindow", "Socket communication...\n"
-"\n"
-""))
-        self.textEdit_Log.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+        self.textEdit_socket_Log.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'Microsoft YaHei\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:8px; margin-bottom:8px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">Socket communication...</span></p></body></html>"))
+"<p style=\"-qt-paragraph-type:empty; margin-top:8px; margin-bottom:8px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>"))
+        self.textEdit_socket_Log.setPlaceholderText(_translate("MainWindow", "Socket communication..."))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("MainWindow", "Socket通讯"))
+        self.lineEdit_POST.setToolTip(_translate("MainWindow", "/rw/iosystem/signals/{network}/{device}/{signal}"))
+        self.lineEdit_POST.setText(_translate("MainWindow", "/rw/panel/speedratio?action=setspeedratio"))
+        self.pushButton_Get_Clear.setText(_translate("MainWindow", "清除结果"))
+        self.textEdit_SUBSCRIBE.setToolTip(_translate("MainWindow", "Subscribe request result"))
+        self.textEdit_SUBSCRIBE.setPlaceholderText(_translate("MainWindow", "SUBSCRIBE result here "))
+        self.label_49.setText(_translate("MainWindow", "Data Params"))
+        self.lineEdit_Web_Port.setToolTip(_translate("MainWindow", "default port 80"))
+        self.lineEdit_Web_Port.setText(_translate("MainWindow", "80"))
+        self.lineEdit_WebPassword.setText(_translate("MainWindow", "robotics"))
+        self.pushButton_POST.setText(_translate("MainWindow", "POST"))
+        self.textEdit_WebService_log.setToolTip(_translate("MainWindow", "Request result"))
+        self.textEdit_WebService_log.setPlaceholderText(_translate("MainWindow", "Request result log"))
+        self.lineEdit_Data_params.setText(_translate("MainWindow", "speed-ratio"))
+        self.label_48.setText(_translate("MainWindow", "*Value"))
+        self.pushButton_GET.setText(_translate("MainWindow", "GET"))
+        self.label_46.setText(_translate("MainWindow", "URL"))
+        self.lineEdit_WebUserName.setText(_translate("MainWindow", "Default User"))
+        self.label_13.setText(_translate("MainWindow", "端口号"))
+        self.label_16.setText(_translate("MainWindow", "密码"))
+        self.label_45.setText(_translate("MainWindow", "URL"))
+        self.label_14.setText(_translate("MainWindow", "用户名"))
+        self.treeWidget_WebserviceSignals.headerItem().setText(0, _translate("MainWindow", "名称"))
+        self.treeWidget_WebserviceSignals.headerItem().setText(1, _translate("MainWindow", "信号类型"))
+        self.treeWidget_WebserviceSignals.headerItem().setText(2, _translate("MainWindow", "种类"))
+        self.treeWidget_WebserviceSignals.headerItem().setText(3, _translate("MainWindow", "值"))
+        self.treeWidget_WebserviceSignals.headerItem().setText(4, _translate("MainWindow", "状态"))
+        self.textEdit_POST.setToolTip(_translate("MainWindow", "post request result"))
+        self.textEdit_POST.setPlaceholderText(_translate("MainWindow", "POST result here"))
+        self.label_18.setText(_translate("MainWindow", "机器人信号"))
+        self.lineEdit_Web_IP.setText(_translate("MainWindow", "127.0.0.1"))
+        self.textEdit_SUBSCRIBE_URL.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'Microsoft YaHei\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Calibri\'; font-size:11pt;\">{\'resources\': [\'1\', \'2\', \'3\', \'4\'],</span><span style=\" font-family:\'SimSun\';\"> </span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Calibri\'; font-size:11pt;\">\'1\': \'/rw/panel/speedratio\',</span><span style=\" font-family:\'SimSun\';\"> </span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Calibri\'; font-size:11pt;\">\'1-p\': \'1\',</span><span style=\" font-family:\'SimSun\';\"> </span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Calibri\'; font-size:11pt;\">\'2\': \'/rw/iosystem/signals/do_ws_signal;state\',</span><span style=\" font-family:\'SimSun\';\"> </span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Calibri\'; font-size:11pt;\">\'2-p\': \'1\',</span><span style=\" font-family:\'SimSun\';\"> </span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Calibri\'; font-size:11pt;\">\'3\': \'/rw/panel/opmode\',</span><span style=\" font-family:\'SimSun\';\"> </span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Calibri\'; font-size:11pt;\">\'3-p\': \'1\',</span><span style=\" font-family:\'SimSun\';\"> </span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Calibri\'; font-size:11pt;\">\'4\': \'/rw/panel/ctrlstate\',</span><span style=\" font-family:\'SimSun\';\"> </span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Calibri\'; font-size:11pt;\">\'4-p\': \'1\'</span><span style=\" font-family:\'SimSun\';\"> </span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Calibri\'; font-size:11pt;\">}</span><span style=\" font-family:\'SimSun\';\"> </span></p></body></html>"))
+        self.pushButton_SUBSCRIBE_Clear.setText(_translate("MainWindow", "清除结果"))
+        self.label_47.setText(_translate("MainWindow", "Data Params\n"
+"resources="))
+        self.label_12.setText(_translate("MainWindow", "IP地址"))
+        self.pushButton_POST_Clear.setText(_translate("MainWindow", "清除结果"))
+        self.pushButton_SUBSCRIBE.setToolTip(_translate("MainWindow", "default URL:/SUBSCRIBE"))
+        self.pushButton_SUBSCRIBE.setText(_translate("MainWindow", "SUBSCRIBE"))
+        self.pushButton_WebServiceRefreshSignals.setText(_translate("MainWindow", "刷新"))
+        self.pushButton_Reference.setText(_translate("MainWindow", "官方文档"))
+        self.textEdit_GET.setToolTip(_translate("MainWindow", "Get request result"))
+        self.textEdit_GET.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'Microsoft YaHei\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>"))
+        self.textEdit_GET.setPlaceholderText(_translate("MainWindow", "GET result here"))
+        self.label_22.setText(_translate("MainWindow", "历史记录"))
+        self.lineEdit_POST_VALUE.setToolTip(_translate("MainWindow", "bool or int type"))
+        self.lineEdit_POST_VALUE.setText(_translate("MainWindow", "50"))
+        self.lineEdit_GET.setText(_translate("MainWindow", "/rw/iosystem/signals"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), _translate("MainWindow", "WebService"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_6), _translate("MainWindow", "OPCUA"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_4), _translate("MainWindow", "网络检查工具"))
         self.textEdit.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'SimSun\'; font-size:10.8pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\"> ! ===================================================================================================================================================================</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">    !</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">    ! Func          : rSocket_ServerComm</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">    ! Function      : Socket server Communication demo</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">    ! Description   :</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">    ! Return        :</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">    ! Parameters    :</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">    ! Author        : YuanQiang.Ding</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">    ! Date          : 2022-11-11</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">    !</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">    ! ===================================================================================================================================================================</span></p>\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:9pt;\"><br /></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">    PROC rSocket_ServerComm()</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">        CONST string sServerIP:=&quot;127.0.0.1&quot;;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">        CONST num nServerPort:=1026;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">        VAR num nCommunicateType:=10;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">        VAR string sSocket_Receive;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">        VAR rawbytes rbSocket_Send;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">        VAR rawbytes rbSocket_Receive;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">        VAR num nSocketReceive_int;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">        VAR num nSocketReceive_float;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">        VAR string sSocketReceive_str;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">        VAR socketdev sdServer_Socket;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">        VAR socketdev sdClinet_Socket;</span></p>\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:9pt;\"><br /></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">        TEST nCommunicateType</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">        CASE 10:</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">            !Send string type</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">            !****Append process logic here</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">            WHILE TRUE DO</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">                SocketSend sdClinet_Socket,\\Str:=&quot;ABB Robot: Message Sended&quot;;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">                WaitTime 1;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">            ENDWHILE</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">        CASE 11:</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">            WHILE TRUE DO</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">                SocketReceive sdClinet_Socket,\\Str:=sSocket_Receive\\Time:=WAIT_MAX;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">                TPWrite &quot;Server Receive clinet string: &quot;+sSocket_Receive;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">                sSocket_Receive:=&quot;&quot;;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">            ENDWHILE</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">        CASE 20:</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">            WHILE TRUE DO</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">                !Send rawbytes type here</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">                ClearRawBytes rbSocket_Send;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">                !---Assign the type sequence and number here---</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">                PackRawBytes temp_integer,rbSocket_Send,1\\IntX:=INT;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">                PackRawBytes temp_float,rbSocket_Send,(RawBytesLen(rbSocket_Send)+1)\\Float4;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">                PackRawBytes temp_string,rbSocket_Send,(RawBytesLen(rbSocket_Send)+1)\\ISOLatin1Encoding;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">                !****Append process logic here</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">                SocketSend sdClinet_Socket,\\RawData:=rbSocket_Send;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">                WaitTime 1;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">            ENDWHILE</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">        CASE 21:</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">            WHILE TRUE DO</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">                SocketReceive sdClinet_Socket,\\RawData:=rbSocket_Receive\\Time:=WAIT_MAX;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">                UnpackRawBytes rbSocket_Receive,1,nSocketReceive_int\\IntX:=INT;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">                UnpackRawBytes rbSocket_Receive,3,nSocketReceive_float\\Float4;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">                UnpackRawBytes rbSocket_Receive,7,sSocketReceive_str\\ISOLatin1Encoding:=5;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">                TPWrite &quot;Server parse rawbytes int value: &quot;\\Num:=nSocketReceive_int;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">                TPWrite &quot;Server parse rawbytes float value: &quot;\\Num:=nSocketReceive_float;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">                TPWrite &quot;Server parse rawbytes string value: &quot;+sSocketReceive_str;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">            ENDWHILE</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">        DEFAULT:</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">            TPWrite &quot;Wrong process no.&quot;;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">        ENDTEST</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">    ERROR</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">        !initial the socket connection</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">        IF ERRNO=ERR_SOCK_TIMEOUT THEN</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">            RETRY;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">        ELSEIF ERRNO=ERR_SOCK_CLOSED</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">            or ERRNO=ERR_SOCK_NET_UNREACH</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">            OR ERRNO=ERR_SOCK_NOT_CONN</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">            OR ERRNO=ERR_SOCK_UNSPEC THEN</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">            SocketClose sdServer_Socket;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">            SocketClose sdClinet_Socket;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">            SocketCreate sdServer_Socket;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">            SocketBind sdServer_Socket,sServerIP,nServerPort;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">            SocketListen sdServer_Socket;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">            SocketAccept sdServer_Socket,sdClinet_Socket\\Time:=WAIT_MAX;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">            RETRY;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">        ELSE</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">            RAISE ;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">        ENDIF</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">    UNDO</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">        SocketClose sdServer_Socket;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">        SocketClose sdClinet_Socket;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">    ENDPROC</span></p>\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:9pt;\"><br /></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">    ! ===================================================================================================================================================================</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">    !</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">    ! Func          : rSocket_ClientComm</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">    ! Function      : Socket client Communication demo, change nSocker_SendDataType value to switch send string or rawbytes</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">    ! Description   : you need to define the type sequence for rawbytes firstly,the receiver need to decode the data as your type sequence</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">    ! Return        :</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">    ! Parameters    :</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">    ! Author        : YuanQiang.Ding</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">    ! Date          : 2022-11-11</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">    !</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">    ! ===================================================================================================================================================================</span></p>\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:9pt;\"><br /></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">    PROC rSocket_ClientComm()</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">        CONST num nCommunicateType:=21;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">        CONST string sServerIP:=&quot;127.0.0.1&quot;;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">        CONST num nServerPort:=1025;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">        VAR socketdev sdClinet_Socket;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">        VAR rawbytes rbSocket_Send;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">        VAR rawbytes rbSocket_Receive;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">        VAR num nSocketReceive_int;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">        VAR num nSocketReceive_float;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">        VAR string sSocketReceive_str;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">        VAR string sSocket_Receive;</span></p>\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:9pt;\"><br /></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">        TEST nCommunicateType</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">        CASE 10:</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">            !Send string type</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">            WHILE TRUE DO</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">                !****Append process logic here</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">                SocketSend sdClinet_Socket,\\Str:=&quot;ABB Robot: Message Sended&quot;;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">                WaitTime 1;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">            ENDWHILE</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">        CASE 11:</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">            WHILE TRUE DO</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">                SocketReceive sdClinet_Socket,\\Str:=sSocket_Receive;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">                TPWrite &quot;Client Receive clinet string: &quot;+sSocket_Receive;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">                sSocket_Receive:=&quot;&quot;;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">            ENDWHILE</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">        CASE 20:</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">            WHILE TRUE DO</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">                !Send rawbytes type here</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">                ClearRawBytes rbSocket_Send;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">                !---Assign the type sequence and number here---</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">                PackRawBytes temp_integer,rbSocket_Send,1\\IntX:=INT;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">                PackRawBytes temp_float,rbSocket_Send,(RawBytesLen(rbSocket_Send)+1)\\Float4;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">                PackRawBytes temp_string,rbSocket_Send,(RawBytesLen(rbSocket_Send)+1)\\ISOLatin1Encoding;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">                !****Append process logic here</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">                SocketSend sdClinet_Socket,\\RawData:=rbSocket_Send;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">                WaitTime 1;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">            ENDWHILE</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">        CASE 21:</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">            WHILE TRUE DO</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">                SocketReceive sdClinet_Socket,\\RawData:=rbSocket_Receive;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">                UnpackRawBytes rbSocket_Receive,1,nSocketReceive_int\\IntX:=INT;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">                UnpackRawBytes rbSocket_Receive,3,nSocketReceive_float\\Float4;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">                UnpackRawBytes rbSocket_Receive,7,sSocketReceive_str\\ISOLatin1Encoding:=5;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">                TPWrite &quot;Client parse rawbytes int value: &quot;\\Num:=nSocketReceive_int;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">                TPWrite &quot;Client parse rawbytes float value: &quot;\\Num:=nSocketReceive_float;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">                TPWrite &quot;Client parse rawbytes string value: &quot;+sSocketReceive_str;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">            ENDWHILE</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">        ENDTEST</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">        SocketClose sdClinet_Socket;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">    ERROR</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">        !initial the socket connection</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">        IF ERRNO=ERR_SOCK_CLOSED</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">            OR ERRNO=ERR_SOCK_NET_UNREACH</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">            OR ERRNO=ERR_SOCK_NOT_CONN</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">            OR ERRNO=ERR_SOCK_UNSPEC</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">            THEN</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">            SocketClose sdClinet_Socket;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">            SocketCreate sdClinet_Socket;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">            SocketConnect sdClinet_Socket,sServerIP,nServerPort\\Time:=WAIT_MAX;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">            RETRY;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">        ELSE</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">            RAISE ;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">        ENDIF</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">    UNDO</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">        SocketClose sdClinet_Socket;</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt;\">    ENDPROC</span></p></body></html>"))
+"</style></head><body style=\" font-family:\'SimSun\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"> ! ===================================================================================================================================================================</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">    !</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">    ! Func          : rSocket_ServerComm</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">    ! Function      : Socket server Communication demo</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">    ! Description   :</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">    ! Return        :</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">    ! Parameters    :</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">    ! Author        : YuanQiang.Ding</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">    ! Date          : 2022-11-11</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">    !</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">    ! ===================================================================================================================================================================</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">    PROC rSocket_ServerComm()</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        CONST string sServerIP:=&quot;127.0.0.1&quot;;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        CONST num nServerPort:=1026;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        VAR num nCommunicateType:=10;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        VAR string sSocket_Receive;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        VAR rawbytes rbSocket_Send;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        VAR rawbytes rbSocket_Receive;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        VAR num nSocketReceive_int;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        VAR num nSocketReceive_float;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        VAR string sSocketReceive_str;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        VAR socketdev sdServer_Socket;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        VAR socketdev sdClinet_Socket;</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        TEST nCommunicateType</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        CASE 10:</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            !Send string type</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            !****Append process logic here</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            WHILE TRUE DO</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                SocketSend sdClinet_Socket,\\Str:=&quot;ABB Robot: Message Sended&quot;;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                WaitTime 1;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            ENDWHILE</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        CASE 11:</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            WHILE TRUE DO</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                SocketReceive sdClinet_Socket,\\Str:=sSocket_Receive\\Time:=WAIT_MAX;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                TPWrite &quot;Server Receive clinet string: &quot;+sSocket_Receive;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                sSocket_Receive:=&quot;&quot;;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            ENDWHILE</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        CASE 20:</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            WHILE TRUE DO</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                !Send rawbytes type here</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                ClearRawBytes rbSocket_Send;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                !---Assign the type sequence and number here---</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                PackRawBytes temp_integer,rbSocket_Send,1\\IntX:=INT;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                PackRawBytes temp_float,rbSocket_Send,(RawBytesLen(rbSocket_Send)+1)\\Float4;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                PackRawBytes temp_string,rbSocket_Send,(RawBytesLen(rbSocket_Send)+1)\\ISOLatin1Encoding;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                !****Append process logic here</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                SocketSend sdClinet_Socket,\\RawData:=rbSocket_Send;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                WaitTime 1;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            ENDWHILE</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        CASE 21:</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            WHILE TRUE DO</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                SocketReceive sdClinet_Socket,\\RawData:=rbSocket_Receive\\Time:=WAIT_MAX;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                UnpackRawBytes rbSocket_Receive,1,nSocketReceive_int\\IntX:=INT;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                UnpackRawBytes rbSocket_Receive,3,nSocketReceive_float\\Float4;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                UnpackRawBytes rbSocket_Receive,7,sSocketReceive_str\\ISOLatin1Encoding:=5;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                TPWrite &quot;Server parse rawbytes int value: &quot;\\Num:=nSocketReceive_int;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                TPWrite &quot;Server parse rawbytes float value: &quot;\\Num:=nSocketReceive_float;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                TPWrite &quot;Server parse rawbytes string value: &quot;+sSocketReceive_str;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            ENDWHILE</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        DEFAULT:</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            TPWrite &quot;Wrong process no.&quot;;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        ENDTEST</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">    ERROR</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        !initial the socket connection</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        IF ERRNO=ERR_SOCK_TIMEOUT THEN</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            RETRY;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        ELSEIF ERRNO=ERR_SOCK_CLOSED</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            or ERRNO=ERR_SOCK_NET_UNREACH</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            OR ERRNO=ERR_SOCK_NOT_CONN</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            OR ERRNO=ERR_SOCK_UNSPEC THEN</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            SocketClose sdServer_Socket;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            SocketClose sdClinet_Socket;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            SocketCreate sdServer_Socket;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            SocketBind sdServer_Socket,sServerIP,nServerPort;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            SocketListen sdServer_Socket;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            SocketAccept sdServer_Socket,sdClinet_Socket\\Time:=WAIT_MAX;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            RETRY;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        ELSE</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            RAISE ;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        ENDIF</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">    UNDO</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        SocketClose sdServer_Socket;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        SocketClose sdClinet_Socket;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">    ENDPROC</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">    ! ===================================================================================================================================================================</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">    !</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">    ! Func          : rSocket_ClientComm</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">    ! Function      : Socket client Communication demo, change nSocker_SendDataType value to switch send string or rawbytes</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">    ! Description   : you need to define the type sequence for rawbytes firstly,the receiver need to decode the data as your type sequence</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">    ! Return        :</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">    ! Parameters    :</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">    ! Author        : YuanQiang.Ding</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">    ! Date          : 2022-11-11</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">    !</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">    ! ===================================================================================================================================================================</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">    PROC rSocket_ClientComm()</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        CONST num nCommunicateType:=21;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        CONST string sServerIP:=&quot;127.0.0.1&quot;;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        CONST num nServerPort:=1025;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        VAR socketdev sdClinet_Socket;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        VAR rawbytes rbSocket_Send;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        VAR rawbytes rbSocket_Receive;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        VAR num nSocketReceive_int;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        VAR num nSocketReceive_float;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        VAR string sSocketReceive_str;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        VAR string sSocket_Receive;</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        TEST nCommunicateType</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        CASE 10:</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            !Send string type</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            WHILE TRUE DO</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                !****Append process logic here</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                SocketSend sdClinet_Socket,\\Str:=&quot;ABB Robot: Message Sended&quot;;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                WaitTime 1;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            ENDWHILE</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        CASE 11:</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            WHILE TRUE DO</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                SocketReceive sdClinet_Socket,\\Str:=sSocket_Receive;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                TPWrite &quot;Client Receive clinet string: &quot;+sSocket_Receive;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                sSocket_Receive:=&quot;&quot;;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            ENDWHILE</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        CASE 20:</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            WHILE TRUE DO</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                !Send rawbytes type here</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                ClearRawBytes rbSocket_Send;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                !---Assign the type sequence and number here---</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                PackRawBytes temp_integer,rbSocket_Send,1\\IntX:=INT;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                PackRawBytes temp_float,rbSocket_Send,(RawBytesLen(rbSocket_Send)+1)\\Float4;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                PackRawBytes temp_string,rbSocket_Send,(RawBytesLen(rbSocket_Send)+1)\\ISOLatin1Encoding;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                !****Append process logic here</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                SocketSend sdClinet_Socket,\\RawData:=rbSocket_Send;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                WaitTime 1;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            ENDWHILE</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        CASE 21:</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            WHILE TRUE DO</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                SocketReceive sdClinet_Socket,\\RawData:=rbSocket_Receive;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                UnpackRawBytes rbSocket_Receive,1,nSocketReceive_int\\IntX:=INT;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                UnpackRawBytes rbSocket_Receive,3,nSocketReceive_float\\Float4;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                UnpackRawBytes rbSocket_Receive,7,sSocketReceive_str\\ISOLatin1Encoding:=5;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                TPWrite &quot;Client parse rawbytes int value: &quot;\\Num:=nSocketReceive_int;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                TPWrite &quot;Client parse rawbytes float value: &quot;\\Num:=nSocketReceive_float;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                TPWrite &quot;Client parse rawbytes string value: &quot;+sSocketReceive_str;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            ENDWHILE</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        ENDTEST</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        SocketClose sdClinet_Socket;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">    ERROR</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        !initial the socket connection</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        IF ERRNO=ERR_SOCK_CLOSED</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            OR ERRNO=ERR_SOCK_NET_UNREACH</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            OR ERRNO=ERR_SOCK_NOT_CONN</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            OR ERRNO=ERR_SOCK_UNSPEC</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            THEN</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            SocketClose sdClinet_Socket;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            SocketCreate sdClinet_Socket;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            SocketConnect sdClinet_Socket,sServerIP,nServerPort\\Time:=WAIT_MAX;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            RETRY;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        ELSE</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">            RAISE ;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        ENDIF</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">    UNDO</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        SocketClose sdClinet_Socket;</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">    ENDPROC</p></body></html>"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_5), _translate("MainWindow", "ABB编程样例"))
 import shine_robot_rc

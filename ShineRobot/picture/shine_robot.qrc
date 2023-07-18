@@ -6,7 +6,9 @@
     <file>BackGround.jpg</file>
   </qresource>
   <qresource prefix="pushbutton">
+    <file>icons8-switch-48.png</file>
     <file>Clear.png</file>
+    <file>icons8-switch-48_unchecked.png</file>
     <file>disconnect.png</file>
     <file>connect.png</file>
     <file>send.png</file>

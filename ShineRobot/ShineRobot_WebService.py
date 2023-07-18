@@ -16,7 +16,7 @@ from requests.auth import HTTPDigestAuth
 from ws4py.client import WebSocketBaseClient
 from PyQt5.QtCore import QThread, QObject, pyqtSignal
 from PyQt5.QtWidgets import QApplication, QMainWindow
-from WebService_Qthread import Ui_MainWindow
+# from WebService_Qthread import Ui_MainWindow
 import xml.etree.ElementTree as ET
 
 
@@ -292,22 +292,3 @@ class WebService(QObject):
 
     def subscribe_signal_emit(self, _str):
         self.signal_result_record.emit(time.strftime('%Y-%m-%d %H:%M:%S') + ' > ' + _str)
-
-
-class MyMainWindow(QMainWindow, Ui_MainWindow):
-    def __init__(self):
-        super().__init__()
-        self.setupUi(self)
-        self.web_service = WebService()
-        self.web_Service_thread = QThread()
-        self.web_service.moveToThread(self.web_Service_thread)
-        self.web_service.signal_recvMessage.connect(self.textEdit_textedit.setPlainText)
-        self.pushButton_subscribe.clicked.connect(self.web_service.run)
-        self.web_Service_thread.start()
-
-
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    my_window = MyMainWindow()
-    my_window.show()
-    sys.exit(app.exec())
